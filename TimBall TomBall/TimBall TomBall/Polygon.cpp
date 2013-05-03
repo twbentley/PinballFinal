@@ -5,6 +5,7 @@ Polygon::Polygon()
 	num_sides = 3;
 	radius = 0.5f;
 	points = new Vector2[num_sides];
+	points2 = new Vector4[num_sides];
 
 	GLfloat x, y, theta = 0;
     for (int i=0; i < 3 ; i++) 
@@ -14,6 +15,7 @@ Polygon::Polygon()
         x = static_cast<GLfloat>( radius * cos(theta + PI / 2) );
         y = static_cast<GLfloat>( radius * sin(theta + PI / 2) );
         points[i] = Vector2(x,y);
+		points2[i] = Vector4(x,y,0,0);
     }
 
 	// Create a vertex array object
@@ -22,7 +24,7 @@ Polygon::Polygon()
 
 	glGenBuffers( 1, &buffer );
 	glBindBuffer( GL_ARRAY_BUFFER, buffer);
-	glBufferData( GL_ARRAY_BUFFER, sizeof(Vector2) * num_sides, points, GL_STATIC_DRAW );
+	glBufferData( GL_ARRAY_BUFFER, sizeof(Vector2) * num_sides, points2, GL_STATIC_DRAW );
 }
 
 Polygon::~Polygon(void)

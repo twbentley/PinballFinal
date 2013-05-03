@@ -1,9 +1,13 @@
 #include "ColorShader.h"
 
+using namespace std;
+#include <iostream>
+
 // Color Shader Constructor - set up shaders
 ColorShader::ColorShader()
 {
-	// Load shaders and use the resulting shader program    shaderProgram = InitShader( "vshader.glsl", "fshader.glsl" );
+	// Load shaders and use the resulting shader program    
+	shaderProgram = InitShader( "vshader.glsl", "fshader.glsl" );
     glUseProgram( shaderProgram );
 
     // Initialize the vertex position attribute from the vertex shader
@@ -49,8 +53,17 @@ char* ColorShader::readShaderSource(const char* shaderFile)
     fread(buf, 1, size, fp);
 
 	// Cap off the char array with a null-term
-    buf[size] = '\0';
-    fclose(fp);
+	fclose(fp);
+	for(int i = size; i >= 0; i--)
+	{
+		if(buf[i] == '}')
+		{
+			 buf[i + 1] = '\0';
+			 i = -1;
+		}
+	}
+    //buf[size] = '\0';
+	cout << buf << endl;
 
     return buf;
 }
@@ -101,7 +114,7 @@ GLuint ColorShader::InitShader(const char* vShaderFile, const char* fShaderFile)
 			glGetShaderInfoLog( shader, logSize, NULL, logMsg );
 			delete [] logMsg;
 
-			exit( EXIT_FAILURE );
+			//exit( EXIT_FAILURE );
 		}
 
 		// Clean up memory
@@ -155,18 +168,18 @@ void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix,
 	glUniformMatrix4fv(location, 1, false, (GLfloat*)&worldMatrix);
 
 	// Set the view matrix in the vertex shader.
-	location = glGetUniformLocation(shaderProgram, "viewMatrix");
+	//location = glGetUniformLocation(shaderProgram, "viewMatrix");
 	if(location == -1)
 	{
 		int x = 0;
 	}
-	glUniformMatrix4fv(location, 1, false, (GLfloat*)&viewMatrix);
+	//glUniformMatrix4fv(location, 1, false, (GLfloat*)&viewMatrix);
 
 	// Set the projection matrix in the vertex shader.
-	location = glGetUniformLocation(shaderProgram, "projectionMatrix");
+	//location = glGetUniformLocation(shaderProgram, "projectionMatrix");
 	if(location == -1)
 	{
 		int x = 0;
 	}
-	glUniformMatrix4fv(location, 1, false, (GLfloat*)&projectionMatrix);
+	//glUniformMatrix4fv(location, 1, false, (GLfloat*)&projectionMatrix);
 }

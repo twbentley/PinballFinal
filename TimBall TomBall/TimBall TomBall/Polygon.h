@@ -14,6 +14,7 @@ private:
 	GLuint buffer;
 	GLuint vao;
 	Vector2* points;
+	Vector4* points2;
 	int num_sides;
 	GLfloat radius;
 public:

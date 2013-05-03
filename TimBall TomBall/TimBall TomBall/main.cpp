@@ -14,7 +14,7 @@ GLfloat Poly_Color[3] = { 1.0, 0.0, 0.0 };
 #define _CRTDBG_MAP_ALLOC
 
 // Prevent console window from opening
-#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
+//#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 
 // Forward declarations
 void Main_Loop();
