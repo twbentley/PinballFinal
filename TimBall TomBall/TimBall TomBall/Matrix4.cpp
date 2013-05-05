@@ -289,3 +289,10 @@ Matrix4* Matrix4::CreateProjectionMatrix(float left,float right,float bottom,flo
 
 	return new Matrix4(2 / right, 0.0f, 0.0f, 0.0f, 0.0f, 2 / -bottom, 0.0f, 0.0f, 0.0f, 0.0f, -2 / (zFar - zNear), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
 }
+
+void Matrix4::UpdatePositionMatrix(Matrix4& currMatrix, float positionX, float positionY, float positionZ)
+{
+	currMatrix.matrix[0][3] += positionX;
+	currMatrix.matrix[1][3] += positionY;
+	currMatrix.matrix[2][3] += positionZ;
+}

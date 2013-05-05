@@ -23,10 +23,8 @@ public:
 
 	Matrix4* objectMatrix;
 
-	Vector2* velocity;
-	Vector2* accel;
-
-	
+	Vector4* velocity;
+	Vector4* accel;	
 };
 
 #endif

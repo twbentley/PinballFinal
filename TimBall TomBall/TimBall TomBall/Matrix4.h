@@ -60,6 +60,7 @@ public:
 
 	static Matrix4* CreatePositionMatrix(float, float, float);
 	static Matrix4* CreateProjectionMatrix(float, float, float, float, float, float);
+	static void UpdatePositionMatrix(Matrix4&, float, float, float);
 };
 
 #endif
