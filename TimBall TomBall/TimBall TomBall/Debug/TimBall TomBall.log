@@ -1,24 +1,43 @@
-﻿Build started 5/3/2013 2:50:38 PM.
-     1>Project "D:\Users\twb1193\PinballFinal\TimBall TomBall\TimBall TomBall\TimBall TomBall.vcxproj" on node 2 (build target(s)).
+﻿Build started 5/5/2013 2:38:26 PM.
+     1>Project "\\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\TimBall TomBall\TimBall TomBall.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\TimBall TomBall.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         All outputs are up-to-date.
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Polygon.cpp
+         Polygon.cpp
        Link:
-         All outputs are up-to-date.
-         TimBall TomBall.vcxproj -> D:\Users\twb1193\PinballFinal\TimBall TomBall\Debug\TimBall TomBall.exe
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"\\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\Debug\TimBall TomBall.exe" /NOLOGO glew32.lib opengl32.lib glfw.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\TimBall TomBall.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"\\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\Debug\TimBall TomBall.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"\\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\Debug\TimBall TomBall.lib" /MACHINE:X86 Debug\ColorShader.obj
+         Debug\Data_Container.obj
+         Debug\Game.obj
+         Debug\Game_Object.obj
+         Debug\main.obj
+         Debug\Matrix2.obj
+         Debug\Matrix3.obj
+         Debug\Matrix4.obj
+         Debug\Polygon.obj
+         Debug\Render.obj
+         Debug\Sprite.obj
+         Debug\Update.obj
+         Debug\Vector2.obj
+         Debug\Vector3.obj
+         Debug\Vector4.obj
+         LINK : \\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\Debug\TimBall TomBall.exe not found or not built by the last incremental link; performing full link
+     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+         TimBall TomBall.vcxproj -> \\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\Debug\TimBall TomBall.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"\\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\Debug\TimBall TomBall.exe;#1" /manifest "Debug\TimBall TomBall.exe.intermediate.manifest"
        PostBuildEvent:
-         xcopy "D:\Users\twb1193\PinballFinal\TimBall TomBall\GL\x86\bin" "D:\Users\twb1193\PinballFinal\TimBall TomBall\Debug" /y
+         xcopy "\\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\GL\x86\bin" "\\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\Debug" /y
          :VCEnd
-         D:\Users\twb1193\PinballFinal\TimBall TomBall\GL\x86\bin\glew32.dll
-         D:\Users\twb1193\PinballFinal\TimBall TomBall\GL\x86\bin\glew32mx.dll
-         D:\Users\twb1193\PinballFinal\TimBall TomBall\GL\x86\bin\GLFW.dll
+         \\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\GL\x86\bin\GLFW.dll
+         \\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\GL\x86\bin\glew32.dll
+         \\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\GL\x86\bin\glew32mx.dll
          3 File(s) copied
        FinalizeBuildStatus:
          Deleting file "Debug\TimBall TomBall.unsuccessfulbuild".
          Touching "Debug\TimBall TomBall.lastbuildstate".
-     1>Done Building Project "D:\Users\twb1193\PinballFinal\TimBall TomBall\TimBall TomBall\TimBall TomBall.vcxproj" (build target(s)).
+     1>Done Building Project "\\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\TimBall TomBall\TimBall TomBall.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.95
+Time Elapsed 00:00:05.37

@@ -13,7 +13,9 @@ ColorShader::ColorShader()
     // Initialize the vertex position attribute from the vertex shader
     GLuint loc = glGetAttribLocation( shaderProgram, "vPosition" );
     glEnableVertexAttribArray( loc );
-    glVertexAttribPointer( loc, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0) );
+
+
+    glVertexAttribPointer( loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0) ); // TODO: CHECK PARAMS
 }
 
 // Destructor
@@ -114,7 +116,7 @@ GLuint ColorShader::InitShader(const char* vShaderFile, const char* fShaderFile)
 			glGetShaderInfoLog( shader, logSize, NULL, logMsg );
 			delete [] logMsg;
 
-			//exit( EXIT_FAILURE );
+			exit( EXIT_FAILURE );
 		}
 
 		// Clean up memory
@@ -165,21 +167,21 @@ void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix,
 	{
 		int x = 0;
 	}
-	glUniformMatrix4fv(location, 1, false, (GLfloat*)&worldMatrix);
+	glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)worldMatrix);
 
 	// Set the view matrix in the vertex shader.
-	//location = glGetUniformLocation(shaderProgram, "viewMatrix");
+	location = glGetUniformLocation(shaderProgram, "viewMatrix");
 	if(location == -1)
 	{
 		int x = 0;
 	}
-	//glUniformMatrix4fv(location, 1, false, (GLfloat*)&viewMatrix);
+	glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)viewMatrix);
 
 	// Set the projection matrix in the vertex shader.
-	//location = glGetUniformLocation(shaderProgram, "projectionMatrix");
+	location = glGetUniformLocation(shaderProgram, "projectionMatrix");
 	if(location == -1)
 	{
 		int x = 0;
 	}
-	//glUniformMatrix4fv(location, 1, false, (GLfloat*)&projectionMatrix);
+	glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)projectionMatrix);
 }

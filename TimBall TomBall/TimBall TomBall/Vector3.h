@@ -1,6 +1,7 @@
 #ifndef Vector3_H
 #define Vector3_H
 
+#include <GL/glew.h>
 #include <GL/glfw.h>
 #include <istream>
 

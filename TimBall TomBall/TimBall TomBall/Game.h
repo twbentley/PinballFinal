@@ -48,6 +48,7 @@ public:
 
 	Matrix4* viewMatrix;
 	Matrix4* projectionMatrix;
+	GLuint vao;
 };
 
 #endif

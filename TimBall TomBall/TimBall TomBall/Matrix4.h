@@ -57,6 +57,9 @@ public:
 	Matrix4 transpose();
 
 	std::string ToString();
+
+	static Matrix4* CreatePositionMatrix(float, float, float);
+	static Matrix4* CreateProjectionMatrix(float, float, float, float, float, float);
 };
 
 #endif

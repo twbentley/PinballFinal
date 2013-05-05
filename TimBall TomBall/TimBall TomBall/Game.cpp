@@ -23,9 +23,13 @@ Game::Game(void)
 	Renderer = new Render();
 	Updater = new Update();
 
+	// Create a vertex array object
+    glGenVertexArrays( 1, &vao );
+    glBindVertexArray( vao );
+
 	data = new Data_Container();
 	circle = new Game_Object(data->sprites["circle"], 0.0f, 0.0f);
-	circle2 = new Game_Object(data->sprites["circle"], 0.5f, 0.0f);
+	circle2 = new Game_Object(data->sprites["circle"], 50.0f, 0.0f);
 	shader = new ColorShader();
 
 	// Instantiate useful matrices
@@ -37,6 +41,13 @@ Game::Game(void)
 
 	// The program is running
 	programRunning = true;
+
+	// Setup the projection matrix. (Used to translate the 3d scene into the 2d viewport space
+	float fieldOfView = (float)PI / 4.0f;
+	float screenAspect = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;
+	float screenNear = .1f;
+	float screenDepth = 1000.0f;
+	projectionMatrix = Matrix4::CreateProjectionMatrix(-WINDOW_WIDTH, WINDOW_WIDTH, -WINDOW_HEIGHT, WINDOW_HEIGHT, screenNear, screenDepth);
 }
 
 Game::~Game(void)

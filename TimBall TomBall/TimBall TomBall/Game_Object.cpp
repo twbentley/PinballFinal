@@ -8,8 +8,8 @@ Game_Object::Game_Object()
 Game_Object::Game_Object(Polygon* sprite_name, float positionX, float positionY)
 {
 	sprite = sprite_name;
-	objectMatrix = new Matrix4();
-	velocity = new Vector2(0.0, 0.0f);
+	objectMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
+	velocity = new Vector2(0.0f, 0.0f);
 	accel = new Vector2(0.0f, 0.0f);
 }
 

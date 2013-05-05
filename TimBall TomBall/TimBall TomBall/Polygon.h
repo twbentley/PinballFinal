@@ -1,7 +1,7 @@
 #ifndef POLYGON_H
 #define POLYGON_H
 
-#include "Vector2.h"
+#include "Vector4.h"
 #include "Matrix4.h"
 #include "ColorShader.h"
 
@@ -13,8 +13,7 @@ class Polygon
 private:
 	GLuint buffer;
 	GLuint vao;
-	Vector2* points;
-	Vector4* points2;
+	Vector4* points;
 	int num_sides;
 	GLfloat radius;
 public:

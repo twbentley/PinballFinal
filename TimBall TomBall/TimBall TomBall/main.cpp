@@ -2,7 +2,7 @@
 
 // Polygon Fields:
 // Points for the polygon
-Vector2 * points;
+Vector2* points;
 // Number of sides of the polygon
 int num_sides;
 // Radius of the polygon

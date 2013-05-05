@@ -1,6 +1,7 @@
 #ifndef VECTOR_4_H
 #define VECTOR_4_H
 
+#include <GL/glew.h>
 #include <GL/glfw.h>
 #include <istream>
 
