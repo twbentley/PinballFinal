@@ -245,7 +245,6 @@ Matrix4 matrixCompMult(const Matrix4& A, const Matrix4& B)
 // Transpose the given matrix
 Matrix4 Matrix4::transpose()
 {
-	// TODO: Make sure this actually transposes
 	return Matrix4
 	(
 		matrix[0][0], matrix[1][0], matrix[2][0], matrix[3][0],

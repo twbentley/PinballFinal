@@ -43,11 +43,11 @@ Vector4& Vector4::operator=(const Vector4& other)
 	return *this;
 }
 
-GLfloat& Vector4::operator[](int i) // TODO: Figure out why return x and not Vector4
+GLfloat& Vector4::operator[](int i)
 {
 	return *(&x + i);
 }
-const GLfloat Vector4::operator[](int i) const // TODO: Figure out why return x and not Vector4
+const GLfloat Vector4::operator[](int i) const
 {
 	return *(&x + i);
 }

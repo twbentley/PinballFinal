@@ -14,8 +14,8 @@ ColorShader::ColorShader()
     GLuint loc = glGetAttribLocation( shaderProgram, "vPosition" );
     glEnableVertexAttribArray( loc );
 
-
-    glVertexAttribPointer( loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0) ); // TODO: CHECK PARAMS
+	// Define vertex attribute data
+    glVertexAttribPointer( loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0) );
 }
 
 // Destructor
@@ -159,6 +159,8 @@ void ColorShader::Render(Matrix4* worldMatrix, Matrix4* viewMatrix, Matrix4* pro
 
 void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix, Matrix4* projectionMatrix)
 {
+	// glUniformMatrix4fv should have GL_TRUE to enable translation
+
 	unsigned int location;
 
 	// Set the world matrix in the vertex shader.
@@ -167,7 +169,7 @@ void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix,
 	{
 		int x = 0;
 	}
-	glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)worldMatrix);
+	glUniformMatrix4fv(location, 1, GL_TRUE, (GLfloat*)worldMatrix);
 
 	// Set the view matrix in the vertex shader.
 	location = glGetUniformLocation(shaderProgram, "viewMatrix");
@@ -175,7 +177,7 @@ void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix,
 	{
 		int x = 0;
 	}
-	glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)viewMatrix);
+	glUniformMatrix4fv(location, 1, GL_TRUE, (GLfloat*)viewMatrix);
 
 	// Set the projection matrix in the vertex shader.
 	location = glGetUniformLocation(shaderProgram, "projectionMatrix");
@@ -183,5 +185,5 @@ void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix,
 	{
 		int x = 0;
 	}
-	glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)projectionMatrix);
+	glUniformMatrix4fv(location, 1, GL_TRUE, (GLfloat*)projectionMatrix);
 }

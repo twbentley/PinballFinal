@@ -14,6 +14,6 @@ void Render::Draw(ColorShader* shader, Game_Object* object, Game_Object* object2
 	// Reset the viewing matrix
 	glLoadIdentity();
 
-	//object->Draw(shader, viewMatrix, projectionMatrix);
+	object->Draw(shader, viewMatrix, projectionMatrix);
 	object2->Draw(shader, viewMatrix, projectionMatrix);
 }

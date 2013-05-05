@@ -28,8 +28,8 @@ Game::Game(void)
     glBindVertexArray( vao );
 
 	data = new Data_Container();
-	circle = new Game_Object(data->sprites["circle"], 0.0f, 0.0f);
-	circle2 = new Game_Object(data->sprites["circle"], 50.0f, 0.0f);
+	circle = new Game_Object(data->sprites["circle"], 200.0f, -130.0f);
+	circle2 = new Game_Object(data->sprites["circle"], -190.0f, 50.0f);
 	shader = new ColorShader();
 
 	// Instantiate useful matrices

@@ -42,7 +42,7 @@ GLfloat& Vector3::operator[](int i)
 {
 	return *(&x + i);
 }
-const GLfloat Vector3::operator[](int i) const // TODO: Figure out why return x and not Vector3
+const GLfloat Vector3::operator[](int i) const
 {
 	return *(&x + i);
 }
