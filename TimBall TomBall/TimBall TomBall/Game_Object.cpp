@@ -9,7 +9,7 @@ Game_Object::Game_Object(Polygon* sprite_name, float positionX, float positionY)
 {
 	sprite = sprite_name;
 	objectMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
-	velocity = new Vector4(5.0f, 0.0f, 0.0f, 0.0f);
+	velocity = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 	accel = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
@@ -26,10 +26,10 @@ void Game_Object::Update()
 	*velocity += *accel;
 
 	// "Friction"
-	if(accel > 0)
-		*(accel) += Vector4(-0.01f, 0.0f, 0.0f, 0);
-	else if(accel < 0)
-		*(accel) += Vector4(0.01f, 0.0f, 0.0f, 0);
+	//if(accel > 0)
+	//	*(accel) += Vector4(-0.01f, 0.0f, 0.0f, 0);
+	//else if(accel < 0)
+	//	*(accel) += Vector4(0.01f, 0.0f, 0.0f, 0);
 }
 
 void Game_Object::Draw(ColorShader* shader, Matrix4* viewMatrix, Matrix4* projectionMatrix)

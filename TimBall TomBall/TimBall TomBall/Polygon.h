@@ -11,10 +11,11 @@
 class Polygon
 {
 private:
-	GLuint buffer;
-	GLuint vao;
-	Vector4* points;
-	int num_sides;
+	GLuint vertexBuffer;
+	GLuint indexbuffer;
+	Vector4* vertices;
+	unsigned int* indices;
+	int numIndices;
 	GLfloat radius;
 public:
 	Polygon();

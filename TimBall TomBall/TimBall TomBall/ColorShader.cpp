@@ -154,7 +154,8 @@ void ColorShader::Render(Matrix4* worldMatrix, Matrix4* viewMatrix, Matrix4* pro
 {
 	SetShader();
 	SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix);
-	glDrawArrays(GL_QUADS, 0, indexCount);
+	//glDrawArrays(GL_TRIANGLES, 0, indexCount);
+	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (void*)0);
 }
 
 void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix, Matrix4* projectionMatrix)
