@@ -1,26 +1,57 @@
 #include "Polygon.h"
 
 Polygon::Polygon()
+{}
+
+Polygon::Polygon(string modelToLoad)
 {
-	numIndices = 6;
+	vector<float> modelData[11];
+	FileIO::LoadObject("Assets/" + modelToLoad + ".obj", &(modelData[0]));
+
+	numIndices = modelData[8].size();
+
 	radius = 0.5f;
 	//points = new Vector2[num_sides];
-	vertices = new Vector4[numIndices - 2];
+	vertices = new Vector4[numIndices];
 	indices = new unsigned int[numIndices];
 
-	vertices[0] = Vector4(-100.0f, -100.0f, 0, 1);
-	vertices[1] = Vector4(-100.0f, 100.0f, 0, 1);
-	vertices[2] = Vector4(100.0f, 100.0f, 0, 1);
-	vertices[3] = Vector4(100.0f, -100.0f, 0, 1);
-	//points[4] = Vector4(125.0f, 200.0f, 0, 1);
-	//points[5] = Vector4(0.0f, 100.0f, 0, 1);
+	// Load in vertices based on obj indices setup
+	// COMMENTS FOR TEXTURING/LIGHTING IF WE DECIDE TO IMPLEMENT
+	int currentPositionIndex;
+	//int currentTextureIndex;
+	//int currentNormalIndex;
+	for(int i = 0; i < modelData[8].size(); i++)
+	{
+		currentPositionIndex = modelData[8][i];
+		//currentTextureIndex = modelData[9][i];
+		//currentNormalIndex = modelData[10][i];
 
-	indices[0] = 0;
-	indices[1] = 1;
-	indices[2] = 2;
-	indices[3] = 3;
-	indices[4] = 2;
-	indices[5] = 0;
+		vertices[i] = Vector4(modelData[0][currentPositionIndex] * 200, modelData[1][currentPositionIndex] * 200, modelData[2][currentPositionIndex] * 200, 1.0f);
+		//vertices[i].position = D3DXVECTOR3(modelData[0][currentPositionIndex], modelData[1][currentPositionIndex], modelData[2][currentPositionIndex]);
+		//vertices[i].texture = D3DXVECTOR2(modelData[3][currentTextureIndex], modelData[4][currentTextureIndex]);
+		//vertices[i].normal = D3DXVECTOR3(modelData[5][currentNormalIndex], modelData[6][currentNormalIndex], modelData[7][currentNormalIndex]);
+	}
+	// Load in indices, swapping direction the triangles are drawn (for converting from right hand to left hand system)
+	for(int i = 0; i < modelData[8].size(); i++)
+	{
+		indices[i] = i;
+	}
+
+	Vector4 i = vertices[indices[0]];
+	Vector4 ii = vertices[indices[1]];
+	Vector4 iii = vertices[indices[2]];
+
+	//vertices[0] = Vector4(-100.0f, -100.0f, 0, 1);
+	//vertices[1] = Vector4(-100.0f, 100.0f, 0, 1);
+	//vertices[2] = Vector4(100.0f, 100.0f, 0, 1);
+	//vertices[3] = Vector4(100.0f, -100.0f, 0, 1);
+
+	//indices[0] = 0;
+	//indices[1] = 1;
+	//indices[2] = 2;
+	//indices[3] = 3;
+	//indices[4] = 2;
+	//indices[5] = 0;
 
 	glGenBuffers( 1, &vertexBuffer );
 	glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer);

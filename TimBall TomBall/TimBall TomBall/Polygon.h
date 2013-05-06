@@ -4,6 +4,7 @@
 #include "Vector4.h"
 #include "Matrix4.h"
 #include "ColorShader.h"
+#include "FileIO.h"
 
 // Define value of pi
 #define PI 3.14159265358979323846264338327950288
@@ -19,6 +20,7 @@ private:
 	GLfloat radius;
 public:
 	Polygon();
+	Polygon(string);
 	~Polygon(void);
 
 	//ColorShader* shader;

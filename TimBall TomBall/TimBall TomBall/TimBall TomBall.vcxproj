@@ -63,6 +63,7 @@
   <ItemGroup>
     <ClCompile Include="ColorShader.cpp" />
     <ClCompile Include="Data_Container.cpp" />
+    <ClCompile Include="FileIO.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game_Object.cpp" />
     <ClCompile Include="main.cpp" />
@@ -80,6 +81,7 @@
   <ItemGroup>
     <ClInclude Include="ColorShader.h" />
     <ClInclude Include="Data_Container.h" />
+    <ClInclude Include="FileIO.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game_Object.h" />
     <ClInclude Include="Matrix2.h" />

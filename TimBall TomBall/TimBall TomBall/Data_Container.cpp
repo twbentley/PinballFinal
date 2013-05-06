@@ -2,5 +2,5 @@
 
 Data_Container::Data_Container()
 {
-	sprites["circle"] = new Polygon();
+	sprites["circle"] = new Polygon("box");
 }

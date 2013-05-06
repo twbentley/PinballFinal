@@ -9,7 +9,7 @@ Game_Object::Game_Object(Polygon* sprite_name, float positionX, float positionY)
 {
 	sprite = sprite_name;
 	objectMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
-	velocity = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	velocity = new Vector4(5.0f, 0.0f, 0.0f, 0.0f);
 	accel = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
