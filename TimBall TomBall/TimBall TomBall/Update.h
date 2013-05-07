@@ -10,7 +10,7 @@ public:
 	Update();
 	~Update();
 
-	void Update_Game(Game_Object*);
+	void Update_Game(unordered_map<char*, Game_Object*>);
 };
 
 #endif

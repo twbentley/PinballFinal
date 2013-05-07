@@ -35,9 +35,13 @@ private:
 	bool programRunning;
 	Render* Renderer;
 	Update* Updater;
-	Game_Object* gameObjects;
+	unordered_map<char*, Game_Object*>  gameObjects;
 	Game_Object* circle;
 	Game_Object* circle2;
+	Game_Object* wallXP;
+	Game_Object* wallXN;
+	Game_Object* wallYP;
+	Game_Object* wallYN;
 	Data_Container* data;
 	ColorShader* shader;
 public:
@@ -47,8 +51,8 @@ public:
 	bool Game_Loop();
 	void Shut_Down();
 
-	Matrix4* viewMatrix;
-	Matrix4* projectionMatrix;
+	Matrix4* viewMatrices;
+	Matrix4* projectionMatrices;
 	GLuint vao;
 };
 

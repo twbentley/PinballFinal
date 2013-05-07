@@ -6,7 +6,7 @@
 #include <string>
 #include <unordered_map>
 
-// This class holds models, sprite, and other similar data for objects
+// This class holds models, sprites, and other similar data for objects
 class Data_Container
 {
 private:
