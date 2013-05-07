@@ -1,5 +1,7 @@
 #include "Game.h"
 
+const int NUM_OBJECTS = 2;
+
 Game::Game(void)
 {
 	// Initialize the GLFW libary
@@ -22,19 +24,23 @@ Game::Game(void)
 	// Instantiate Rendering and Updating
 	Renderer = new Render();
 	Updater = new Update();
+	gameObjects = new Game_Object[NUM_OBJECTS];
 
 	// Create a vertex array object
     glGenVertexArrays( 1, &vao );
     glBindVertexArray( vao );
 
 	data = new Data_Container();
-	//circle = new Game_Object(data->sprites["circle"], 0.0f, 0.0f);
+	circle = new Game_Object(data->sprites["circle"], 200.0f, 0.0f);
 	circle2 = new Game_Object(data->sprites["circle"], 0.0f, 0.0f);
+	circle2->interactable = true;
+	circle->interactable = false;
+
 	shader = new ColorShader();
 
 	// Instantiate useful matrices
-	viewMatrix = new Matrix4();
-	projectionMatrix = new Matrix4();
+	viewMatrix = new Matrix4[2];
+	projectionMatrix = new Matrix4[2];
 
 	// Set the background color
 	glClearColor(0.f, 1.f, 1.f, 1.f);
@@ -47,7 +53,8 @@ Game::Game(void)
 	float screenAspect = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;
 	float screenNear = .1f;
 	float screenDepth = 1000.0f;
-	projectionMatrix = Matrix4::CreateProjectionMatrix(-WINDOW_WIDTH, WINDOW_WIDTH, -WINDOW_HEIGHT, WINDOW_HEIGHT, screenNear, screenDepth);
+	*(projectionMatrix + 0) = Matrix4::CreateProjectionMatrix(-WINDOW_WIDTH, WINDOW_WIDTH, -WINDOW_HEIGHT, WINDOW_HEIGHT, screenNear, screenDepth);
+	*(projectionMatrix + 1) = Matrix4::CreateProjectionMatrix(-WINDOW_WIDTH, WINDOW_WIDTH, -WINDOW_HEIGHT, WINDOW_HEIGHT, screenNear, screenDepth);
 }
 
 Game::~Game(void)
@@ -60,12 +67,16 @@ bool Game::Game_Loop()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Render the current scene
-	Renderer->Draw(shader, circle, circle2, viewMatrix, projectionMatrix);
+	Renderer->Draw(shader, circle, *(viewMatrix + 0), *(projectionMatrix + 0));
+	Renderer->Draw(shader, circle2, *(viewMatrix + 1), *(projectionMatrix + 1));
 
 	// Swap front and back buffers
 	glfwSwapBuffers(); 
 
 	// Update game objects
+	Updater->Update_Game(circle);
+	//circle->ProcessCollisions(circle2);
+	circle2->ProcessCollisions(circle);
 	Updater->Update_Game(circle2);
 
 	// Exit the program when ESC is pressed

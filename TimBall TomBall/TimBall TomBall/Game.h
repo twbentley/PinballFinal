@@ -35,6 +35,7 @@ private:
 	bool programRunning;
 	Render* Renderer;
 	Update* Updater;
+	Game_Object* gameObjects;
 	Game_Object* circle;
 	Game_Object* circle2;
 	Data_Container* data;

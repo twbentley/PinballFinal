@@ -59,7 +59,9 @@ Matrix4::~Matrix4(void) { }
 
 // Indexer operators
 Vector4& Matrix4::operator [] (int i)
-{ return matrix[i]; }
+{ 
+	return matrix[i]; 
+}
 const Vector4& Matrix4::operator [] (int i) const
 { return matrix[i]; }
 
@@ -281,13 +283,13 @@ Matrix4* Matrix4::CreatePositionMatrix(float positionX, float positionY, float p
 	return new Matrix4(1.0f, 0.0f, 0.0f, positionX, 0.0f, 1.0f, 0.0f, positionY, 0.0f, 0.0f, 1.0f, positionZ, 0.0f, 0.0f, 0.0f, 1.0f);
 }
 
-Matrix4* Matrix4::CreateProjectionMatrix(float left,float right,float bottom,float top,float zNear,float zFar)
+Matrix4 Matrix4::CreateProjectionMatrix(float left,float right,float bottom,float top,float zNear,float zFar)
 {
 	float tx=-(right+left)/(right-left);
 	float ty=-(top+bottom)/(top-bottom);
 	float tz=-(zFar+zNear)/(zFar-zNear);
 
-	return new Matrix4(2 / right, 0.0f, 0.0f, 0.0f, 0.0f, 2 / -bottom, 0.0f, 0.0f, 0.0f, 0.0f, -2 / (zFar - zNear), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+	return Matrix4(2 / right, 0.0f, 0.0f, 0.0f, 0.0f, 2 / -bottom, 0.0f, 0.0f, 0.0f, 0.0f, -2 / (zFar - zNear), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void Matrix4::UpdatePositionMatrix(Matrix4& currMatrix, float positionX, float positionY, float positionZ)

@@ -1,5 +1,8 @@
 #include "Polygon.h"
 
+// Scaling factor for objects
+const int OBJ_CONST = 50;
+
 Polygon::Polygon()
 {}
 
@@ -10,7 +13,6 @@ Polygon::Polygon(string modelToLoad)
 
 	numIndices = modelData[8].size();
 
-	radius = 0.5f;
 	//points = new Vector2[num_sides];
 	vertices = new Vector4[numIndices];
 	indices = new unsigned int[numIndices];
@@ -26,7 +28,7 @@ Polygon::Polygon(string modelToLoad)
 		//currentTextureIndex = modelData[9][i];
 		//currentNormalIndex = modelData[10][i];
 
-		vertices[i] = Vector4(modelData[0][currentPositionIndex] * 200, modelData[1][currentPositionIndex] * 200, modelData[2][currentPositionIndex] * 200, 1.0f);
+		vertices[i] = Vector4(modelData[0][currentPositionIndex] * OBJ_CONST, modelData[1][currentPositionIndex] * OBJ_CONST, modelData[2][currentPositionIndex] * OBJ_CONST, 1.0f);
 		//vertices[i].position = D3DXVECTOR3(modelData[0][currentPositionIndex], modelData[1][currentPositionIndex], modelData[2][currentPositionIndex]);
 		//vertices[i].texture = D3DXVECTOR2(modelData[3][currentTextureIndex], modelData[4][currentTextureIndex]);
 		//vertices[i].normal = D3DXVECTOR3(modelData[5][currentNormalIndex], modelData[6][currentNormalIndex], modelData[7][currentNormalIndex]);
@@ -35,6 +37,15 @@ Polygon::Polygon(string modelToLoad)
 	for(int i = 0; i < modelData[8].size(); i++)
 	{
 		indices[i] = i;
+	}
+
+	// Store radius as longest vertex
+	for each(float distance in modelData[0])
+	{
+		if(distance > radius)
+		{
+			radius = distance * OBJ_CONST;
+		}
 	}
 
 	Vector4 i = vertices[indices[0]];
@@ -55,11 +66,11 @@ Polygon::Polygon(string modelToLoad)
 
 	glGenBuffers( 1, &vertexBuffer );
 	glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData( GL_ARRAY_BUFFER, sizeof(Vector4) * (numIndices - 2), vertices, GL_STATIC_DRAW );
+	glBufferData( GL_ARRAY_BUFFER, sizeof(Vector4) * numIndices, vertices, GL_STATIC_DRAW );
 
 	glGenBuffers(1, &indexbuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexbuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 6, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * numIndices, indices, GL_STATIC_DRAW);
 
 }
 
@@ -88,3 +99,11 @@ void Polygon::Draw(ColorShader* shader, Matrix4* worldMatrix, Matrix4* viewMatri
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexbuffer);
 	shader->Render(worldMatrix, viewMatrix, projectionMatrix, numIndices);
 }
+
+Vector4 Polygon::GetVertexAt(int index)
+{
+	return vertices[index];
+}
+
+GLfloat Polygon::GetRadius()
+{ return radius; }

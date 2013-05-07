@@ -2,5 +2,5 @@
 
 Data_Container::Data_Container()
 {
-	sprites["circle"] = new Polygon("box");
+	sprites["circle"] = new Polygon("Pinball_Circle");
 }
