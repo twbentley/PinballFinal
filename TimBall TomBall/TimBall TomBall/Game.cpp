@@ -34,20 +34,12 @@ Game::Game(void)
 	projectionMatrix = new Matrix4();
 
 	// Instantiate some game objects
-	circle = new Game_Object(data->sprites["circle"], 200.0f, 0.0f);
-	circle2 = new Game_Object(data->sprites["circle"], 0.0f, 0.0f);
-	wallXP = new Game_Object(data->sprites["vert_rect"], 400.0f, 0.0f);
-	wallXN = new Game_Object(data->sprites["vert_rect"], -400.0f, 0.0f);
-	wallYP = new Game_Object(data->sprites["horiz_rect"], 0.0f, 400.0f);
-	wallYN = new Game_Object(data->sprites["horiz_rect"], 0.0f, -400.0f);
-
-	// Add some game objects
-	gameObjects["circle"] = circle;
-	gameObjects["circle2"] = circle2;
-	gameObjects["wallXP"] = wallXP;
-	gameObjects["wallXN"] = wallXN;
-	gameObjects["wallYP"] = wallYP;
-	gameObjects["wallYN"] = wallYN;
+	gameObjects["Ball"] = new Ball(data->sprites["circle"], 200.0f, 0.0f);
+	gameObjects["Bumper"] = new Game_Object(data->sprites["circle"], 0.0f, 0.0f);
+	gameObjects["WallRight"] = new Game_Object(data->sprites["vert_rect"], 400.0f, 0.0f);
+	gameObjects["WallLeft"] = new Game_Object(data->sprites["vert_rect"], -400.0f, 0.0f);
+	gameObjects["WallTop"] = new Game_Object(data->sprites["horiz_rect"], 0.0f, 400.0f);
+	gameObjects["WallBottom"] = new Game_Object(data->sprites["horiz_rect"], 0.0f, -400.0f);
 
 	// Set the background color
 	glClearColor(0.f, 1.f, 1.f, 1.f);

@@ -19,15 +19,18 @@
     <Filter Include="Source Files\Data">
       <UniqueIdentifier>{00da08cf-9a04-4c6f-818c-e51cac0a69e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game_Objects">
+      <UniqueIdentifier>{804515fe-5e9d-4361-8ae9-df842e1ce20e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game_Objects">
+      <UniqueIdentifier>{da5a79a3-a863-4ed3-b8e6-f98e8f737e23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Render.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game_Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Update.cpp">
@@ -69,12 +72,21 @@
     <ClCompile Include="FileIO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Game_Object.cpp">
+      <Filter>Source Files\Game_Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <Filter>Source Files\Game_Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Bumper.cpp">
+      <Filter>Source Files\Game_Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Source Files\Game_Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Render.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game_Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Update.h">
@@ -115,6 +127,18 @@
     </ClInclude>
     <ClInclude Include="FileIO.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game_Object.h">
+      <Filter>Header Files\Game_Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Bumper.h">
+      <Filter>Header Files\Game_Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
+      <Filter>Header Files\Game_Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Header Files\Game_Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

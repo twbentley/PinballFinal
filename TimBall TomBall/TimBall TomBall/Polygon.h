@@ -17,7 +17,7 @@ private:
 	Vector4* vertices;
 	unsigned int* indices;
 	int numIndices;
-	GLfloat radius;
+	Vector4 radius;
 	GLuint vao;
 public:
 	Polygon();
@@ -27,7 +27,7 @@ public:
 	//ColorShader* shader;
 	void Draw(ColorShader*, Matrix4*, Matrix4*, Matrix4*);
 	Vector4 GetVertexAt(int);
-	GLfloat GetRadius();
+	Vector4 GetRadius();
 };
 
 #endif

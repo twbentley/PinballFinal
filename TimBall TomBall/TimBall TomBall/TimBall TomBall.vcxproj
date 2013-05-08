@@ -61,6 +61,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="Bumper.cpp" />
     <ClCompile Include="ColorShader.cpp" />
     <ClCompile Include="Data_Container.cpp" />
     <ClCompile Include="FileIO.cpp" />
@@ -77,8 +79,11 @@
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vector4.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ball.h" />
+    <ClInclude Include="Bumper.h" />
     <ClInclude Include="ColorShader.h" />
     <ClInclude Include="Data_Container.h" />
     <ClInclude Include="FileIO.h" />
@@ -94,6 +99,7 @@
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fshader.glsl" />

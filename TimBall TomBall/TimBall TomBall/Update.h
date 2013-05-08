@@ -2,6 +2,7 @@
 #define UPDATE_H
 
 #include "Game_Object.h"
+#include "Ball.h"
 
 // This class updates game objects (position, rotation, etc)
 class Update

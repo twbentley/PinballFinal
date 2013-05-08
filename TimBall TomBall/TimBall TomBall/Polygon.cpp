@@ -40,11 +40,19 @@ Polygon::Polygon(string modelToLoad)
 	}
 
 	// Store radius as longest vertex
-	for each(float distance in modelData[0])
+	for each(float distanceX in modelData[0])
 	{
-		if(distance > radius)
+		if(distanceX > radius.x)
 		{
-			radius = distance * OBJ_CONST;
+			radius.x = distanceX * OBJ_CONST;
+		}
+	}
+	// Store radius as longest vertex
+	for each(float distanceY in modelData[1])
+	{
+		if(distanceY > radius.y)
+		{
+			radius.y = distanceY * OBJ_CONST;
 		}
 	}
 
@@ -88,5 +96,7 @@ Vector4 Polygon::GetVertexAt(int index)
 	return vertices[index];
 }
 
-GLfloat Polygon::GetRadius()
-{ return radius; }
+Vector4 Polygon::GetRadius()
+{ 
+	return radius; 
+}

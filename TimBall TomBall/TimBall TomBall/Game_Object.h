@@ -16,20 +16,11 @@ public:
 	Game_Object();
 	Game_Object(Polygon*, float, float);
 	~Game_Object();
-
-	void Update();
+	
 	void Draw(ColorShader*, Matrix4*, Matrix4*);
-	void PollUserInput();
-	void ProcessCollisions(Game_Object*);
 
 	Polygon* sprite;
-
 	Matrix4* objectMatrix;
-
-	Vector4* velocity;
-	Vector4* accel;
-
-	bool interactable;
 };
 
 #endif

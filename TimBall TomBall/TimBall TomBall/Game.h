@@ -35,13 +35,7 @@ private:
 	bool programRunning;
 	Render* Renderer;
 	Update* Updater;
-	unordered_map<char*, Game_Object*>  gameObjects;
-	Game_Object* circle;
-	Game_Object* circle2;
-	Game_Object* wallXP;
-	Game_Object* wallXN;
-	Game_Object* wallYP;
-	Game_Object* wallYN;
+	unordered_map<char*, Game_Object*> gameObjects;
 	Data_Container* data;
 	ColorShader* shader;
 public:
