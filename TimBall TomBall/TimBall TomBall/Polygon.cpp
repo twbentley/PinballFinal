@@ -48,10 +48,16 @@ Polygon::Polygon(string modelToLoad)
 		}
 	}
 
+	// Create a vertex array object
+    glGenVertexArrays( 1, &vao );
+    glBindVertexArray( vao );
+
+	// Create, bind, and populate the vertex buffer
 	glGenBuffers( 1, &vertexBuffer );
 	glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData( GL_ARRAY_BUFFER, sizeof(Vector4) * numIndices, vertices, GL_STATIC_DRAW );
 
+	// Create, bind, and populate the index buffer
 	glGenBuffers(1, &indexbuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexbuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * numIndices, indices, GL_STATIC_DRAW);
@@ -65,23 +71,16 @@ Polygon::~Polygon(void)
 // Draw a polygon using an array of points
 void Polygon::Draw(ColorShader* shader, Matrix4* worldMatrix, Matrix4* viewMatrix, Matrix4* projectionMatrix)
 {
-	/*Vector4 temp[4];
-	temp[0] = Vector4( *worldMatrix * vertices[0] );
-	temp[0] = Vector4(*viewMatrix * temp[0] );
-	temp[0] = Vector4(*projectionMatrix * temp[0] );
-	temp[1] = Vector4( *worldMatrix * vertices[1] );
-	temp[1] = Vector4(*viewMatrix * temp[1] );
-	temp[1] = Vector4(*projectionMatrix * temp[1] );
-	temp[2] = Vector4( *worldMatrix * vertices[2] );
-	temp[2] = Vector4(*viewMatrix * temp[2] );
-	temp[2] = Vector4(*projectionMatrix * temp[2] );
-	temp[3] = Vector4( *worldMatrix * vertices[3] );
-	temp[3] = Vector4(*viewMatrix * temp[3] );
-	temp[3] = Vector4(*projectionMatrix * temp[3] );*/
+	//glEnableVertexAttribArray(vao);
 
+	// Swap the to the correct buffer for the object (vertices and indices)
 	glBindBuffer( GL_ARRAY_BUFFER, vertexBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexbuffer);
+
+	// Render object using the shader
 	shader->Render(worldMatrix, viewMatrix, projectionMatrix, numIndices);
+
+	//glDisableVertexAttribArray(vao);
 }
 
 Vector4 Polygon::GetVertexAt(int index)

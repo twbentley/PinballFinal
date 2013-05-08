@@ -25,25 +25,23 @@ Game::Game(void)
 	Renderer = new Render();
 	Updater = new Update();
 
-	// Create a vertex array object
-    glGenVertexArrays( 1, &vao );
-    glBindVertexArray( vao );
-
 	data = new Data_Container();
 
 	shader = new ColorShader();
 
 	// Instantiate useful matrices
-	viewMatrices = new Matrix4[NUM_OBJECTS];
-	projectionMatrices = new Matrix4[NUM_OBJECTS];
+	viewMatrix = new Matrix4();
+	projectionMatrix = new Matrix4();
 
+	// Instantiate some game objects
 	circle = new Game_Object(data->sprites["circle"], 200.0f, 0.0f);
 	circle2 = new Game_Object(data->sprites["circle"], 0.0f, 0.0f);
-	wallXP = new Game_Object(data->sprites["horiz_rect"], 400.0f, 0.0f);
-	wallXN = new Game_Object(data->sprites["horiz_rect"], -400.0f, 0.0f);
-	wallYP = new Game_Object(data->sprites["vert_rect"], 0.0f, 400.0f);
-	wallYN = new Game_Object(data->sprites["vert_rect"], 0.0f, -400.0f);
+	wallXP = new Game_Object(data->sprites["vert_rect"], 400.0f, 0.0f);
+	wallXN = new Game_Object(data->sprites["vert_rect"], -400.0f, 0.0f);
+	wallYP = new Game_Object(data->sprites["horiz_rect"], 0.0f, 400.0f);
+	wallYN = new Game_Object(data->sprites["horiz_rect"], 0.0f, -400.0f);
 
+	// Add some game objects
 	gameObjects["circle"] = circle;
 	gameObjects["circle2"] = circle2;
 	gameObjects["wallXP"] = wallXP;
@@ -62,7 +60,7 @@ Game::Game(void)
 	float screenAspect = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;
 	float screenNear = .1f;
 	float screenDepth = 1000.0f;
-	*projectionMatrices = Matrix4::CreateProjectionMatrix(-WINDOW_WIDTH, WINDOW_WIDTH, -WINDOW_HEIGHT, WINDOW_HEIGHT, screenNear, screenDepth);
+	*projectionMatrix = Matrix4::CreateProjectionMatrix(-WINDOW_WIDTH, WINDOW_WIDTH, -WINDOW_HEIGHT, WINDOW_HEIGHT, screenNear, screenDepth);
 }
 
 Game::~Game(void)
@@ -75,7 +73,7 @@ bool Game::Game_Loop()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Render the current scene
-	Renderer->Draw(shader, gameObjects, viewMatrices, projectionMatrices);
+	Renderer->Draw(shader, gameObjects, viewMatrix, projectionMatrix);
 
 	// Swap front and back buffers
 	glfwSwapBuffers(); 

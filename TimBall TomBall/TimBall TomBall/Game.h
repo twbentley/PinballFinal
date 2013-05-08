@@ -51,9 +51,8 @@ public:
 	bool Game_Loop();
 	void Shut_Down();
 
-	Matrix4* viewMatrices;
-	Matrix4* projectionMatrices;
-	GLuint vao;
+	Matrix4* viewMatrix;
+	Matrix4* projectionMatrix;
 };
 
 #endif

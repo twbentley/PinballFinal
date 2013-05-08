@@ -18,6 +18,7 @@ private:
 	unsigned int* indices;
 	int numIndices;
 	GLfloat radius;
+	GLuint vao;
 public:
 	Polygon();
 	Polygon(string);

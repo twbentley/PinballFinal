@@ -3,24 +3,18 @@
 using namespace std;
 #include <iostream>
 
-// Color Shader Constructor - set up shaders
+// Color Shader Constructor - load shader program
 ColorShader::ColorShader()
 {
 	// Load shaders and use the resulting shader program    
 	shaderProgram = InitShader( "vshader.glsl", "fshader.glsl" );
-    glUseProgram( shaderProgram );
-
-    // Initialize the vertex position attribute from the vertex shader
-    GLuint loc = glGetAttribLocation( shaderProgram, "vPosition" );
-    glEnableVertexAttribArray( loc );
-
-	// Define vertex attribute data
-    glVertexAttribPointer( loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0) );
+	glUseProgram( shaderProgram );
 }
 
 // Destructor
 ColorShader::~ColorShader() { }
 
+// Set the correct shader program to be used
 void ColorShader::SetShader()
 {
 	glUseProgram(shaderProgram);
@@ -158,8 +152,16 @@ void ColorShader::Render(Matrix4* worldMatrix, Matrix4* viewMatrix, Matrix4* pro
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (void*)0);
 }
 
+// Set up the shader and matrices for a game object (vertex array must be swapped to the currect object)
 void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix, Matrix4* projectionMatrix)
 {
+	// Initialize the vertex position attribute from the vertex shader
+	GLuint loc = glGetAttribLocation( shaderProgram, "vPosition" );
+	glEnableVertexAttribArray( loc );
+
+	// Define vertex attribute data
+	glVertexAttribPointer( loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0) );
+
 	// glUniformMatrix4fv should have GL_TRUE to enable translation
 
 	unsigned int location;
