@@ -2,12 +2,14 @@
 #define _BALL_H
 
 #include "Game_Object.h"
+#include "Wall.h"
+#include <cstdarg>
 
 class Ball : public Game_Object
 {
 public:
 	Ball();
-	Ball(Polygon*, float, float);
+	Ball(Polygon*, float, float, float, float);
 	~Ball(void);
 
 	Vector4* velocity;
@@ -17,6 +19,7 @@ public:
 
 	void PollUserInput();
 	void ProcessCollisions(unordered_map<char*, Game_Object*>);
+	void ApplyForce(unordered_map<char*, Game_Object*>::iterator);
 };
 
 #endif

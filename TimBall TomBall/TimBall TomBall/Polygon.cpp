@@ -1,7 +1,7 @@
 #include "Polygon.h"
 
 // Scaling factor for objects
-const int OBJ_CONST = 50;
+const int OBJ_CONST = 25;
 
 Polygon::Polygon()
 {}

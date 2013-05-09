@@ -4,11 +4,11 @@ Ball::Ball()
 {
 }
 
-Ball::Ball(Polygon* sprite_name, float positionX, float positionY)
+Ball::Ball(Polygon* sprite_name, float positionX, float positionY, float velX, float velY)
 {
 	sprite = sprite_name;
 	objectMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
-	velocity = new Vector4(0.0f, -5.0f, 0.0f, 0.0f);
+	velocity = new Vector4(velX, velY, 0.0f, 0.0f);
 	accel = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
@@ -66,32 +66,84 @@ void Ball::ProcessCollisions(unordered_map<char*, Game_Object*> objects)
 		Vector2 otherCenter(itr->second->objectMatrix->matrix[0][3], itr->second->objectMatrix->matrix[1][3]);
 		Vector4 combinedRadius = this->sprite->GetRadius() + itr->second->sprite->GetRadius();
 
-		// TODO::If check for appropriate type of object, Check based on dictionary name
+		// Check for collidable objects, based on dictionary name
 		if(itr->first == "WallLeft" && thisCenter.x - sprite->GetRadius().x < otherCenter.x + itr->second->sprite->GetRadius().x)
 		{
-			velocity = new Vector4(velocity->x * -1, 0.0f, 0.0f, 0.0f);
+			velocity->x += this->velocity->x * -2.0f;
 		}
 		if(itr->first == "WallRight" && thisCenter.x + sprite->GetRadius().x > otherCenter.x - itr->second->sprite->GetRadius().x)
 		{
-			velocity = new Vector4(velocity->x * -1, 0.0f, 0.0f, 0.0f);
+			velocity->x += this->velocity->x * -2.0f;
 		}
 		if(itr->first == "WallTop" && thisCenter.y + sprite->GetRadius().x > otherCenter.y - itr->second->sprite->GetRadius().y)
 		{
-			velocity = new Vector4(0.0f, velocity->y * -1, 0.0f, 0.0f);
+			velocity->y += this->velocity->y * -2.0f;
 		}
 		if(itr->first == "WallBottom" && thisCenter.y - sprite->GetRadius().x < otherCenter.y + itr->second->sprite->GetRadius().y)
 		{
-			velocity = new Vector4(0.0f, velocity->y * -1, 0.0f, 0.0f);
+			velocity->y += this->velocity->y * -2.0f;
 		}
 
+
 		// Detect spherical collision
-		if( ( (thisCenter.x - otherCenter.x) * (thisCenter.x - otherCenter.x) ) +
+		if( ( itr->first == "OtherBall" || itr->first == "Bumper" ) &&
+			( (thisCenter.x - otherCenter.x) * (thisCenter.x - otherCenter.x) ) +
 			( (thisCenter.y - otherCenter.y) * (thisCenter.y - otherCenter.y) ) <
 			( combinedRadius.x * combinedRadius.x) )
 		{
-			// Do something
-			// acc -> vel -> pos
-			// TODO: World bounds, objects move via force (schwartz's Circle-Circle)
+			// Get the velocity of this object
+			Vector4* thisInitialVelocity = new Vector4(this->velocity->x, this->velocity->y, 0.0f, 0.0f);
+
+			if(itr->first == "Bumper")
+			{
+				// Colliding with a bumper increases the pinball's speed slightly
+				this->velocity = new Vector4(*velocity * -1.0f);	
+			}
+			else if(itr->first == "OtherBall")
+			{
+				// Get the velocity of the other ball
+				Vector4* otherInitialVelocity = new Vector4(static_cast<Ball*>(itr->second)->velocity->x, static_cast<Ball*>(itr->second)->velocity->y, 0.0f, 0.0f);
+
+				// If the object is static, just reverse the speed of the pinball
+				if(otherInitialVelocity->x == 0.0f && otherInitialVelocity->y == 0.0f)
+				{
+					this->velocity = new Vector4(*velocity * -1.0f);	
+				}
+				else
+				{
+					// Use basic conservation of momentum and swap velocities
+					this->velocity = (otherInitialVelocity);
+					static_cast<Ball*>(itr->second)->velocity = (thisInitialVelocity);
+				}
+			}
 		}
 	}
+}
+
+// Apply a force to the object (DEPRECATED)
+void Ball::ApplyForce(unordered_map<char*, Game_Object*>::iterator other)
+{
+	//Vector4& tmp = *velocity;
+	//Vector4 thisForce( tmp );	// velocity / mass
+	//Vector4 otherForce;
+	//Vector4 thisFinalForce;
+	//Vector4 otherFinalForce;
+
+	//if(other->first == "Circle")
+	//{
+	//	otherForce = *( static_cast<Ball*>(other->second)->velocity );
+	//}
+	//else
+	//{	}
+
+	//// You'll want to replace all the 1's with something later, this is the general setup.
+	//thisFinalForce = thisForce * (1.0f - 1.0f) / (1.0f + 1.0f) + otherForce * (2.0f * 1.0f / (1.0f + 1.0f));
+	//otherFinalForce = otherForce * (1.0f - 1.0f) / (1.0f + 1.0f) + thisForce * (2.0f * 1.0f / (1.0f + 1.0f));
+	///*thisFinalForce /= mass;
+	//otherFinalForce /= other->mass;*/
+
+	//accel->x = thisFinalForce.x;
+	//accel->y = thisFinalForce.y;
+	//accel->z = zForce;
+	//accel->w = wForce;
 }
