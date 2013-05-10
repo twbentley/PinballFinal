@@ -11,7 +11,7 @@ public:
 	Render();
 	~Render();
 
-	void Draw(ColorShader*, unordered_map<char*, Game_Object*>, Matrix4*, Matrix4*);
+	void Draw(ColorShader*, unordered_map<string, Game_Object*>, Matrix4*, Matrix4*);
 };
 
 #endif

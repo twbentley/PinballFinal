@@ -35,7 +35,7 @@ private:
 	bool programRunning;
 	Render* Renderer;
 	Update* Updater;
-	unordered_map<char*, Game_Object*> gameObjects;
+	unordered_map<string, Game_Object*> gameObjects;
 	Data_Container* data;
 	ColorShader* shader;
 public:

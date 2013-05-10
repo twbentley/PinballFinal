@@ -114,19 +114,20 @@ Vector4& Vector4::operator /= ( const GLfloat s )
 }
 
 // Vector-Vector dot product
-GLfloat Vector4::dot( const Vector4& u, const Vector4& v ) const
+GLfloat Vector4::dot() const
 {
-	return u.x * v.x + u.y * v.y + u.z * v.z, u.w + v.w;
+	return this->x * this->x + this->y * this->y + this->z * this->z + this->w * this->w;
 }
 // Vector length
-GLfloat Vector4::length( const Vector4& v ) const
+GLfloat Vector4::length() const
 {
-	return std::sqrt(dot(v,v));
+	return std::sqrt(abs(dot()));
 }
 // Vector normalize
 Vector4 Vector4::normalize( const Vector4& v ) const
 {
-	return v / length(v);
+	// Can't divide by 0
+	return v / length();
 }
 // Vector-Vector crossproduct
 Vector4 Vector4::cross(const Vector4& a, const Vector4& b ) const

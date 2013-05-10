@@ -11,7 +11,7 @@ public:
 	Update();
 	~Update();
 
-	void Update_Game(unordered_map<char*, Game_Object*>);
+	void Update_Game(unordered_map<string, Game_Object*>);
 };
 
 #endif

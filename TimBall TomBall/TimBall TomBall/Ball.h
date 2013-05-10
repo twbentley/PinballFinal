@@ -15,11 +15,11 @@ public:
 	Vector4* velocity;
 	Vector4* accel;
 
-	void Update(unordered_map<char*, Game_Object*>);
+	void Update(unordered_map<string, Game_Object*>);
 
 	void PollUserInput();
-	void ProcessCollisions(unordered_map<char*, Game_Object*>);
-	void ApplyForce(unordered_map<char*, Game_Object*>::iterator);
+	void ProcessCollisions(unordered_map<string, Game_Object*>);
+	void ApplyForce(unordered_map<string, Game_Object*>::iterator);
 };
 
 #endif

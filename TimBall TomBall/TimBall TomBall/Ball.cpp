@@ -16,7 +16,7 @@ Ball::~Ball(void)
 {
 }
 
-void Ball::Update(unordered_map<char*, Game_Object*> objects)
+void Ball::Update(unordered_map<string, Game_Object*> objects)
 {
 	Matrix4::UpdatePositionMatrix(*objectMatrix, velocity->x, velocity->y, 0);
 	*velocity += *accel;
@@ -55,13 +55,13 @@ void Ball::PollUserInput()
 	}
 }
 
-void Ball::ProcessCollisions(unordered_map<char*, Game_Object*> objects)
+void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 {
 	// Calculate 
 	Vector2 thisCenter(this->objectMatrix->matrix[0][3], this->objectMatrix->matrix[1][3]);
 
 	// Check collision with all objects
-	for(unordered_map<char*, Game_Object*>::iterator itr = objects.begin(); itr != objects.end(); itr++)
+	for(unordered_map<string, Game_Object*>::iterator itr = objects.begin(); itr != objects.end(); itr++)
 	{
 		Vector2 otherCenter(itr->second->objectMatrix->matrix[0][3], itr->second->objectMatrix->matrix[1][3]);
 		Vector4 combinedRadius = this->sprite->GetRadius() + itr->second->sprite->GetRadius();
@@ -86,42 +86,46 @@ void Ball::ProcessCollisions(unordered_map<char*, Game_Object*> objects)
 
 
 		// Detect spherical collision
-		if( ( itr->first == "OtherBall" || itr->first == "Bumper" ) &&
+		if( ( itr->first.find("Ball") != string::npos || itr->first == "Bumper" ) && 
+			itr->second != this && 
 			( (thisCenter.x - otherCenter.x) * (thisCenter.x - otherCenter.x) ) +
 			( (thisCenter.y - otherCenter.y) * (thisCenter.y - otherCenter.y) ) <
 			( combinedRadius.x * combinedRadius.x) )
 		{
-			// Get the velocity of this object
-			Vector4* thisInitialVelocity = new Vector4(this->velocity->x, this->velocity->y, 0.0f, 0.0f);
+			Vector4 hyp( (thisCenter.x - otherCenter.x), (thisCenter.y - otherCenter.y), 0.0f, 0.0f );
+			Vector4* normal = new Vector4(hyp.normalize(hyp));
+			*velocity = *normal * (-normal->dot() * -2.0f) + *velocity;
+			int i = 0;
+			//if(itr->first == "Bumper")
+			//{
+			//	// Colliding with a bumper increases the pinball's speed slightly
+			//	this->velocity = new Vector4(*velocity * -1.0f);	
+			//}
+			//else if(itr->first.find("Ball") != string::npos)
+			//{
+			//	// Get the velocity of this object
+			//	Vector4* thisInitialVelocity = new Vector4(this->velocity->x, this->velocity->y, 0.0f, 0.0f);
+			//	// Get the velocity of the other ball
+			//	Vector4* otherInitialVelocity = new Vector4(static_cast<Ball*>(itr->second)->velocity->x, static_cast<Ball*>(itr->second)->velocity->y, 0.0f, 0.0f);
 
-			if(itr->first == "Bumper")
-			{
-				// Colliding with a bumper increases the pinball's speed slightly
-				this->velocity = new Vector4(*velocity * -1.0f);	
-			}
-			else if(itr->first == "OtherBall")
-			{
-				// Get the velocity of the other ball
-				Vector4* otherInitialVelocity = new Vector4(static_cast<Ball*>(itr->second)->velocity->x, static_cast<Ball*>(itr->second)->velocity->y, 0.0f, 0.0f);
-
-				// If the object is static, just reverse the speed of the pinball
-				if(otherInitialVelocity->x == 0.0f && otherInitialVelocity->y == 0.0f)
-				{
-					this->velocity = new Vector4(*velocity * -1.0f);	
-				}
-				else
-				{
-					// Use basic conservation of momentum and swap velocities
-					this->velocity = (otherInitialVelocity);
-					static_cast<Ball*>(itr->second)->velocity = (thisInitialVelocity);
-				}
-			}
+			//	// If the object is static, just reverse the speed of the pinball
+			//	if(otherInitialVelocity->x == 0.0f && otherInitialVelocity->y == 0.0f)
+			//	{
+			//		this->velocity = new Vector4(*velocity * -1.0f);	
+			//	}
+			//	else
+			//	{
+			//		// Use basic conservation of momentum and swap velocities
+			//		this->velocity = (otherInitialVelocity);
+			//		static_cast<Ball*>(itr->second)->velocity = (thisInitialVelocity);
+			//	}
+			//}
 		}
 	}
 }
 
 // Apply a force to the object (DEPRECATED)
-void Ball::ApplyForce(unordered_map<char*, Game_Object*>::iterator other)
+void Ball::ApplyForce(unordered_map<string, Game_Object*>::iterator other)
 {
 	//Vector4& tmp = *velocity;
 	//Vector4 thisForce( tmp );	// velocity / mass
