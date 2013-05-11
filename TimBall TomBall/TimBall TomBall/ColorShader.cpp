@@ -144,16 +144,16 @@ GLuint ColorShader::InitShader(const char* vShaderFile, const char* fShaderFile)
     return program;
 }
 
-void ColorShader::Render(Matrix4* worldMatrix, Matrix4* viewMatrix, Matrix4* projectionMatrix, int indexCount)
+void ColorShader::Render(Matrix4* worldMatrix, Matrix4* viewMatrix, Matrix4* projectionMatrix, int indexCount, Vector4* color)
 {
 	SetShader();
-	SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix);
+	SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix, color);
 	//glDrawArrays(GL_TRIANGLES, 0, indexCount);
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (void*)0);
 }
 
 // Set up the shader and matrices for a game object (vertex array must be swapped to the currect object)
-void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix, Matrix4* projectionMatrix)
+void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix, Matrix4* projectionMatrix, Vector4* color)
 {
 	// Initialize the vertex position attribute from the vertex shader
 	GLuint loc = glGetAttribLocation( shaderProgram, "vPosition" );
@@ -189,4 +189,7 @@ void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix,
 		int x = 0;
 	}
 	glUniformMatrix4fv(location, 1, GL_TRUE, (GLfloat*)projectionMatrix);
+
+	glGetUniformLocation(shaderProgram, "vColor");
+	glUniform4f(shaderProgram, color->x, color->y, color->z, color->w);
 }
