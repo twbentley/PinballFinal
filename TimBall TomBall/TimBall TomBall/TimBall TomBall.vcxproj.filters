@@ -84,6 +84,9 @@
     <ClCompile Include="Wall.cpp">
       <Filter>Source Files\Game_Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Flipper.cpp">
+      <Filter>Source Files\Game_Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Render.h">
@@ -138,6 +141,9 @@
       <Filter>Header Files\Game_Objects</Filter>
     </ClInclude>
     <ClInclude Include="Wall.h">
+      <Filter>Header Files\Game_Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Flipper.h">
       <Filter>Header Files\Game_Objects</Filter>
     </ClInclude>
   </ItemGroup>

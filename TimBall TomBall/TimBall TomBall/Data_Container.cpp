@@ -6,4 +6,5 @@ Data_Container::Data_Container()
 	sprites["square"] = new Polygon("Pinball_Square");
 	sprites["horiz_rect"] = new Polygon("Pinball_RectangleHorizontal");
 	sprites["vert_rect"] = new Polygon("Pinball_RectangleVertical");
+	sprites["flipper"] = new Polygon("Pinball_RectangleHorizontal");
 }

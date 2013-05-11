@@ -45,6 +45,7 @@ public:
     Vector4& operator /= ( const GLfloat s );
 
 	// Non-class Vector4 Methods
+	GLfloat dot(const Vector4&) const;
 	GLfloat dot() const;
 	GLfloat length() const;
 	Vector4 normalize( const Vector4& v ) const;

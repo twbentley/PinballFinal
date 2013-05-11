@@ -86,40 +86,22 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 
 
 		// Detect spherical collision
-		if( ( itr->first.find("Ball") != string::npos || itr->first == "Bumper" ) && 
+		if( ( itr->first.find("Ball") != string::npos || itr->first == "Bumper" || itr->first == "Flipper1") && 
 			itr->second != this && 
 			( (thisCenter.x - otherCenter.x) * (thisCenter.x - otherCenter.x) ) +
 			( (thisCenter.y - otherCenter.y) * (thisCenter.y - otherCenter.y) ) <
 			( combinedRadius.x * combinedRadius.x) )
 		{
+			// Get the vector in between the two objects
 			Vector4 hyp( (thisCenter.x - otherCenter.x), (thisCenter.y - otherCenter.y), 0.0f, 0.0f );
-			Vector4* normal = new Vector4(hyp.normalize(hyp));
-			*velocity = *normal * (-normal->dot() * -2.0f) + *velocity;
-			int i = 0;
-			//if(itr->first == "Bumper")
-			//{
-			//	// Colliding with a bumper increases the pinball's speed slightly
-			//	this->velocity = new Vector4(*velocity * -1.0f);	
-			//}
-			//else if(itr->first.find("Ball") != string::npos)
-			//{
-			//	// Get the velocity of this object
-			//	Vector4* thisInitialVelocity = new Vector4(this->velocity->x, this->velocity->y, 0.0f, 0.0f);
-			//	// Get the velocity of the other ball
-			//	Vector4* otherInitialVelocity = new Vector4(static_cast<Ball*>(itr->second)->velocity->x, static_cast<Ball*>(itr->second)->velocity->y, 0.0f, 0.0f);
+			// Get the normal vector to the colliding object
+			Vector4 normal(hyp.normalize(hyp));
+			// Calculate a new velocity
+			*velocity = normal * (velocity->dot(normal) * -2.0f) + *velocity;
+			// Separate collided objects (upon collision 2 objects will slightly overlap so this is necessary)
+			Matrix4::UpdatePositionMatrix(*objectMatrix, velocity->x, velocity->y, 0);
 
-			//	// If the object is static, just reverse the speed of the pinball
-			//	if(otherInitialVelocity->x == 0.0f && otherInitialVelocity->y == 0.0f)
-			//	{
-			//		this->velocity = new Vector4(*velocity * -1.0f);	
-			//	}
-			//	else
-			//	{
-			//		// Use basic conservation of momentum and swap velocities
-			//		this->velocity = (otherInitialVelocity);
-			//		static_cast<Ball*>(itr->second)->velocity = (thisInitialVelocity);
-			//	}
-			//}
+			// NOTE: Ball-Ball collision sometimes only changes the velocity of one of the balls
 		}
 	}
 }

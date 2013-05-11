@@ -13,4 +13,5 @@ void Update::Update_Game(unordered_map<string, Game_Object*> objects)
 {
 	static_cast<Ball*>(objects["Ball1"])->Update(objects);
 	static_cast<Ball*>(objects["Ball2"])->Update(objects);
+	static_cast<Flipper*>(objects["Flipper1"])->Update();
 }

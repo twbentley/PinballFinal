@@ -3,6 +3,7 @@
 
 #include "Game_Object.h"
 #include "Ball.h"
+#include "Flipper.h"
 
 // This class updates game objects (position, rotation, etc)
 class Update

@@ -7,6 +7,9 @@
 //#include <ostream>
 //#include <istream>
 
+// Define value of pi
+#define PI 3.14159265358979323846264338327950288
+
 class Matrix4
 {
 public:
@@ -61,6 +64,7 @@ public:
 	static Matrix4* CreatePositionMatrix(float, float, float);
 	static Matrix4 CreateProjectionMatrix(float, float, float, float, float, float);
 	static void UpdatePositionMatrix(Matrix4&, float, float, float);
+	static void UpdateRotationMatrix(Matrix4&, char, float);
 };
 
 #endif

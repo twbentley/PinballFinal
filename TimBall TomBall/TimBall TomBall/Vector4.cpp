@@ -114,6 +114,10 @@ Vector4& Vector4::operator /= ( const GLfloat s )
 }
 
 // Vector-Vector dot product
+GLfloat Vector4::dot(const Vector4& v) const
+{
+	return this->x * v.x + this->y * v.y + this->z * v.z + this->w * v.w;
+}
 GLfloat Vector4::dot() const
 {
 	return this->x * this->x + this->y * this->y + this->z * this->z + this->w * this->w;

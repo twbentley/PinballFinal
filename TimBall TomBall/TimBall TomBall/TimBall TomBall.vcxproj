@@ -66,6 +66,7 @@
     <ClCompile Include="ColorShader.cpp" />
     <ClCompile Include="Data_Container.cpp" />
     <ClCompile Include="FileIO.cpp" />
+    <ClCompile Include="Flipper.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game_Object.cpp" />
     <ClCompile Include="main.cpp" />
@@ -87,6 +88,7 @@
     <ClInclude Include="ColorShader.h" />
     <ClInclude Include="Data_Container.h" />
     <ClInclude Include="FileIO.h" />
+    <ClInclude Include="Flipper.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game_Object.h" />
     <ClInclude Include="Matrix2.h" />

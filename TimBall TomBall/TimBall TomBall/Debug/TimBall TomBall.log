@@ -1,24 +1,24 @@
-﻿Build started 5/10/2013 2:42:23 PM.
-     1>Project "\\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\TimBall TomBall\TimBall TomBall.vcxproj" on node 2 (build target(s)).
+﻿Build started 5/11/2013 4:17:01 PM.
+     1>Project "\\banner.main.ad.rit.edu\students\twb1193\IGMProfile\Desktop\PinballFinal\TimBall TomBall\TimBall TomBall\TimBall TomBall.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\TimBall TomBall.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          All outputs are up-to-date.
        Link:
          All outputs are up-to-date.
-         TimBall TomBall.vcxproj -> \\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\Debug\TimBall TomBall.exe
+         TimBall TomBall.vcxproj -> \\banner.main.ad.rit.edu\students\twb1193\IGMProfile\Desktop\PinballFinal\TimBall TomBall\Debug\TimBall TomBall.exe
        PostBuildEvent:
-         xcopy "\\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\GL\x86\bin" "\\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\Debug" /y
+         xcopy "\\banner.main.ad.rit.edu\students\twb1193\IGMProfile\Desktop\PinballFinal\TimBall TomBall\GL\x86\bin" "\\banner.main.ad.rit.edu\students\twb1193\IGMProfile\Desktop\PinballFinal\TimBall TomBall\Debug" /y
          :VCEnd
-         \\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\GL\x86\bin\GLFW.dll
-         \\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\GL\x86\bin\glew32.dll
-         \\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\GL\x86\bin\glew32mx.dll
+         \\banner.main.ad.rit.edu\students\twb1193\IGMProfile\Desktop\PinballFinal\TimBall TomBall\GL\x86\bin\glew32.dll
+         \\banner.main.ad.rit.edu\students\twb1193\IGMProfile\Desktop\PinballFinal\TimBall TomBall\GL\x86\bin\glew32mx.dll
+         \\banner.main.ad.rit.edu\students\twb1193\IGMProfile\Desktop\PinballFinal\TimBall TomBall\GL\x86\bin\GLFW.dll
          3 File(s) copied
        FinalizeBuildStatus:
          Deleting file "Debug\TimBall TomBall.unsuccessfulbuild".
          Touching "Debug\TimBall TomBall.lastbuildstate".
-     1>Done Building Project "\\banner.main.ad.rit.edu\students\tmr9209\IGMProfile\Desktop\PinballFinal\TimBall TomBall\TimBall TomBall\TimBall TomBall.vcxproj" (build target(s)).
+     1>Done Building Project "\\banner.main.ad.rit.edu\students\twb1193\IGMProfile\Desktop\PinballFinal\TimBall TomBall\TimBall TomBall\TimBall TomBall.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.05
+Time Elapsed 00:00:00.85

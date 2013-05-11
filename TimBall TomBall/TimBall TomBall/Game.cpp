@@ -41,6 +41,8 @@ Game::Game(void)
 	gameObjects["WallLeft"] = new Game_Object(data->sprites["vert_rect"], -400.0f, 0.0f);
 	gameObjects["WallTop"] = new Game_Object(data->sprites["horiz_rect"], 0.0f, 400.0f);
 	gameObjects["WallBottom"] = new Game_Object(data->sprites["horiz_rect"], 0.0f, -400.0f);
+	gameObjects["Flipper1"] = new Game_Object(data->sprites["flipper"], -200.0f, -200.0f);
+	//gameObjects["Flipper2"] = new Game_Object(data->sprites["flipper"], 200.0f, -200.0f);
 
 	// Set the background color
 	glClearColor(0.f, 1.f, 1.f, 1.f);

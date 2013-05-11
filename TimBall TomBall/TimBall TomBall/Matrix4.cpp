@@ -298,3 +298,36 @@ void Matrix4::UpdatePositionMatrix(Matrix4& currMatrix, float positionX, float p
 	currMatrix.matrix[1][3] += positionY;
 	currMatrix.matrix[2][3] += positionZ;
 }
+
+void Matrix4::UpdateRotationMatrix(Matrix4& currMatrix, char axisToRotate, float angleInDegrees)
+{
+	float angleInRadians = angleInDegrees * PI / 180;
+
+	if(axisToRotate == 'z' || axisToRotate == 'Z')
+	{
+		currMatrix *= Matrix4(	
+								cos(angleInRadians), -sin(angleInRadians), 0.0f, 0.0f, 
+								sin(angleInRadians), cos(angleInRadians), 0.0f, 0.0f, 
+								0.0f, 0.0f, 1.0f, 0.0f,
+								0.0f, 0.0f, 0.0f, 1.0f
+							 );
+	}
+	else if(axisToRotate == 'y' || axisToRotate == 'Y')
+	{
+		currMatrix *= Matrix4(	
+								cos(angleInRadians), 0.0f, sin(angleInRadians), 0.0f, 
+								0.0f, 1.0f, 0.0f, 0.0f, 
+								-sin(angleInRadians), 0.0f, cos(angleInRadians), 0.0f,
+								0.0f, 0.0f, 0.0f, 1.0f
+							 );
+	}
+	else if(axisToRotate == 'x' || axisToRotate == 'X')
+	{
+		currMatrix *= Matrix4(	
+								1.0f, 0.0f, 0.0f, 0.0f, 
+								0.0f, cos(angleInRadians), -sin(angleInRadians), 0.0f, 
+								0.0f, sin(angleInRadians), cos(angleInRadians), 0.0f,
+								0.0f, 0.0f, 0.0f, 1.0f
+							 );
+	}
+}
