@@ -25,6 +25,9 @@ public:
 	Matrix4(const Matrix4& m);
 	~Matrix4(void);
 
+	// Copy assignment
+	Matrix4& operator = (const Matrix4& other);
+
 	// Indexers
 	Vector4& operator [] ( int i );
 	const Vector4& operator [] ( int i ) const;
@@ -61,7 +64,7 @@ public:
 
 	std::string ToString();
 
-	static Matrix4* CreatePositionMatrix(float, float, float);
+	static Matrix4 CreatePositionMatrix(float, float, float);
 	static Matrix4 CreateProjectionMatrix(float, float, float, float, float, float);
 	static void UpdatePositionMatrix(Matrix4&, float, float, float);
 	static void UpdateRotationMatrix(Matrix4&, char, float);

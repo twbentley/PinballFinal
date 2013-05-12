@@ -19,8 +19,11 @@ public:
 	
 	void Draw(ColorShader*, Matrix4*, Matrix4*);
 
+	void UpdateObjectMatrix();
+
 	Polygon* sprite;
-	Matrix4* objectMatrix;
+	Matrix4 objectMatrix;
+	Matrix4 translationMatrix;
 };
 
 #endif

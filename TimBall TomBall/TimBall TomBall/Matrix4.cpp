@@ -57,6 +57,17 @@ Matrix4::Matrix4(const Matrix4& m)
 // Destructor
 Matrix4::~Matrix4(void) { }
 
+// Copy assignment
+Matrix4& Matrix4::operator = (const Matrix4& other)
+{
+	matrix[0] = other.matrix[0];
+	matrix[1] = other.matrix[1];
+	matrix[2] = other.matrix[2];
+	matrix[3] = other.matrix[3];
+
+	return *this;
+}
+
 // Indexer operators
 Vector4& Matrix4::operator [] (int i)
 { 
@@ -278,9 +289,9 @@ string Matrix4::ToString()
 	return stream.str();
 }
 
-Matrix4* Matrix4::CreatePositionMatrix(float positionX, float positionY, float positionZ)
+Matrix4 Matrix4::CreatePositionMatrix(float positionX, float positionY, float positionZ)
 {
-	return new Matrix4(1.0f, 0.0f, 0.0f, positionX, 0.0f, 1.0f, 0.0f, positionY, 0.0f, 0.0f, 1.0f, positionZ, 0.0f, 0.0f, 0.0f, 1.0f);
+	return Matrix4(1.0f, 0.0f, 0.0f, positionX, 0.0f, 1.0f, 0.0f, positionY, 0.0f, 0.0f, 1.0f, positionZ, 0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 Matrix4 Matrix4::CreateProjectionMatrix(float left,float right,float bottom,float top,float zNear,float zFar)
@@ -289,7 +300,7 @@ Matrix4 Matrix4::CreateProjectionMatrix(float left,float right,float bottom,floa
 	float ty=-(top+bottom)/(top-bottom);
 	float tz=-(zFar+zNear)/(zFar-zNear);
 
-	return Matrix4(2 / right, 0.0f, 0.0f, 0.0f, 0.0f, 2 / -bottom, 0.0f, 0.0f, 0.0f, 0.0f, -2 / (zFar - zNear), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+	return Matrix4(2.0f / right, 0.0f, 0.0f, 0.0f, 0.0f, 2.0f / -bottom, 0.0f, 0.0f, 0.0f, 0.0f, -2.0f / (zFar - zNear), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void Matrix4::UpdatePositionMatrix(Matrix4& currMatrix, float positionX, float positionY, float positionZ)

@@ -42,7 +42,7 @@ Polygon::Polygon(string modelToLoad)
 	// Store radius as longest vertex
 	for each(float distanceX in modelData[0])
 	{
-		if(distanceX > radius.x)
+		if(distanceX * OBJ_CONST > radius.x)
 		{
 			radius.x = distanceX * OBJ_CONST;
 		}
@@ -50,7 +50,7 @@ Polygon::Polygon(string modelToLoad)
 	// Store radius as longest vertex
 	for each(float distanceY in modelData[1])
 	{
-		if(distanceY > radius.y)
+		if(distanceY * OBJ_CONST > radius.y)
 		{
 			radius.y = distanceY * OBJ_CONST;
 		}

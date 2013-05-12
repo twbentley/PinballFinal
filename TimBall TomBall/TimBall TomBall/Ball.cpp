@@ -7,7 +7,9 @@ Ball::Ball()
 Ball::Ball(Polygon* sprite_name, float positionX, float positionY, float velX, float velY)
 {
 	sprite = sprite_name;
-	objectMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
+	translationMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
+	//objectMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
+
 	velocity = new Vector4(velX, velY, 0.0f, 0.0f);
 	accel = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 }
@@ -18,7 +20,7 @@ Ball::~Ball(void)
 
 void Ball::Update(unordered_map<string, Game_Object*> objects)
 {
-	Matrix4::UpdatePositionMatrix(*objectMatrix, velocity->x, velocity->y, 0);
+	Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
 	*velocity += *accel;
 
 	// "Friction"
@@ -27,7 +29,7 @@ void Ball::Update(unordered_map<string, Game_Object*> objects)
 	//else if(accel < 0)
 	//	*(accel) += Vector4(0.01f, 0.0f, 0.0f, 0);
 
-	PollUserInput();
+	//PollUserInput();
 	ProcessCollisions(objects);
 }
 
@@ -35,35 +37,36 @@ void Ball::Update(unordered_map<string, Game_Object*> objects)
 void Ball::PollUserInput()
 {
 	// Horizontal Keyboard-based input
-	if(glfwGetKey(GLFW_KEY_RIGHT) == GLFW_PRESS)
-	{
-		Matrix4::UpdatePositionMatrix(*objectMatrix, 5, 0, 0);
-	}
-	else if(glfwGetKey(GLFW_KEY_LEFT) == GLFW_PRESS)
-	{
-		Matrix4::UpdatePositionMatrix(*objectMatrix, -5, 0, 0);
-	}
+	//if(glfwGetKey(GLFW_KEY_RIGHT) == GLFW_PRESS)
+	//{
+	//	Matrix4::UpdatePositionMatrix(translationMatrix, 5, 0, 0);
+	//}
+	//else if(glfwGetKey(GLFW_KEY_LEFT) == GLFW_PRESS)
+	//{
+	//	Matrix4::UpdatePositionMatrix(translationMatrix, -5, 0, 0);
+	//}
 
-	// Horizontal Keyboard-based input
-	if(glfwGetKey(GLFW_KEY_UP) == GLFW_PRESS)
-	{
-		Matrix4::UpdatePositionMatrix(*objectMatrix, 0, 5, 0);
-	}
-	else if(glfwGetKey(GLFW_KEY_DOWN) == GLFW_PRESS)
-	{
-		Matrix4::UpdatePositionMatrix(*objectMatrix, 0, -5, 0);
-	}
+	//// Horizontal Keyboard-based input
+	//if(glfwGetKey(GLFW_KEY_UP) == GLFW_PRESS)
+	//{
+	//	Matrix4::UpdatePositionMatrix(translationMatrix, 0, 5, 0);
+	//}
+	//else if(glfwGetKey(GLFW_KEY_DOWN) == GLFW_PRESS)
+	//{
+	//	Matrix4::UpdatePositionMatrix(translationMatrix, 0, -5, 0);
+	//}
 }
 
 void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 {
 	// Calculate 
-	Vector2 thisCenter(this->objectMatrix->matrix[0][3], this->objectMatrix->matrix[1][3]);
+	Vector2 thisCenter(this->translationMatrix[0][3], this->translationMatrix[1][3]);
 
 	// Check collision with all objects
 	for(unordered_map<string, Game_Object*>::iterator itr = objects.begin(); itr != objects.end(); itr++)
 	{
-		Vector2 otherCenter(itr->second->objectMatrix->matrix[0][3], itr->second->objectMatrix->matrix[1][3]);
+		//
+		Vector2 otherCenter(itr->second->translationMatrix[0][3], itr->second->translationMatrix[1][3]);
 		Vector4 combinedRadius = this->sprite->GetRadius() + itr->second->sprite->GetRadius();
 
 		// Check for collidable objects, based on dictionary name
@@ -86,7 +89,7 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 
 
 		// Detect spherical collision
-		if( ( itr->first.find("Ball") != string::npos || itr->first == "Bumper" || itr->first == "Flipper1") && 
+		if( ( itr->first.find("Ball") != string::npos || itr->first == "Bumper" /*|| itr->first == "Flipper1"*/) && 
 			itr->second != this && 
 			( (thisCenter.x - otherCenter.x) * (thisCenter.x - otherCenter.x) ) +
 			( (thisCenter.y - otherCenter.y) * (thisCenter.y - otherCenter.y) ) <
@@ -99,11 +102,43 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 			// Calculate a new velocity
 			*velocity = normal * (velocity->dot(normal) * -2.0f) + *velocity;
 			// Separate collided objects (upon collision 2 objects will slightly overlap so this is necessary)
-			Matrix4::UpdatePositionMatrix(*objectMatrix, velocity->x, velocity->y, 0);
+			Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
 
 			// NOTE: Ball-Ball collision sometimes only changes the velocity of one of the balls
 		}
+
+		if(itr->first == "Flipper1" && FlipperCollision(otherCenter, *(itr->second)))
+		{
+			// Detect flipper collision
+			int i = 0;
+		}
 	}
+}
+
+bool Ball::FlipperCollision(Vector2& otherCenter, Game_Object& other)
+{
+	Vector2 thisCenter(this->translationMatrix[0][3], this->translationMatrix[1][3]);
+	// Calculate closest corners
+	Vector2 otherCorner(other.sprite->GetRadius().x, other.sprite->GetRadius().y);
+	Vector2 thisCorner(this->sprite->GetRadius().x, this->sprite->GetRadius().y);
+	// Calculate axis of rotation
+	Vector2 axis(10.0f, 0.0f);
+	// C Calculate vector between objects
+	Vector2 C(otherCenter.x - thisCenter.x, otherCenter.y - thisCenter.y);
+	// A,B Calculate vector from centers to corners
+	Vector2 A(thisCorner.x - thisCenter.x, thisCorner.y - thisCenter.y);
+	Vector2 B(otherCorner.x - otherCenter.x, otherCorner.y - otherCenter.y);
+	// Project A,B,C onto axis of rotation
+	float projC = C.dot(axis);
+	float projA = A.dot(axis);
+	float projB = B.dot(axis);
+	// Calculate gap between objects
+	float gap = projC - projA + projB;
+	// Check value of gap
+	if(gap < 0)
+		return true;
+	else
+		return false;
 }
 
 // Apply a force to the object (DEPRECATED)

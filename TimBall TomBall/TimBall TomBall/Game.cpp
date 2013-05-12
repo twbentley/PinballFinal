@@ -36,7 +36,7 @@ Game::Game(void)
 	// Instantiate some game objects
 	gameObjects["Ball1"] = new Ball(data->sprites["circle"], 200.0f, 0.0f, -3.5f, -5.0f);
 	gameObjects["Ball2"] = new Ball(data->sprites["circle"], -200.0f, 75.0f, 1.0f, -3.5f);
-	gameObjects["Bumper"] = new Game_Object(data->sprites["circle"], 0.0f, 0.0f);
+	//gameObjects["Bumper"] = new Game_Object(data->sprites["circle"], 0.0f, 0.0f);
 	gameObjects["WallRight"] = new Game_Object(data->sprites["vert_rect"], 400.0f, 0.0f);
 	gameObjects["WallLeft"] = new Game_Object(data->sprites["vert_rect"], -400.0f, 0.0f);
 	gameObjects["WallTop"] = new Game_Object(data->sprites["horiz_rect"], 0.0f, 400.0f);

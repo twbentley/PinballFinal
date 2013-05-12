@@ -33,7 +33,7 @@ Vector4::Vector4(const Vector4& v)
 Vector4::~Vector4() { }
 
 // Copy assignment
-Vector4& Vector4::operator=(const Vector4& other)
+Vector4& Vector4::operator = (const Vector4& other)
 {
 	x = other.x;
 	y = other.y;

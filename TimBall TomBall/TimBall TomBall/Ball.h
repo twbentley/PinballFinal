@@ -20,6 +20,7 @@ public:
 	void PollUserInput();
 	void ProcessCollisions(unordered_map<string, Game_Object*>);
 	void ApplyForce(unordered_map<string, Game_Object*>::iterator);
+	bool FlipperCollision(Vector2&, Game_Object&);
 };
 
 #endif
