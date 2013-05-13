@@ -24,6 +24,7 @@ public:
 	Polygon* sprite;
 	Matrix4 objectMatrix;
 	Matrix4 translationMatrix;
+	Matrix4 rotationMatrix;
 };
 
 #endif

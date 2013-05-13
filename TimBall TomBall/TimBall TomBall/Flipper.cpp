@@ -9,7 +9,7 @@ Flipper::Flipper(Polygon* sprite_name, float positionX, float positionY)
 {
 	sprite = sprite_name;
 	translationMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
-	//objectMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
+	Matrix4::UpdateRotationMatrix(rotationMatrix, 'z', 0);
 }
 
 Flipper::~Flipper(void)
@@ -27,6 +27,6 @@ void Flipper::PollUserInput()
 	// Horizontal Keyboard-based input
 	if(glfwGetKey(GLFW_KEY_ENTER) == GLFW_PRESS)
 	{
-		//Matrix4::UpdateRotationMatrix(rotationMatrix, 'z', 1);
+		Matrix4::UpdateRotationMatrix(rotationMatrix, 'z', 1);
 	}
 }

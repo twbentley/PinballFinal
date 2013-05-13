@@ -109,36 +109,122 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 
 		if(itr->first == "Flipper1" && FlipperCollision(otherCenter, *(itr->second)))
 		{
-			// Detect flipper collision
-			int i = 0;
+			// Get the vector in between the two objects
+			Vector4 hyp;
+			if(thisCenter.x < otherCenter.x - itr->second->sprite->GetRadius().x)
+				hyp = Vector4( ( (otherCenter.x - itr->second->sprite->GetRadius().x + itr->second->sprite->GetRadius().y) - thisCenter.x ), (otherCenter.y - thisCenter.y), 0.0f, 0.0f );
+			else if(thisCenter.x > otherCenter.x + itr->second->sprite->GetRadius().x)
+				hyp = Vector4( ( (otherCenter.x + itr->second->sprite->GetRadius().x - itr->second->sprite->GetRadius().y) - thisCenter.x ), (otherCenter.y - thisCenter.y), 0.0f, 0.0f );
+			else
+				hyp = Vector4( (0.0f), (otherCenter.y - thisCenter.y), 0.0f, 0.0f );
+			
+			// Get the normal vector to the colliding object
+			Vector4 normal(hyp.normalize(hyp));
+			// Calculate a new velocity
+			*velocity = normal * (velocity->dot(normal) * -2.0f) + *velocity;
+			// Separate collided objects (upon collision 2 objects will slightly overlap so this is necessary)
+			Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
+
+			// NOTE: Corner wonky, need to implement with rotation
 		}
 	}
 }
 
 bool Ball::FlipperCollision(Vector2& otherCenter, Game_Object& other)
 {
+	Vector4 axis, C, A, B;
+	float projC, projA, projB, gap;
+
+	// Calculate the center
 	Vector2 thisCenter(this->translationMatrix[0][3], this->translationMatrix[1][3]);
-	// Calculate closest corners
-	Vector2 otherCorner(other.sprite->GetRadius().x, other.sprite->GetRadius().y);
-	Vector2 thisCorner(this->sprite->GetRadius().x, this->sprite->GetRadius().y);
-	// Calculate axis of rotation
-	Vector2 axis(10.0f, 0.0f);
-	// C Calculate vector between objects
-	Vector2 C(otherCenter.x - thisCenter.x, otherCenter.y - thisCenter.y);
-	// A,B Calculate vector from centers to corners
-	Vector2 A(thisCorner.x - thisCenter.x, thisCorner.y - thisCenter.y);
-	Vector2 B(otherCorner.x - otherCenter.x, otherCorner.y - otherCenter.y);
-	// Project A,B,C onto axis of rotation
-	float projC = C.dot(axis);
-	float projA = A.dot(axis);
-	float projB = B.dot(axis);
-	// Calculate gap between objects
-	float gap = projC - projA + projB;
+
+	// Corners of flipper
+	Vector4 upperRight(other.sprite->GetRadius().x, other.sprite->GetRadius().y, 0.0f, 0.0f);
+	Vector4 upperLeft(-other.sprite->GetRadius().x, other.sprite->GetRadius().y, 0.0f, 0.0f);
+	Vector4 bottomRight(other.sprite->GetRadius().x, -other.sprite->GetRadius().y, 0.0f, 0.0f);
+	Vector4 bottomLeft(-other.sprite->GetRadius().x, -other.sprite->GetRadius().y, 0.0f, 0.0f);
+	// Properly rotate all corners
+	upperRight = other.rotationMatrix * upperRight;
+	upperLeft = other.rotationMatrix * upperLeft;
+	bottomRight = other.rotationMatrix * bottomRight;
+	bottomLeft = other.rotationMatrix * bottomLeft;
+
+	// Corners of circle
+	Vector4 circleUpperRight( (float)sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), (float)sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), 0.0f, 0.0f ); 
+	Vector4 circleUpperLeft( (float)-sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), (float)sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), 0.0f, 0.0f );
+	Vector4 circleBottomRight( (float)sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), (float)-sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), 0.0f, 0.0f );
+	Vector4 circleBottomLeft( (float)-sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), (float)-sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), 0.0f, 0.0f );
+	// Properly rotate all corners
+	circleUpperRight = other.rotationMatrix * circleUpperRight;
+	circleUpperLeft = other.rotationMatrix * circleUpperLeft;
+	circleBottomRight = other.rotationMatrix * circleBottomRight;
+	circleBottomLeft = other.rotationMatrix * circleBottomLeft;
+
+	// Axis 1
+	// Calculate axis, 3 vectors, the dot, and then the gap
+	axis = Vector4( (upperRight - upperLeft).normalize(upperRight - upperLeft) );
+	C = Vector4(otherCenter.x - thisCenter.x, otherCenter.y - thisCenter.y, 0.0f, 0.0f);
+	A = Vector4(circleUpperRight);
+	B = Vector4(upperRight);
+
+	projC = C.dot(axis);
+	projA = A.dot(axis);
+	projB = B.dot(axis);
+	gap = abs(projC) - abs(projA) - abs(projB);	
+
 	// Check value of gap
-	if(gap < 0)
-		return true;
-	else
+	if(gap > 0)
 		return false;
+
+	// Axis 2
+	// Calculate axis, 3 vectors, the dot, and then the gap
+	axis = Vector4( (bottomRight - bottomLeft).normalize(bottomRight - bottomLeft) );
+	C = Vector4(otherCenter.x - thisCenter.x, otherCenter.y - thisCenter.y, 0.0f, 0.0f);
+	A = Vector4(circleBottomRight);
+	B = Vector4(bottomRight);
+
+	projC = C.dot(axis);
+	projA = A.dot(axis);
+	projB = B.dot(axis);
+	gap = abs(projC) - abs(projA) - abs(projB);	
+
+	// Check value of gap
+	if(gap > 0)
+		return false;
+
+	// Axis 3
+	// Calculate axis, 3 vectors, the dot, and then the gap
+	axis = Vector4( (upperRight - bottomRight).normalize(upperRight - bottomRight) );
+	C = Vector4(otherCenter.x - thisCenter.x, otherCenter.y - thisCenter.y, 0.0f, 0.0f);
+	A = Vector4(circleBottomRight);
+	B = Vector4(bottomRight);
+
+	projC = C.dot(axis);
+	projA = A.dot(axis);
+	projB = B.dot(axis);
+	gap = abs(projC) - abs(projA) - abs(projB);	
+
+	// Check value of gap
+	if(gap > 0)
+		return false;
+
+	// Axis 4
+	// Calculate axis, 3 vectors, the dot, and then the gap
+	axis = Vector4( (upperLeft - upperLeft).normalize(upperLeft - upperLeft) );
+	C = Vector4(otherCenter.x - thisCenter.x, otherCenter.y - thisCenter.y, 0.0f, 0.0f);
+	A = Vector4(circleBottomLeft);
+	B = Vector4(bottomLeft);
+
+	projC = C.dot(axis);
+	projA = A.dot(axis);
+	projB = B.dot(axis);
+	gap = abs(projC) - abs(projA) - abs(projB);	
+
+	// Check value of gap
+	if(gap > 0)
+		return false;
+
+	return true;
 }
 
 // Apply a force to the object (DEPRECATED)

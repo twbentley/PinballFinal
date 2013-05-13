@@ -35,17 +35,17 @@ Game::Game(void)
 
 	// Instantiate some game objects
 	gameObjects["Ball1"] = new Ball(data->sprites["circle"], 200.0f, 0.0f, -3.5f, -5.0f);
-	gameObjects["Ball2"] = new Ball(data->sprites["circle"], -200.0f, 75.0f, 1.0f, -3.5f);
+	//gameObjects["Ball2"] = new Ball(data->sprites["circle"], -200.0f, 75.0f, 1.0f, -3.5f);
 	//gameObjects["Bumper"] = new Game_Object(data->sprites["circle"], 0.0f, 0.0f);
 	gameObjects["WallRight"] = new Game_Object(data->sprites["vert_rect"], 400.0f, 0.0f);
 	gameObjects["WallLeft"] = new Game_Object(data->sprites["vert_rect"], -400.0f, 0.0f);
 	gameObjects["WallTop"] = new Game_Object(data->sprites["horiz_rect"], 0.0f, 400.0f);
 	gameObjects["WallBottom"] = new Game_Object(data->sprites["horiz_rect"], 0.0f, -400.0f);
-	gameObjects["Flipper1"] = new Game_Object(data->sprites["flipper"], -200.0f, -200.0f);
+	gameObjects["Flipper1"] = new Flipper(data->sprites["flipper"], 0.0f, 0.0f);
 	//gameObjects["Flipper2"] = new Game_Object(data->sprites["flipper"], 200.0f, -200.0f);
 
 	// Set the background color
-	glClearColor(0.f, 1.f, 1.f, 1.f);
+	glClearColor(0.f, 1.f, 1.f, 0.f);
 
 	// The program is running
 	programRunning = true;

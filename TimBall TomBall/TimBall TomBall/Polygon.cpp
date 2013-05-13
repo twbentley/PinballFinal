@@ -86,7 +86,7 @@ void Polygon::Draw(ColorShader* shader, Matrix4* worldMatrix, Matrix4* viewMatri
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexbuffer);
 
 	// Render object using the shader
-	shader->Render(worldMatrix, viewMatrix, projectionMatrix, numIndices, new Vector4( 0.0f, 1.0f, 0.0f, 0.0f));
+	shader->Render(worldMatrix, viewMatrix, projectionMatrix, numIndices, new Vector4( 0.0f, 0.0f, 1.0f, 0.0f));
 
 	//glDisableVertexAttribArray(vao);
 }

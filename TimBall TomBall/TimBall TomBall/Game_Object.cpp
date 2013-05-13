@@ -24,5 +24,5 @@ void Game_Object::Draw(ColorShader* shader, Matrix4* viewMatrix, Matrix4* projec
 
 void Game_Object::UpdateObjectMatrix()
 {
-	(objectMatrix) = /*(rotationMatrix) * (scaleMatrix) * */(translationMatrix);
+	(objectMatrix) = (translationMatrix) * (rotationMatrix) ;
 }
