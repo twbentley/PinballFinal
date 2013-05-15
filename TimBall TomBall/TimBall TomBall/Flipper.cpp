@@ -9,7 +9,7 @@ Flipper::Flipper(Polygon* sprite_name, float positionX, float positionY)
 {
 	sprite = sprite_name;
 	translationMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
-	Matrix4::UpdateRotationMatrix(rotationMatrix, 'z', 0);
+	Matrix4::UpdateRotationMatrix(rotationMatrix, 'z', 175);
 }
 
 Flipper::~Flipper(void)

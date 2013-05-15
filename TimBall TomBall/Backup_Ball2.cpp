@@ -109,31 +109,29 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 
 		// Angle of reflection (angle of flipper)
 		float bounceAngle = 0.0f;
-		bool hitCorner = false;
-		if(itr->first == "Flipper1" && FlipperCollision(otherCenter, *(itr->second), bounceAngle, hitCorner))
+		if(itr->first == "Flipper1" && FlipperCollision(otherCenter, *(itr->second), bounceAngle))
 		{
+
 			Vector4 flipperRadius(itr->second->sprite->GetRadius().x, itr->second->sprite->GetRadius().y, 0.0f, 0.0f);
 			GLfloat cosAngle(itr->second->rotationMatrix[0][0]);
 			GLfloat sinAngle(-itr->second->rotationMatrix[0][1]);
-
-			if(!hitCorner)
-			{			
-				// Calculate angle of impact
-				GLfloat hitAngle = atan(velocity->y/velocity->x) + PI;
-				if(velocity->x < 0)
-					hitAngle += 180 * PI / 180;
-				else if(velocity->x >= 0 && velocity->y < 0)
-					hitAngle += 360 * PI / 180;
 			
-				if(hitAngle >= 2*PI - .0000002 && hitAngle <= 2*PI + .0000002)
-					hitAngle = 0.0f;
+			// Calculate angle of impact
+			GLfloat hitAngle = atan(velocity->y/velocity->x) + PI;
+			if(velocity->x < 0)
+				hitAngle += 180 * PI / 180;
+			else if(velocity->x >= 0 && velocity->y < 0)
+				hitAngle += 360 * PI / 180;
+			
+			if(hitAngle >= 2*PI - .0000002 && hitAngle <= 2*PI + .0000002)
+				hitAngle = 0.0f;
 
-				bounceAngle = PI - hitAngle - 2 * bounceAngle;
-					if(bounceAngle < 0)
-						bounceAngle += 2 * PI;
-			}
+			bounceAngle = PI - hitAngle - 2 * bounceAngle;
+				if(bounceAngle < 0)
+					bounceAngle += 2 * PI;
 
 			float length = velocity->length();
+			
 			
 			// How to get a vector based on this angle
 			Vector4 normal(length * cos(bounceAngle), length * sin(bounceAngle), 0.0f, 0.0f);
@@ -142,11 +140,13 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 
 			// Separate collided objects (upon collision 2 objects will slightly overlap so this is necessary)
 			Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
+
+			// NOTE: Corner wonky, need to implement with rotation
 		}
 	}
 }
 
-bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& angle, bool& hitCorner)
+bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& angle)
 {
 	bool hasCollided;
 
@@ -244,119 +244,65 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 
 	float currentAngle = acos(other.rotationMatrix[0][0]);
 
-	float distanceUpperLeft = ( (upperLeft + otherCenter) - Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f )).length();
-	float distanceLowerLeft = ( (bottomLeft + otherCenter) - Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f )).length();
-	float distanceUpperRight = ( (upperRight + otherCenter) - Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f )).length();
-	float distanceLowerRight = ( (bottomRight + otherCenter) - Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f )).length();
-
-	// Instantiate voronoi vectors (one for each cardinal direction)
-	Vector4 top(0.0f, 10.0f, 0.0f, 0.0f);
-	Vector4 bot(0.0f, -10.0f, 0.0f, 0.0f);
-	Vector4 left(-10.0f, 0.0f, 0.0f, 0.0f);
-	Vector4 right(10.0f, 0.0f, 0.0f, 0.0f);
-	// Rotation voronoi vectors to match flipper rotation
-	top = other.rotationMatrix * top;
-	bot = other.rotationMatrix * bot;
-	left = other.rotationMatrix * left;
-	right = other.rotationMatrix * right;
-	
-	Vector4 testUpperLeft( Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f) - otherCenter - upperLeft);;
-	Vector4 testUpperRight( Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f) - otherCenter - upperRight);
-	Vector4 testBottomLeft( Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f) - otherCenter - bottomLeft);
-	Vector4 testBottomRight( Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f) - otherCenter - bottomRight);
-
-	// UpperLeft, Upper
-	if (testUpperLeft.dot(left) > 0 && testUpperLeft.dot(top) > 0)
+	// Collides with long side
+	if(projC > 0 && projA < 0 )
 	{
-		// Upper left quadrant
-		hitCorner = true;
+		// compare against leftUpper && leftLower
+			// use distance formula - from circle_center to each point
+			// which is shortest? leftUpper => "above", leftLower => "below"
+		float distanceUpper = ( (upperLeft + otherCenter) - Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f )).length();
+		float distanceLower = ( (bottomLeft + otherCenter) - Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f )).length();
+		if(distanceUpper < distanceLower)
+		{
+			// Hit "top" side
+			angle = currentAngle;
 
-		// might have to add this instead of setting
-		/*angle = 3 * PI / 4;
-		int i = 0;*/
-	}
-	else if(testUpperLeft.dot(top) > 0 && testUpperLeft.dot(left) < 0 && testUpperLeft.dot(testUpperRight) < 0)
-	{
-		// Upper quadrant
-		angle = currentAngle;
-
-		if(angle <= PI)
-			angle = PI - angle;
+			if(angle <= PI)
+				angle = PI - angle;
+			else
+				angle = 2*PI - angle;
+		}
 		else
-			angle = 2*PI - angle;
-	}
+		{
+			// Hit "bottom" side
+			angle = currentAngle + PI;
 
-	// BottomRight, Bottom
-	else if(testBottomRight.dot(bot) > 0 && testBottomRight.dot(right) > 0)
+			if(angle <= PI)
+				angle = PI - angle;
+			else
+				angle = 2*PI - angle;
+		}
+	}
+	// Collides with short side
+	else
 	{
-		// Bottom right quadrant
-		hitCorner = true;
+		// compare against leftUpper && rightUpper
+			// use distance formula - from circle_center to each point
+			// which is shortest? leftUpper => "left", rightUpper => "right"
+		float distanceLeft = ( (upperLeft + otherCenter) - Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f )).length();
+		float distanceRight = ( (upperRight + otherCenter) - Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f )).length();
+		if(distanceLeft < distanceRight)
+		{
+			// Hit "left" side
+			angle = currentAngle + PI / 2;
 
-		angle = -PI / 4;
-
-		/*if(angle <= PI)
-			angle = PI - angle;
+			if(angle <= PI)
+				angle = PI - angle;
+			else
+				angle = 2*PI - angle;
+		}
 		else
-			angle = 2*PI - angle;*/
-	}
-	else if(testBottomRight.dot(bot) > 0 && testBottomRight.dot(right) < 0 && testBottomRight.dot(testUpperLeft) < 0)
-	{
-		// Bottom quadrant
-		angle = currentAngle + PI;
+		{
+			// Hit "right" side
+			angle = currentAngle + 3 * PI / 2;
 
-		if(angle <= PI)
-			angle = PI - angle;
-		else
-			angle = 2*PI - angle;
-	}
-
-	// UpperRight, Right
-	else if(testUpperRight.dot(right) > 0 && testUpperRight.dot(top) > 0)
-	{
-		// Upper right quadrant
-		hitCorner = true;
-
-		/*angle = 3 * PI / 4;
-
-		if(angle <= PI)
-			angle = PI - angle;
-		else
-			angle = 2 * PI - angle;*/
-	}
-	else if(testUpperRight.dot(right) > 0 && testUpperRight.dot(top) < 0 && testUpperRight.dot(testUpperLeft) < 0)
-	{
-		// Right quadrant
-		angle = currentAngle + 3 * PI / 2;
-
-		if(angle <= PI)
-			angle = PI - angle;
-		else
-			angle = 2*PI - angle;
+			if(angle <= PI)
+				angle = PI - angle;
+			else
+				angle = 2*PI - angle;
+		}
 	}
 
-	// BottomLeft, Left
-	else if(testBottomLeft.dot(bot) > 0 && testBottomLeft.dot(left) > 0)
-	{
-		// Bottom left quadrant
-		hitCorner = true;
-
-		/*angle =  -PI / 4;
-
-		if(angle <= PI)
-			angle = PI - angle;
-		else
-			angle = 2 * PI - angle;*/
-	}
-	else if(testBottomLeft.dot(left) > 0 && testBottomLeft.dot(bot) < 0 && testBottomLeft.dot(testBottomRight) < 0)
-	{
-		// Left quadrant
-		angle = currentAngle + PI / 2;
-
-		if(angle <= PI)
-			angle = PI - angle;
-		else
-			angle = 2 * PI - angle;
-	}
 
 	return true;
 }
