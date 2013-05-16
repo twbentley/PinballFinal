@@ -5,11 +5,15 @@ Game_Object::Game_Object() : objectMatrix(), /*rotationMatrix(), scaleMatrix(), 
 	
 }
 
-Game_Object::Game_Object(Polygon* sprite_name, float positionX, float positionY)
+Game_Object::Game_Object(Polygon* sprite_name, float positionX, float positionY, float scaleX, float scaleY)
 {
 	sprite = sprite_name;
 	translationMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
+	Matrix4::UpdateScaleMatrix(scaleMatrix, scaleX, scaleY, 1.0f);
 	//objectMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
+
+	radius = sprite_name->GetRadius() * Vector4(scaleX, scaleY, 1.0f, 1.0f);
+
 }
 
 Game_Object::~Game_Object()
@@ -24,5 +28,10 @@ void Game_Object::Draw(ColorShader* shader, Matrix4* viewMatrix, Matrix4* projec
 
 void Game_Object::UpdateObjectMatrix()
 {
-	(objectMatrix) = (translationMatrix) * (rotationMatrix) ;
+	(objectMatrix) = (translationMatrix) * (rotationMatrix) * scaleMatrix;
+}
+
+Vector4 Game_Object::GetRadius()
+{ 
+	return radius; 
 }

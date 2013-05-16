@@ -9,7 +9,7 @@ class Ball : public Game_Object
 {
 public:
 	Ball();
-	Ball(Polygon*, float, float, float, float);
+	Ball(Polygon*, float, float, float, float, float, float);
 	~Ball(void);
 
 	Vector4* velocity;

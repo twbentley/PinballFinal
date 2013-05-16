@@ -68,6 +68,8 @@ public:
 	static Matrix4 CreateProjectionMatrix(float, float, float, float, float, float);
 	static void UpdatePositionMatrix(Matrix4&, float, float, float);
 	static void UpdateRotationMatrix(Matrix4&, char, float);
+	static void Matrix4::UpdateScaleMatrix(Matrix4&, float, float, float);
+	float zAngle;
 };
 
 #endif

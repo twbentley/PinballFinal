@@ -1,15 +1,20 @@
-#pragma once
+#ifndef FLIPPER_H
+#define FLIPPER_H
+
 #include "game_object.h"
 class Flipper :
 	public Game_Object
 {
 public:
 	Flipper(void);
-	Flipper(Polygon*, float, float);
+	Flipper(Polygon*, float, float, int, float, float);
 	~Flipper(void);
 
-	void Update();
+	void Update(string);
 
-	void PollUserInput();
+	bool flipped;
+	bool moving;
+	int moveTimes;
 };
 
+#endif

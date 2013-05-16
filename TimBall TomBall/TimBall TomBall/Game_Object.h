@@ -14,17 +14,20 @@ private:
 	
 public:
 	Game_Object();
-	Game_Object(Polygon*, float, float);
+	Game_Object(Polygon*, float, float, float, float);
 	~Game_Object();
 	
 	void Draw(ColorShader*, Matrix4*, Matrix4*);
 
 	void UpdateObjectMatrix();
+	Vector4 GetRadius();
 
 	Polygon* sprite;
 	Matrix4 objectMatrix;
 	Matrix4 translationMatrix;
 	Matrix4 rotationMatrix;
+	Matrix4 scaleMatrix;
+	Vector4 radius;
 };
 
 #endif

@@ -7,7 +7,7 @@ class Bumper : public Game_Object
 {
 public:
 	Bumper(void);
-	Bumper(Polygon*, float, float);
+	Bumper(Polygon*, float, float, float, float);
 	~Bumper(void);
 };
 

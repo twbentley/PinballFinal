@@ -10,6 +10,8 @@ Matrix4::Matrix4(void)
 	matrix[1][1] = 1.0f;
 	matrix[2][2] = 1.0f;
 	matrix[3][3] = 1.0f;
+
+	zAngle = 0.0f;
 }
 
 // Full Parameterized Constructor
@@ -34,6 +36,8 @@ Matrix4::Matrix4( GLfloat m00, GLfloat m01, GLfloat m02, GLfloat m03,
 	matrix[3][1] = m31;
 	matrix[3][2] = m32;
 	matrix[3][3] = m33;
+
+	zAngle = 0.0f;
 }
 
 // Parameterized Constructors for Vectors
@@ -43,6 +47,8 @@ Matrix4::Matrix4(const Vector4& a, const Vector4& b, const Vector4& c, const Vec
 	matrix[1] = b;
 	matrix[2] = c;
 	matrix[3] = d;
+
+	zAngle = 0.0f;
 }
 
 // Copy Constructor
@@ -52,6 +58,8 @@ Matrix4::Matrix4(const Matrix4& m)
 	matrix[1] = m.matrix[1];
 	matrix[2] = m.matrix[2];
 	matrix[3] = m.matrix[3];
+
+	zAngle = 0.0f;
 }
 
 // Destructor
@@ -316,6 +324,8 @@ void Matrix4::UpdateRotationMatrix(Matrix4& currMatrix, char axisToRotate, float
 
 	if(axisToRotate == 'z' || axisToRotate == 'Z')
 	{
+		currMatrix.zAngle += angleInDegrees;
+
 		currMatrix *= Matrix4(	
 								cos(angleInRadians), -sin(angleInRadians), 0.0f, 0.0f, 
 								sin(angleInRadians), cos(angleInRadians), 0.0f, 0.0f, 
@@ -325,6 +335,8 @@ void Matrix4::UpdateRotationMatrix(Matrix4& currMatrix, char axisToRotate, float
 	}
 	else if(axisToRotate == 'y' || axisToRotate == 'Y')
 	{
+		currMatrix.zAngle += angleInDegrees;
+
 		currMatrix *= Matrix4(	
 								cos(angleInRadians), 0.0f, sin(angleInRadians), 0.0f, 
 								0.0f, 1.0f, 0.0f, 0.0f, 
@@ -334,6 +346,8 @@ void Matrix4::UpdateRotationMatrix(Matrix4& currMatrix, char axisToRotate, float
 	}
 	else if(axisToRotate == 'x' || axisToRotate == 'X')
 	{
+		currMatrix.zAngle += angleInDegrees;
+
 		currMatrix *= Matrix4(	
 								1.0f, 0.0f, 0.0f, 0.0f, 
 								0.0f, cos(angleInRadians), -sin(angleInRadians), 0.0f, 
@@ -341,4 +355,11 @@ void Matrix4::UpdateRotationMatrix(Matrix4& currMatrix, char axisToRotate, float
 								0.0f, 0.0f, 0.0f, 1.0f
 							 );
 	}
+}
+
+void Matrix4::UpdateScaleMatrix(Matrix4& currMatrix, float scaleX, float scaleY, float scaleZ)
+{
+	currMatrix.matrix[0][0] *= scaleX;
+	currMatrix.matrix[1][1] *= scaleY;
+	currMatrix.matrix[2][2] *= scaleZ;
 }

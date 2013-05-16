@@ -34,15 +34,20 @@ Game::Game(void)
 	projectionMatrix = new Matrix4();
 
 	// Instantiate some game objects
-	gameObjects["Ball1"] = new Ball(data->sprites["circle"], 0.0f, -100.0f, -5.0f, -3.0f);
+	gameObjects["Ball1"] = new Ball(data->sprites["circle"], -200.0f, 50.0f, 5.0f, -3.0f, 1.0f, 1.0f);
 	//gameObjects["Ball2"] = new Ball(data->sprites["circle"], -200.0f, 75.0f, 1.0f, -3.5f);
-	//gameObjects["Bumper"] = new Game_Object(data->sprites["circle"], 0.0f, 0.0f);
-	gameObjects["WallRight"] = new Game_Object(data->sprites["vert_rect"], 400.0f, 0.0f);
-	gameObjects["WallLeft"] = new Game_Object(data->sprites["vert_rect"], -400.0f, 0.0f);
-	gameObjects["WallTop"] = new Game_Object(data->sprites["horiz_rect"], 0.0f, 400.0f);
-	gameObjects["WallBottom"] = new Game_Object(data->sprites["horiz_rect"], 0.0f, -400.0f);
-	gameObjects["Flipper1"] = new Flipper(data->sprites["flipper"], 0.0f, 0.0f);
-	//gameObjects["Flipper2"] = new Game_Object(data->sprites["flipper"], 200.0f, -200.0f);
+
+	gameObjects["Bumper1"] = new Game_Object(data->sprites["circle"], -200.0f, 100.0f, 1.0f, 1.0f);
+	gameObjects["Bumper2"] = new Game_Object(data->sprites["circle"], 200.0f, 100.0f, 1.0f, 1.0f);
+	gameObjects["Bumper3"] = new Game_Object(data->sprites["circle"], 0.0f, 150.0f, 1.0f, 1.0f);
+
+	gameObjects["WallRight"] = new Wall(data->sprites["vert_rect"], 300.0f, 0.0f, 1.0f, 6.7f);
+	gameObjects["WallLeft"] = new Wall(data->sprites["vert_rect"], -300.0f, 0.0f, 1.0f, 6.7f);
+	gameObjects["WallTop"] = new Wall(data->sprites["horiz_rect"], 0.0f, 400.0f, 5.0f, 1.0f);
+	gameObjects["WallBottom"] = new Wall(data->sprites["horiz_rect"], 0.0f, -400.0f, 5.0f, 1.0f);
+
+	gameObjects["Flipper1"] = new Flipper(data->sprites["flipper"], -100.0f, -300.0f, 155, 1.0f, 1.0f);
+	gameObjects["Flipper2"] = new Flipper(data->sprites["flipper"], 100.0f, -300.0f, 25, 1.0f, 1.0f);
 
 	// Set the background color
 	glClearColor(0.f, 1.f, 1.f, 0.f);

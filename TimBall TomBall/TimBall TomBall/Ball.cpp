@@ -4,14 +4,17 @@ Ball::Ball()
 {
 }
 
-Ball::Ball(Polygon* sprite_name, float positionX, float positionY, float velX, float velY)
+Ball::Ball(Polygon* sprite_name, float positionX, float positionY, float velX, float velY, float scaleX, float scaleY)
 {
 	sprite = sprite_name;
 	translationMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
+	Matrix4::UpdateScaleMatrix(scaleMatrix, scaleX, scaleY, 1.0f);
 	//objectMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
 
 	velocity = new Vector4(velX, velY, 0.0f, 0.0f);
-	accel = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	accel = new Vector4(0.0f, -0.1f, 0.0f, 0.0f);
+
+	radius = sprite_name->GetRadius() * Vector4(scaleX, scaleY, 1.0f, 1.0f);
 }
 
 Ball::~Ball(void)
@@ -67,29 +70,29 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 	{
 		//
 		Vector4 otherCenter(itr->second->translationMatrix[0][3], itr->second->translationMatrix[1][3], 0.0f, 0.0f);
-		Vector4 combinedRadius = this->sprite->GetRadius() + itr->second->sprite->GetRadius();
+		Vector4 combinedRadius = this->GetRadius() + itr->second->GetRadius();
 
 		// Check for collidable objects, based on dictionary name
-		if(itr->first == "WallLeft" && thisCenter.x - sprite->GetRadius().x < otherCenter.x + itr->second->sprite->GetRadius().x)
+		if(itr->first == "WallLeft" && thisCenter.x - GetRadius().x < otherCenter.x + itr->second->GetRadius().x)
 		{
 			velocity->x += this->velocity->x * -2.0f;
 		}
-		if(itr->first == "WallRight" && thisCenter.x + sprite->GetRadius().x > otherCenter.x - itr->second->sprite->GetRadius().x)
+		if(itr->first == "WallRight" && thisCenter.x + GetRadius().x > otherCenter.x - itr->second->GetRadius().x)
 		{
 			velocity->x += this->velocity->x * -2.0f;
 		}
-		if(itr->first == "WallTop" && thisCenter.y + sprite->GetRadius().x > otherCenter.y - itr->second->sprite->GetRadius().y)
+		if(itr->first == "WallTop" && thisCenter.y + GetRadius().x > otherCenter.y - itr->second->GetRadius().y)
 		{
 			velocity->y += this->velocity->y * -2.0f;
 		}
-		if(itr->first == "WallBottom" && thisCenter.y - sprite->GetRadius().x < otherCenter.y + itr->second->sprite->GetRadius().y)
+		if(itr->first == "WallBottom" && thisCenter.y - GetRadius().x < otherCenter.y + itr->second->GetRadius().y)
 		{
 			velocity->y += this->velocity->y * -2.0f;
 		}
 
 
 		// Detect spherical collision
-		if( ( itr->first.find("Ball") != string::npos || itr->first == "Bumper" /*|| itr->first == "Flipper1"*/) && 
+		if( ( itr->first.find("Ball") != string::npos || itr->first.find("Bumper") != string::npos /*|| itr->first == "Flipper1"*/) && 
 			itr->second != this && 
 			( (thisCenter.x - otherCenter.x) * (thisCenter.x - otherCenter.x) ) +
 			( (thisCenter.y - otherCenter.y) * (thisCenter.y - otherCenter.y) ) <
@@ -110,9 +113,9 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 		// Angle of reflection (angle of flipper)
 		float bounceAngle = 0.0f;
 		bool hitCorner = false;
-		if(itr->first == "Flipper1" && FlipperCollision(otherCenter, *(itr->second), bounceAngle, hitCorner))
+		if(itr->first.find("Flipper") != string::npos && FlipperCollision(otherCenter, *(itr->second), bounceAngle, hitCorner))
 		{
-			Vector4 flipperRadius(itr->second->sprite->GetRadius().x, itr->second->sprite->GetRadius().y, 0.0f, 0.0f);
+			Vector4 flipperRadius(itr->second->GetRadius().x, itr->second->GetRadius().y, 0.0f, 0.0f);
 			GLfloat cosAngle(itr->second->rotationMatrix[0][0]);
 			GLfloat sinAngle(-itr->second->rotationMatrix[0][1]);
 
@@ -148,8 +151,6 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 
 bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& angle, bool& hitCorner)
 {
-	bool hasCollided;
-
 	Vector4 axis, C, A, B;
 	float projC, projA, projB, gap;
 
@@ -157,10 +158,10 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 	Vector2 thisCenter(this->translationMatrix[0][3], this->translationMatrix[1][3]);
 
 	// Corners of flipper
-	Vector4 upperRight(other.sprite->GetRadius().x, other.sprite->GetRadius().y, 0.0f, 0.0f);
-	Vector4 upperLeft(-other.sprite->GetRadius().x, other.sprite->GetRadius().y, 0.0f, 0.0f);
-	Vector4 bottomRight(other.sprite->GetRadius().x, -other.sprite->GetRadius().y, 0.0f, 0.0f);
-	Vector4 bottomLeft(-other.sprite->GetRadius().x, -other.sprite->GetRadius().y, 0.0f, 0.0f);
+	Vector4 upperRight(other.GetRadius().x, other.GetRadius().y, 0.0f, 0.0f);
+	Vector4 upperLeft(-other.GetRadius().x, other.GetRadius().y, 0.0f, 0.0f);
+	Vector4 bottomRight(other.GetRadius().x, -other.GetRadius().y, 0.0f, 0.0f);
+	Vector4 bottomLeft(-other.GetRadius().x, -other.GetRadius().y, 0.0f, 0.0f);
 	// Properly rotate all corners
 	upperRight = other.rotationMatrix * upperRight;
 	upperLeft = other.rotationMatrix * upperLeft;
@@ -168,10 +169,10 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 	bottomLeft = other.rotationMatrix * bottomLeft;
 
 	// Corners of circle
-	Vector4 circleUpperRight( (float)sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), (float)sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), 0.0f, 0.0f ); 
-	Vector4 circleUpperLeft( (float)-sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), (float)sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), 0.0f, 0.0f );
-	Vector4 circleBottomRight( (float)sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), (float)-sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), 0.0f, 0.0f );
-	Vector4 circleBottomLeft( (float)-sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), (float)-sqrt( pow( this->sprite->GetRadius().x, 2.0f ) / 2.0f ), 0.0f, 0.0f );
+	Vector4 circleUpperRight( (float)sqrt( pow( this->GetRadius().x, 2.0f ) / 2.0f ), (float)sqrt( pow( this->GetRadius().x, 2.0f ) / 2.0f ), 0.0f, 0.0f ); 
+	Vector4 circleUpperLeft( (float)-sqrt( pow( this->GetRadius().x, 2.0f ) / 2.0f ), (float)sqrt( pow( this->GetRadius().x, 2.0f ) / 2.0f ), 0.0f, 0.0f );
+	Vector4 circleBottomRight( (float)sqrt( pow( this->GetRadius().x, 2.0f ) / 2.0f ), (float)-sqrt( pow( this->GetRadius().x, 2.0f ) / 2.0f ), 0.0f, 0.0f );
+	Vector4 circleBottomLeft( (float)-sqrt( pow( this->GetRadius().x, 2.0f ) / 2.0f ), (float)-sqrt( pow( this->GetRadius().x, 2.0f ) / 2.0f ), 0.0f, 0.0f );
 	// Properly rotate all corners
 	circleUpperRight = other.rotationMatrix * circleUpperRight;
 	circleUpperLeft = other.rotationMatrix * circleUpperLeft;
@@ -272,8 +273,7 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 		hitCorner = true;
 
 		// might have to add this instead of setting
-		/*angle = 3 * PI / 4;
-		int i = 0;*/
+		angle = currentAngle + 3 * PI / 4;
 	}
 	else if(testUpperLeft.dot(top) > 0 && testUpperLeft.dot(left) < 0 && testUpperLeft.dot(testUpperRight) < 0)
 	{
@@ -292,12 +292,7 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 		// Bottom right quadrant
 		hitCorner = true;
 
-		angle = -PI / 4;
-
-		/*if(angle <= PI)
-			angle = PI - angle;
-		else
-			angle = 2*PI - angle;*/
+		angle = currentAngle + 7 * PI / 4;
 	}
 	else if(testBottomRight.dot(bot) > 0 && testBottomRight.dot(right) < 0 && testBottomRight.dot(testUpperLeft) < 0)
 	{
@@ -316,12 +311,7 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 		// Upper right quadrant
 		hitCorner = true;
 
-		/*angle = 3 * PI / 4;
-
-		if(angle <= PI)
-			angle = PI - angle;
-		else
-			angle = 2 * PI - angle;*/
+		angle = currentAngle + PI / 4;
 	}
 	else if(testUpperRight.dot(right) > 0 && testUpperRight.dot(top) < 0 && testUpperRight.dot(testUpperLeft) < 0)
 	{
@@ -340,12 +330,7 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 		// Bottom left quadrant
 		hitCorner = true;
 
-		/*angle =  -PI / 4;
-
-		if(angle <= PI)
-			angle = PI - angle;
-		else
-			angle = 2 * PI - angle;*/
+		angle = currentAngle + 5 * PI / 4;
 	}
 	else if(testBottomLeft.dot(left) > 0 && testBottomLeft.dot(bot) < 0 && testBottomLeft.dot(testBottomRight) < 0)
 	{
