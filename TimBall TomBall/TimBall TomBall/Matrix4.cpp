@@ -359,7 +359,7 @@ void Matrix4::UpdateRotationMatrix(Matrix4& currMatrix, char axisToRotate, float
 
 void Matrix4::UpdateScaleMatrix(Matrix4& currMatrix, float scaleX, float scaleY, float scaleZ)
 {
-	currMatrix.matrix[0][0] *= scaleX;
-	currMatrix.matrix[1][1] *= scaleY;
-	currMatrix.matrix[2][2] *= scaleZ;
+	currMatrix.matrix[0][0] = scaleX;
+	currMatrix.matrix[1][1] = scaleY;
+	currMatrix.matrix[2][2] = scaleZ;
 }

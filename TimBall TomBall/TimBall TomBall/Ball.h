@@ -3,6 +3,8 @@
 
 #include "Game_Object.h"
 #include "Wall.h"
+#include "Spring.h"
+#include "Spinner.h"
 #include <cstdarg>
 
 class Ball : public Game_Object
@@ -14,6 +16,7 @@ public:
 
 	Vector4* velocity;
 	Vector4* accel;
+	bool launched;
 
 	void Update(unordered_map<string, Game_Object*>);
 

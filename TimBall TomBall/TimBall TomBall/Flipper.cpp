@@ -16,6 +16,7 @@ Flipper::Flipper(Polygon* sprite_name, float positionX, float positionY, int ang
 	flipped = false;
 
 	radius = sprite_name->GetRadius() * Vector4(scaleX, scaleY, 1.0f, 1.0f);
+	int i = 0;
 }
 
 Flipper::~Flipper(void)

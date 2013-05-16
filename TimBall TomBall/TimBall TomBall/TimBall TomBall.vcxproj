@@ -75,6 +75,8 @@
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Polygon.cpp" />
     <ClCompile Include="Render.cpp" />
+    <ClCompile Include="Spinner.cpp" />
+    <ClCompile Include="Spring.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Update.cpp" />
     <ClCompile Include="Vector2.cpp" />
@@ -96,6 +98,8 @@
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Polygon.h" />
     <ClInclude Include="Render.h" />
+    <ClInclude Include="Spinner.h" />
+    <ClInclude Include="Spring.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Update.h" />
     <ClInclude Include="Vector2.h" />

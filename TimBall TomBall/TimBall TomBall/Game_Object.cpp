@@ -28,7 +28,7 @@ void Game_Object::Draw(ColorShader* shader, Matrix4* viewMatrix, Matrix4* projec
 
 void Game_Object::UpdateObjectMatrix()
 {
-	(objectMatrix) = (translationMatrix) * (rotationMatrix) * scaleMatrix;
+	(objectMatrix) = (translationMatrix) * rotationMatrix * scaleMatrix;
 }
 
 Vector4 Game_Object::GetRadius()

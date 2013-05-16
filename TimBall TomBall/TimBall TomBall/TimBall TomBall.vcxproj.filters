@@ -87,6 +87,12 @@
     <ClCompile Include="Flipper.cpp">
       <Filter>Source Files\Game_Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Spring.cpp">
+      <Filter>Source Files\Game_Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Spinner.cpp">
+      <Filter>Source Files\Game_Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Render.h">
@@ -144,6 +150,12 @@
       <Filter>Header Files\Game_Objects</Filter>
     </ClInclude>
     <ClInclude Include="Flipper.h">
+      <Filter>Header Files\Game_Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Spring.h">
+      <Filter>Header Files\Game_Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Spinner.h">
       <Filter>Header Files\Game_Objects</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,6 +4,8 @@
 #include "Game_Object.h"
 #include "Ball.h"
 #include "Flipper.h"
+#include "Spring.h"
+#include "Spinner.h"
 
 // This class updates game objects (position, rotation, etc)
 class Update

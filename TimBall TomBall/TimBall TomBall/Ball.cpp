@@ -15,6 +15,7 @@ Ball::Ball(Polygon* sprite_name, float positionX, float positionY, float velX, f
 	accel = new Vector4(0.0f, -0.1f, 0.0f, 0.0f);
 
 	radius = sprite_name->GetRadius() * Vector4(scaleX, scaleY, 1.0f, 1.0f);
+	launched = false;
 }
 
 Ball::~Ball(void)
@@ -23,8 +24,11 @@ Ball::~Ball(void)
 
 void Ball::Update(unordered_map<string, Game_Object*> objects)
 {
-	Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
-	*velocity += *accel;
+	if(launched)
+	{
+		Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
+		*velocity += *accel;
+	}
 
 	// "Friction"
 	//if(accel > 0)
@@ -68,83 +72,104 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 	// Check collision with all objects
 	for(unordered_map<string, Game_Object*>::iterator itr = objects.begin(); itr != objects.end(); itr++)
 	{
-		//
-		Vector4 otherCenter(itr->second->translationMatrix[0][3], itr->second->translationMatrix[1][3], 0.0f, 0.0f);
-		Vector4 combinedRadius = this->GetRadius() + itr->second->GetRadius();
-
-		// Check for collidable objects, based on dictionary name
-		if(itr->first == "WallLeft" && thisCenter.x - GetRadius().x < otherCenter.x + itr->second->GetRadius().x)
+		// If not launched yet
+		if(!launched)
 		{
-			velocity->x += this->velocity->x * -2.0f;
+			if(itr->first == "Spring")
+			{
+				translationMatrix = Matrix4::CreatePositionMatrix(itr->second->translationMatrix[0][3], itr->second->translationMatrix[1][3] + itr->second->radius.y + radius.y, 0);
+				
+				if(static_cast<Spring*>(itr->second)->finished == true)
+				{
+					launched = true;
+					velocity = new Vector4(0.0f, 12.0f, 0.0f, 0.0f);
+				}
+			}
 		}
-		if(itr->first == "WallRight" && thisCenter.x + GetRadius().x > otherCenter.x - itr->second->GetRadius().x)
+		else
 		{
-			velocity->x += this->velocity->x * -2.0f;
-		}
-		if(itr->first == "WallTop" && thisCenter.y + GetRadius().x > otherCenter.y - itr->second->GetRadius().y)
-		{
-			velocity->y += this->velocity->y * -2.0f;
-		}
-		if(itr->first == "WallBottom" && thisCenter.y - GetRadius().x < otherCenter.y + itr->second->GetRadius().y)
-		{
-			velocity->y += this->velocity->y * -2.0f;
-		}
+			Vector4 otherCenter(itr->second->translationMatrix[0][3], itr->second->translationMatrix[1][3], 0.0f, 0.0f);
+			Vector4 combinedRadius = this->GetRadius() + itr->second->GetRadius();
 
-
-		// Detect spherical collision
-		if( ( itr->first.find("Ball") != string::npos || itr->first.find("Bumper") != string::npos /*|| itr->first == "Flipper1"*/) && 
-			itr->second != this && 
-			( (thisCenter.x - otherCenter.x) * (thisCenter.x - otherCenter.x) ) +
-			( (thisCenter.y - otherCenter.y) * (thisCenter.y - otherCenter.y) ) <
-			( combinedRadius.x * combinedRadius.x) )
-		{
-			// Get the vector in between the two objects
-			Vector4 hyp( (thisCenter.x - otherCenter.x), (thisCenter.y - otherCenter.y), 0.0f, 0.0f );
-			// Get the normal vector to the colliding object
-			Vector4 normal(hyp.normalize(hyp));
-			// Calculate a new velocity
-			*velocity = normal * (velocity->dot(normal) * -2.0f) + *velocity;
-			// Separate collided objects (upon collision 2 objects will slightly overlap so this is necessary)
-			Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
-
-			// NOTE: Ball-Ball collision sometimes only changes the velocity of one of the balls
-		}
-
-		// Angle of reflection (angle of flipper)
-		float bounceAngle = 0.0f;
-		bool hitCorner = false;
-		if(itr->first.find("Flipper") != string::npos && FlipperCollision(otherCenter, *(itr->second), bounceAngle, hitCorner))
-		{
-			Vector4 flipperRadius(itr->second->GetRadius().x, itr->second->GetRadius().y, 0.0f, 0.0f);
-			GLfloat cosAngle(itr->second->rotationMatrix[0][0]);
-			GLfloat sinAngle(-itr->second->rotationMatrix[0][1]);
-
-			if(!hitCorner)
-			{			
-				// Calculate angle of impact
-				GLfloat hitAngle = atan(velocity->y/velocity->x) + PI;
-				if(velocity->x < 0)
-					hitAngle += 180 * PI / 180;
-				else if(velocity->x >= 0 && velocity->y < 0)
-					hitAngle += 360 * PI / 180;
-			
-				if(hitAngle >= 2*PI - .0000002 && hitAngle <= 2*PI + .0000002)
-					hitAngle = 0.0f;
-
-				bounceAngle = PI - hitAngle - 2 * bounceAngle;
-					if(bounceAngle < 0)
-						bounceAngle += 2 * PI;
+			// Check for collidable objects, based on dictionary name
+			if(itr->first == "WallLeft" && thisCenter.x - GetRadius().x < otherCenter.x + itr->second->GetRadius().x)
+			{
+				velocity->x += this->velocity->x * -2.0f;
+			}
+			if(itr->first == "WallRight" && thisCenter.x + GetRadius().x > otherCenter.x - itr->second->GetRadius().x)
+			{
+				velocity->x += this->velocity->x * -2.0f;
+			}
+			if(itr->first == "WallTop" && thisCenter.y + GetRadius().x > otherCenter.y - itr->second->GetRadius().y)
+			{
+				velocity->y += this->velocity->y * -2.0f;
+			}
+			if(itr->first == "WallBottom" && thisCenter.y - GetRadius().x < otherCenter.y + itr->second->GetRadius().y)
+			{
+				velocity->y += this->velocity->y * -2.0f;
+				launched = false;
 			}
 
-			float length = velocity->length();
+
+			// Detect spherical collision
+			if( ( itr->first.find("Ball") != string::npos || itr->first.find("Bumper") != string::npos /*|| itr->first == "Flipper1"*/) && 
+				itr->second != this && 
+				( (thisCenter.x - otherCenter.x) * (thisCenter.x - otherCenter.x) ) +
+				( (thisCenter.y - otherCenter.y) * (thisCenter.y - otherCenter.y) ) <
+				( combinedRadius.x * combinedRadius.x) )
+			{
+				// Get the vector in between the two objects
+				Vector4 hyp( (thisCenter.x - otherCenter.x), (thisCenter.y - otherCenter.y), 0.0f, 0.0f );
+				// Get the normal vector to the colliding object
+				Vector4 normal(hyp.normalize(hyp));
+				// Calculate a new velocity
+				*velocity = normal * (velocity->dot(normal) * -2.0f) + *velocity;
+				// Separate collided objects (upon collision 2 objects will slightly overlap so this is necessary)
+				Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
+
+				// NOTE: Ball-Ball collision sometimes only changes the velocity of one of the balls
+			}
+
+			// Angle of reflection (angle of flipper)
+			float bounceAngle = 0.0f;
+			bool hitCorner = false;
+			if((itr->first.find("Flipper") != string::npos || itr->first.find("InnerWall") != string::npos || itr->first.find("Spinner") != string::npos) && FlipperCollision(otherCenter, *(itr->second), bounceAngle, hitCorner))
+			{
+				Vector4 flipperRadius(itr->second->GetRadius().x, itr->second->GetRadius().y, 0.0f, 0.0f);
+				GLfloat cosAngle(itr->second->rotationMatrix[0][0]);
+				GLfloat sinAngle(-itr->second->rotationMatrix[0][1]);
+
+				// Calculate angle of impact
+				GLfloat hitAngle = atan(velocity->y/velocity->x) + PI;
+
+				if(itr->first.find("Spinner") != string::npos)
+					static_cast<Spinner*>(itr->second)->Spin(hitAngle, *velocity, this);
+
+				if(!hitCorner)
+				{			
+					if(velocity->x < 0)
+						hitAngle += 180 * PI / 180;
+					else if(velocity->x >= 0 && velocity->y < 0)
+						hitAngle += 360 * PI / 180;
 			
-			// How to get a vector based on this angle
-			Vector4 normal(length * cos(bounceAngle), length * sin(bounceAngle), 0.0f, 0.0f);
+					if(hitAngle >= 2*PI - .0000002 && hitAngle <= 2*PI + .0000002)
+						hitAngle = 0.0f;
 
-			*velocity = normal;
+					bounceAngle = PI - hitAngle - 2 * bounceAngle;
+						if(bounceAngle < 0)
+							bounceAngle += 2 * PI;
+				}
 
-			// Separate collided objects (upon collision 2 objects will slightly overlap so this is necessary)
-			Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
+				float length = velocity->length();
+			
+				// How to get a vector based on this angle
+				Vector4 normal(length * cos(bounceAngle), length * sin(bounceAngle), 0.0f, 0.0f);
+
+				*velocity = normal;
+
+				// Separate collided objects (upon collision 2 objects will slightly overlap so this is necessary)
+				Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
+			}
 		}
 	}
 }
