@@ -29,10 +29,6 @@ Game::Game(void)
 
 	shader = new ColorShader();
 
-	// Instantiate useful matrices
-	viewMatrix = new Matrix4();
-	projectionMatrix = new Matrix4();
-
 	// Instantiate some game objects
 	gameObjects["Ball1"] = new Ball(data->sprites["circle"], -200.0f, 50.0f, 5.0f, -3.0f, 1.0f, 1.0f);
 	//gameObjects["Ball2"] = new Ball(data->sprites["circle"], -200.0f, 75.0f, 1.0f, -3.5f);
@@ -68,11 +64,19 @@ Game::Game(void)
 	float screenAspect = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;
 	float screenNear = .1f;
 	float screenDepth = 1000.0f;
-	*projectionMatrix = Matrix4::CreateProjectionMatrix(-WINDOW_WIDTH, WINDOW_WIDTH, -WINDOW_HEIGHT, WINDOW_HEIGHT, screenNear, screenDepth);
+	projectionMatrix = Matrix4::CreateProjectionMatrix(-WINDOW_WIDTH, WINDOW_WIDTH, -WINDOW_HEIGHT, WINDOW_HEIGHT, screenNear, screenDepth);
 }
 
 Game::~Game(void)
 {
+	delete Renderer;
+	delete Updater;
+	delete data;
+	delete shader;
+
+	//gameObjects.clear();
+	/*for(unordered_map<string, Game_Object*>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); itr++)
+		delete itr->second;*/
 }
 
 bool Game::Game_Loop()

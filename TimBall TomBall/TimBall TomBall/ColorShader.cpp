@@ -12,7 +12,9 @@ ColorShader::ColorShader()
 }
 
 // Destructor
-ColorShader::~ColorShader() { }
+ColorShader::~ColorShader()
+{
+}
 
 // Set the correct shader program to be used
 void ColorShader::SetShader()

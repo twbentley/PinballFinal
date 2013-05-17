@@ -17,7 +17,7 @@ public:
 	Game_Object(Polygon*, float, float, float, float);
 	~Game_Object();
 	
-	void Draw(ColorShader*, Matrix4*, Matrix4*);
+	void Draw(ColorShader*, Matrix4, Matrix4);
 
 	void UpdateObjectMatrix();
 	Vector4 GetRadius();

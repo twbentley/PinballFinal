@@ -79,7 +79,7 @@ void Spinner::CheckSide(Game_Object* ball)
 	isTop = (upperLeftDistance < lowerLeftDistance);
 
 	Vector4 linearMomentum;
-	linearMomentum = static_cast<Ball*>(ball)->velocity->cross(ballCenter - upperLeft, *static_cast<Ball*>(ball)->velocity);
+	linearMomentum = static_cast<Ball*>(ball)->velocity.cross(ballCenter - upperLeft, static_cast<Ball*>(ball)->velocity);
 	float I = ((this->radius.x * 2) * (this->radius.y * this->radius.y * this->radius.y) * 8) / 12;
 
 	angularVelocity = linearMomentum.length() / I;

@@ -14,8 +14,8 @@ public:
 	Ball(Polygon*, float, float, float, float, float, float);
 	~Ball(void);
 
-	Vector4* velocity;
-	Vector4* accel;
+	Vector4 velocity;
+	Vector4 accel;
 	bool launched;
 
 	void Update(unordered_map<string, Game_Object*>);

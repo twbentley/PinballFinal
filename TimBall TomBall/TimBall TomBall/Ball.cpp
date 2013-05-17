@@ -9,10 +9,9 @@ Ball::Ball(Polygon* sprite_name, float positionX, float positionY, float velX, f
 	sprite = sprite_name;
 	translationMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
 	Matrix4::UpdateScaleMatrix(scaleMatrix, scaleX, scaleY, 1.0f);
-	//objectMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
 
-	velocity = new Vector4(velX, velY, 0.0f, 0.0f);
-	accel = new Vector4(0.0f, -0.1f, 0.0f, 0.0f);
+	velocity = Vector4(velX, velY, 0.0f, 0.0f);
+	accel = Vector4(0.0f, -0.1f, 0.0f, 0.0f);
 
 	radius = sprite_name->GetRadius() * Vector4(scaleX, scaleY, 1.0f, 1.0f);
 	launched = false;
@@ -26,8 +25,8 @@ void Ball::Update(unordered_map<string, Game_Object*> objects)
 {
 	if(launched)
 	{
-		Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
-		*velocity += *accel;
+		Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x, velocity.y, 0);
+		velocity += accel;
 	}
 
 	// "Friction"
@@ -82,7 +81,7 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 				if(static_cast<Spring*>(itr->second)->finished == true)
 				{
 					launched = true;
-					velocity = new Vector4(0.0f, 12.0f, 0.0f, 0.0f);
+					velocity = Vector4(0.0f, 12.0f, 0.0f, 0.0f);
 				}
 			}
 		}
@@ -94,19 +93,19 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 			// Check for collidable objects, based on dictionary name
 			if(itr->first == "WallLeft" && thisCenter.x - GetRadius().x < otherCenter.x + itr->second->GetRadius().x)
 			{
-				velocity->x += this->velocity->x * -2.0f;
+				velocity.x += this->velocity.x * -2.0f;
 			}
 			if(itr->first == "WallRight" && thisCenter.x + GetRadius().x > otherCenter.x - itr->second->GetRadius().x)
 			{
-				velocity->x += this->velocity->x * -2.0f;
+				velocity.x += this->velocity.x * -2.0f;
 			}
 			if(itr->first == "WallTop" && thisCenter.y + GetRadius().x > otherCenter.y - itr->second->GetRadius().y)
 			{
-				velocity->y += this->velocity->y * -2.0f;
+				velocity.y += this->velocity.y * -2.0f;
 			}
 			if(itr->first == "WallBottom" && thisCenter.y - GetRadius().x < otherCenter.y + itr->second->GetRadius().y)
 			{
-				velocity->y += this->velocity->y * -2.0f;
+				velocity.y += this->velocity.y * -2.0f;
 				launched = false;
 			}
 
@@ -123,9 +122,9 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 				// Get the normal vector to the colliding object
 				Vector4 normal(hyp.normalize(hyp));
 				// Calculate a new velocity
-				*velocity = normal * (velocity->dot(normal) * -2.0f) + *velocity;
+				velocity = normal * (velocity.dot(normal) * -2.0f) + velocity;
 				// Separate collided objects (upon collision 2 objects will slightly overlap so this is necessary)
-				Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
+				Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x, velocity.y, 0);
 
 				// NOTE: Ball-Ball collision sometimes only changes the velocity of one of the balls
 			}
@@ -140,16 +139,16 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 				GLfloat sinAngle(-itr->second->rotationMatrix[0][1]);
 
 				// Calculate angle of impact
-				GLfloat hitAngle = atan(velocity->y/velocity->x) + PI;
+				GLfloat hitAngle = atan(velocity.y/velocity.x) + PI;
 
 				if(itr->first.find("Spinner") != string::npos)
-					static_cast<Spinner*>(itr->second)->Spin(hitAngle, *velocity, this);
+					static_cast<Spinner*>(itr->second)->Spin(hitAngle, velocity, this);
 
 				if(!hitCorner)
 				{			
-					if(velocity->x < 0)
+					if(velocity.x < 0)
 						hitAngle += 180 * PI / 180;
-					else if(velocity->x >= 0 && velocity->y < 0)
+					else if(velocity.x >= 0 && velocity.y < 0)
 						hitAngle += 360 * PI / 180;
 			
 					if(hitAngle >= 2*PI - .0000002 && hitAngle <= 2*PI + .0000002)
@@ -160,15 +159,15 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 							bounceAngle += 2 * PI;
 				}
 
-				float length = velocity->length();
+				float length = velocity.length();
 			
 				// How to get a vector based on this angle
 				Vector4 normal(length * cos(bounceAngle), length * sin(bounceAngle), 0.0f, 0.0f);
 
-				*velocity = normal;
+				velocity = normal;
 
 				// Separate collided objects (upon collision 2 objects will slightly overlap so this is necessary)
-				Matrix4::UpdatePositionMatrix(translationMatrix, velocity->x, velocity->y, 0);
+				Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x, velocity.y, 0);
 			}
 		}
 	}
@@ -374,7 +373,7 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 // Apply a force to the object (DEPRECATED)
 void Ball::ApplyForce(unordered_map<string, Game_Object*>::iterator other)
 {
-	//Vector4& tmp = *velocity;
+	//Vector4& tmp = velocity;
 	//Vector4 thisForce( tmp );	// velocity / mass
 	//Vector4 otherForce;
 	//Vector4 thisFinalForce;

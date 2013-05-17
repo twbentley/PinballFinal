@@ -11,4 +11,8 @@ int main()
 	Game* game = new Game();
 
 	while( (*game).Game_Loop() );
+
+	delete game;
+
+	_CrtDumpMemoryLeaks();
 }
