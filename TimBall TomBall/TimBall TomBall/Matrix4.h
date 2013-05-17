@@ -69,7 +69,9 @@ public:
 	static void UpdatePositionMatrix(Matrix4&, float, float, float);
 	static void UpdateRotationMatrix(Matrix4&, char, float);
 	static void Matrix4::UpdateScaleMatrix(Matrix4&, float, float, float);
+	static void Matrix4::UpdateSkewMatrix(Matrix4& currMatrix, Vector4);
 	float zAngle;
+	Vector4 skewAngle;
 };
 
 #endif

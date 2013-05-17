@@ -14,7 +14,7 @@ private:
 	
 public:
 	Game_Object();
-	Game_Object(Polygon*, float, float, float, float);
+	Game_Object(Polygon*, Vector4, float, float, float, float);
 	~Game_Object();
 	
 	void Draw(ColorShader*, Matrix4, Matrix4);
@@ -28,6 +28,7 @@ public:
 	Matrix4 rotationMatrix;
 	Matrix4 scaleMatrix;
 	Vector4 radius;
+	Vector4 objectsColor;
 };
 
 #endif

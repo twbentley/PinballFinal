@@ -4,16 +4,11 @@ Ball::Ball()
 {
 }
 
-Ball::Ball(Polygon* sprite_name, float positionX, float positionY, float velX, float velY, float scaleX, float scaleY)
+Ball::Ball(Polygon* sprite_name, Vector4 color, float positionX, float positionY, float velX, float velY, float scaleX, float scaleY) : Game_Object( sprite_name, color, positionX, positionY, scaleX, scaleY )
 {
-	sprite = sprite_name;
-	translationMatrix = Matrix4::CreatePositionMatrix(positionX, positionY, 0.0f);
-	Matrix4::UpdateScaleMatrix(scaleMatrix, scaleX, scaleY, 1.0f);
-
 	velocity = Vector4(velX, velY, 0.0f, 0.0f);
 	accel = Vector4(0.0f, -0.1f, 0.0f, 0.0f);
 
-	radius = sprite_name->GetRadius() * Vector4(scaleX, scaleY, 1.0f, 1.0f);
 	launched = false;
 }
 
@@ -127,6 +122,13 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 				Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x, velocity.y, 0);
 
 				// NOTE: Ball-Ball collision sometimes only changes the velocity of one of the balls
+
+				if(static_cast<Bumper*>(itr->second)->complete)
+				{
+					static_cast<Bumper*>(itr->second)->complete = false;
+					static_cast<Bumper*>(itr->second)->growing = true;
+					static_cast<Bumper*>(itr->second)->moveTimes = 5;
+				}
 			}
 
 			// Angle of reflection (angle of flipper)

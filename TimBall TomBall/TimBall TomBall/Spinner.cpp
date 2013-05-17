@@ -5,7 +5,7 @@ Spinner::Spinner(void)
 {
 }
 
-Spinner::Spinner(Polygon* sprite_name, float positionX, float positionY, float scaleX, float scaleY) : Game_Object( sprite_name, positionX, positionY, scaleX, scaleY )
+Spinner::Spinner(Polygon* sprite_name, Vector4 color, float positionX, float positionY, float scaleX, float scaleY) : Game_Object( sprite_name, color, positionX, positionY, scaleX, scaleY )
 {
 	angularVelocity = 0.0f;
 	angle = 0.0f;

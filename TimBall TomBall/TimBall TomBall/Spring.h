@@ -7,7 +7,7 @@ class Spring : public Game_Object
 {
 public:
 	Spring(void);
-	Spring(Polygon*, float, float, float, float);
+	Spring(Polygon*, Vector4, float, float, float, float);
 	~Spring(void);
 
 	void Update();

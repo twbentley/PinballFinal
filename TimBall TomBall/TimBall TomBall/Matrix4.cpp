@@ -363,3 +363,10 @@ void Matrix4::UpdateScaleMatrix(Matrix4& currMatrix, float scaleX, float scaleY,
 	currMatrix.matrix[1][1] = scaleY;
 	currMatrix.matrix[2][2] = scaleZ;
 }
+
+void Matrix4::UpdateSkewMatrix(Matrix4& currMatrix, Vector4 skew)
+{
+	currMatrix.skewAngle = skew;
+	currMatrix.matrix[1][0] = tan(currMatrix.skewAngle.x);
+	currMatrix.matrix[0][1] = tan(currMatrix.skewAngle.y);
+}

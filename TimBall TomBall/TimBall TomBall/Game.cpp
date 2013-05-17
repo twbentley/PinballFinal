@@ -29,29 +29,33 @@ Game::Game(void)
 
 	shader = new ColorShader();
 
+	Vector4 colorBlack = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	Vector4 colorRed = Vector4(1.0f, 0.0f, 0.0f, 0.0f);
+	Vector4 colorBlue = Vector4(0.0f, 0.0f, 1.0f, 0.0f);
+
 	// Instantiate some game objects
-	gameObjects["Ball1"] = new Ball(data->sprites["circle"], -200.0f, 50.0f, 5.0f, -3.0f, 1.0f, 1.0f);
+	gameObjects["Ball1"] = new Ball(data->sprites["circle"], colorRed, -200.0f, 50.0f, 5.0f, -3.0f, 1.0f, 1.0f);
 	//gameObjects["Ball2"] = new Ball(data->sprites["circle"], -200.0f, 75.0f, 1.0f, -3.5f);
 
-	gameObjects["Bumper1"] = new Game_Object(data->sprites["circle"], -190.0f, 150.0f, 1.0f, 1.0f);
-	gameObjects["Bumper2"] = new Game_Object(data->sprites["circle"], 130.0f, 150.0f, 1.0f, 1.0f);
+	gameObjects["Bumper1"] = new Bumper(data->sprites["circle"], colorBlue, -190.0f, 150.0f, 1.0f, 1.0f);
+	gameObjects["Bumper2"] = new Bumper(data->sprites["circle"], colorBlue, 130.0f, 150.0f, 1.0f, 1.0f);
 
-	gameObjects["WallRight"] = new Wall(data->sprites["vert_rect"], 300.0f, 0.0f, 1.0f, 6.7f);
-	gameObjects["WallLeft"] = new Wall(data->sprites["vert_rect"], -300.0f, 0.0f, 1.0f, 6.7f);
-	gameObjects["WallTop"] = new Wall(data->sprites["horiz_rect"], 0.0f, 400.0f, 5.0f, 1.0f);
-	gameObjects["WallBottom"] = new Wall(data->sprites["horiz_rect"], 0.0f, -400.0f, 5.0f, 1.0f);
+	gameObjects["WallRight"] = new Wall(data->sprites["vert_rect"], colorBlack, 300.0f, 0.0f, 1.0f, 6.7f);
+	gameObjects["WallLeft"] = new Wall(data->sprites["vert_rect"], colorBlack, -300.0f, 0.0f, 1.0f, 6.7f);
+	gameObjects["WallTop"] = new Wall(data->sprites["horiz_rect"], colorBlack, 0.0f, 400.0f, 5.0f, 1.0f);
+	gameObjects["WallBottom"] = new Wall(data->sprites["horiz_rect"], colorBlack, 0.0f, -400.0f, 5.0f, 1.0f);
 
-	gameObjects["InnerWall1"] = new Flipper(data->sprites["flipper"], 260.0f, 370.0f, 135, 1.0f, 1.0f);
-	gameObjects["InnerWall2"] = new Flipper(data->sprites["flipper"], 225.0f, -80.0f, 0, 0.25f, 26.0f);
-	gameObjects["InnerWall3"] = new Flipper(data->sprites["flipper"], 170.0f, -285.0f, 0, 1.0f, 1.0f);
-	gameObjects["InnerWall4"] = new Flipper(data->sprites["flipper"], -230.0f, -285.0f, 0, 1.0f, 1.0f);
+	gameObjects["InnerWall1"] = new Flipper(data->sprites["flipper"], colorBlue, 260.0f, 370.0f, 135, 1.0f, 1.0f);
+	gameObjects["InnerWall2"] = new Flipper(data->sprites["flipper"], colorBlue, 225.0f, -80.0f, 0, 0.25f, 26.0f);
+	gameObjects["InnerWall3"] = new Flipper(data->sprites["flipper"], colorBlue, 170.0f, -285.0f, 0, 1.0f, 1.0f);
+	gameObjects["InnerWall4"] = new Flipper(data->sprites["flipper"], colorBlue, -230.0f, -285.0f, 0, 1.0f, 1.0f);
 
-	gameObjects["Flipper1"] = new Flipper(data->sprites["flipper"], -120.0f, -260.0f, 135, 1.0f, 1.0f);
-	gameObjects["Flipper2"] = new Flipper(data->sprites["flipper"], 60.0f, -260.0f, 45, 1.0f, 1.0f);
+	gameObjects["Flipper1"] = new Flipper(data->sprites["flipper"], colorBlue, -120.0f, -260.0f, 135, 1.0f, 1.0f);
+	gameObjects["Flipper2"] = new Flipper(data->sprites["flipper"], colorBlue, 60.0f, -260.0f, 45, 1.0f, 1.0f);
 
-	gameObjects["Spinner"] = new Spinner(data->sprites["flipper"], -30.0f, 250.0f, 1.0f, 1.0f);
+	gameObjects["Spinner"] = new Spinner(data->sprites["flipper"], colorBlue, -30.0f, 250.0f, 1.0f, 1.0f);
 
-	gameObjects["Spring"] = new Spring(data->sprites["spring"], 264.f, -390.0f, 1.0f, 1.0f);
+	gameObjects["Spring"] = new Spring(data->sprites["spring"], colorBlue, 264.f, -390.0f, 1.0f, 1.0f);
 
 	// Set the background color
 	glClearColor(0.f, 1.f, 1.f, 0.f);
@@ -69,14 +73,16 @@ Game::Game(void)
 
 Game::~Game(void)
 {
+	glfwTerminate();
+
 	delete Renderer;
 	delete Updater;
 	delete data;
 	delete shader;
 
 	//gameObjects.clear();
-	/*for(unordered_map<string, Game_Object*>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); itr++)
-		delete itr->second;*/
+	for(unordered_map<string, Game_Object*>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); itr++)
+		delete itr->second;
 }
 
 bool Game::Game_Loop()

@@ -7,7 +7,7 @@ class Wall : public Game_Object
 {
 public:
 	Wall(void);
-	Wall(Polygon*, float, float, float, float);
+	Wall(Polygon*, Vector4, float, float, float, float);
 	~Wall(void);
 };
 

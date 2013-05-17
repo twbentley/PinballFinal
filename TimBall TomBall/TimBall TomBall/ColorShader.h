@@ -20,9 +20,9 @@ public:
 	char* readShaderSource(const char* shaderFile);
 	GLuint InitShader(const char* vShaderFile, const char* fShaderFile);
 
-	void Render(Matrix4*, Matrix4*, Matrix4*, int, Vector4*);
+	void Render(Matrix4*, Matrix4*, Matrix4*, int, Vector4);
 	void SetShader();
-	void SetShaderParameters(Matrix4*, Matrix4*, Matrix4*, Vector4*);
+	void SetShaderParameters(Matrix4*, Matrix4*, Matrix4*, Vector4);
 };
 
 #endif

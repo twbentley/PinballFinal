@@ -5,13 +5,14 @@
 #include "Wall.h"
 #include "Spring.h"
 #include "Spinner.h"
+#include "Bumper.h"
 #include <cstdarg>
 
 class Ball : public Game_Object
 {
 public:
 	Ball();
-	Ball(Polygon*, float, float, float, float, float, float);
+	Ball(Polygon*, Vector4, float, float, float, float, float, float);
 	~Ball(void);
 
 	Vector4 velocity;

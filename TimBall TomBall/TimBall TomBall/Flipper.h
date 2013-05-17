@@ -7,7 +7,7 @@ class Flipper :
 {
 public:
 	Flipper(void);
-	Flipper(Polygon*, float, float, int, float, float);
+	Flipper(Polygon*, Vector4, float, float, int, float, float);
 	~Flipper(void);
 
 	void Update(string);

@@ -73,12 +73,16 @@ Polygon::Polygon(string modelToLoad)
 
 Polygon::~Polygon(void)
 {
+	// Assertion failure, possibly glfwTerminate?
+	// Vertices deleted by deleting buffer?
+	glDeleteBuffers(1, &vertexBuffer);
+	glDeleteBuffers(1, &indexbuffer);
 	//delete vertices;
-	//delete indices;
+	delete indices;
 }
 
 // Draw a polygon using an array of points
-void Polygon::Draw(ColorShader* shader, Matrix4 worldMatrix, Matrix4 viewMatrix, Matrix4 projectionMatrix)
+void Polygon::Draw(ColorShader* shader, Matrix4 worldMatrix, Matrix4 viewMatrix, Matrix4 projectionMatrix, Vector4 color)
 {
 	//glEnableVertexAttribArray(vao);
 
@@ -87,7 +91,7 @@ void Polygon::Draw(ColorShader* shader, Matrix4 worldMatrix, Matrix4 viewMatrix,
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexbuffer);
 
 	// Render object using the shader
-	shader->Render(&worldMatrix, &viewMatrix, &projectionMatrix, numIndices, new Vector4( 0.0f, 0.0f, 1.0f, 0.0f));
+	shader->Render(&worldMatrix, &viewMatrix, &projectionMatrix, numIndices, color);
 
 	//glDisableVertexAttribArray(vao);
 }

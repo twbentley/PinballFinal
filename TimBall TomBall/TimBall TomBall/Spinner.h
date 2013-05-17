@@ -9,7 +9,7 @@ class Spinner :
 {
 public:
 	Spinner(void);
-	Spinner(Polygon*, float, float, float, float);
+	Spinner(Polygon*, Vector4, float, float, float, float);
 
 	~Spinner(void);
 

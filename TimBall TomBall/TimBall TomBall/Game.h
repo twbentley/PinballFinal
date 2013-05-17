@@ -7,6 +7,7 @@
 #include "Game_Object.h"
 #include "Data_Container.h"
 #include "ColorShader.h"
+#include "Bumper.h"
 #include <GL/glfw.h>
 
 using namespace std;

@@ -7,8 +7,16 @@ class Bumper : public Game_Object
 {
 public:
 	Bumper(void);
-	Bumper(Polygon*, float, float, float, float);
+	Bumper(Polygon*, Vector4, float, float, float, float);
 	~Bumper(void);
+
+	void Update(string);
+
+	bool complete;
+	bool shrinking;
+	bool growing;
+	int moveTimes;
+	Vector4 startRadius;
 };
 
 #endif

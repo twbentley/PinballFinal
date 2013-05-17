@@ -12,7 +12,7 @@ Data_Container::Data_Container()
 
 Data_Container::~Data_Container()
 {
-	sprites.clear();
-	/*for(unordered_map<string, Polygon*>::iterator itr = sprites.begin(); itr != sprites.end(); itr++)
-		delete itr->second;*/
+	//sprites.clear();
+	for(unordered_map<string, Polygon*>::iterator itr = sprites.begin(); itr != sprites.end(); itr++)
+		delete itr->second;
 }
