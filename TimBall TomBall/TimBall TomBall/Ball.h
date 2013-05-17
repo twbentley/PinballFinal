@@ -6,6 +6,7 @@
 #include "Spring.h"
 #include "Spinner.h"
 #include "Bumper.h"
+#include "Flipper.h"
 #include <cstdarg>
 
 class Ball : public Game_Object

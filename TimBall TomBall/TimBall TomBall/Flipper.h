@@ -2,8 +2,7 @@
 #define FLIPPER_H
 
 #include "game_object.h"
-class Flipper :
-	public Game_Object
+class Flipper : public Game_Object
 {
 public:
 	Flipper(void);

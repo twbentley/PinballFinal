@@ -46,9 +46,9 @@ Game::Game(void)
 	gameObjects["WallBottom"] = new Wall(data->sprites["horiz_rect"], colorBlack, 0.0f, -400.0f, 5.0f, 1.0f);
 
 	gameObjects["InnerWall1"] = new Flipper(data->sprites["flipper"], colorBlue, 260.0f, 370.0f, 135, 1.0f, 1.0f);
-	gameObjects["InnerWall2"] = new Flipper(data->sprites["flipper"], colorBlue, 225.0f, -80.0f, 0, 0.25f, 26.0f);
-	gameObjects["InnerWall3"] = new Flipper(data->sprites["flipper"], colorBlue, 170.0f, -285.0f, 0, 1.0f, 1.0f);
-	gameObjects["InnerWall4"] = new Flipper(data->sprites["flipper"], colorBlue, -230.0f, -285.0f, 0, 1.0f, 1.0f);
+	gameObjects["InnerWall2"] = new Flipper(data->sprites["flipper"], colorBlue, 170.0f, -215.0f, 10, 1.0f, 1.0f);
+	gameObjects["InnerWall3"] = new Flipper(data->sprites["flipper"], colorBlue, -230.0f, -215.0f, 170, 1.0f, 1.0f);
+	gameObjects["InnerWall4"] = new Flipper(data->sprites["flipper"], colorBlue, 225.0f, -80.0f, 90, 5.0f, 1.0f);
 
 	gameObjects["Flipper1"] = new Flipper(data->sprites["flipper"], colorBlue, -120.0f, -260.0f, 135, 1.0f, 1.0f);
 	gameObjects["Flipper2"] = new Flipper(data->sprites["flipper"], colorBlue, 60.0f, -260.0f, 45, 1.0f, 1.0f);
