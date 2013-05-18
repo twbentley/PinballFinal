@@ -14,7 +14,7 @@ using namespace std;
 
 // Resolution of window
 const int WINDOW_WIDTH = 600;
-const int WINDOW_HEIGHT = 800;
+const int WINDOW_HEIGHT = 850;
 
 // Number of bits per color (Color Depth)
 const int REDBITS = 8;		// uses color depth of desktop if set to 0
@@ -40,6 +40,9 @@ private:
 	Data_Container* data;
 	ColorShader* shader;
 	string gameState;
+
+	int ballCount;
+	int score;
 public:
 	Game();
 	~Game();

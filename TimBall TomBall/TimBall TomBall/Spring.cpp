@@ -25,7 +25,7 @@ void Spring::Update()
 
 	int temp = moveTimes;
 	// Horizontal Keyboard-based input
-	if(!finished && moveTimes == 0 && glfwGetKey(GLFW_KEY_ENTER) == GLFW_PRESS)
+	if(!finished && moveTimes == 0 && glfwGetKey(GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
 		moveTimes = 20;
 		started = true;

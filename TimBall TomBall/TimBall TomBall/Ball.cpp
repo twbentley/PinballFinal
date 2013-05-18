@@ -16,7 +16,7 @@ Ball::~Ball(void)
 {
 }
 
-void Ball::Update(unordered_map<string, Game_Object*> objects)
+int Ball::Update(unordered_map<string, Game_Object*> objects, int& ballCount)
 {
 	if(launched)
 	{
@@ -31,35 +31,12 @@ void Ball::Update(unordered_map<string, Game_Object*> objects)
 	//	*(accel) += Vector4(0.01f, 0.0f, 0.0f, 0);
 
 	//PollUserInput();
-	ProcessCollisions(objects);
+	return ProcessCollisions(objects, ballCount);
 }
 
-// Get user input for various purposes
-void Ball::PollUserInput()
+int Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects, int& ballCount)
 {
-	// Horizontal Keyboard-based input
-	//if(glfwGetKey(GLFW_KEY_RIGHT) == GLFW_PRESS)
-	//{
-	//	Matrix4::UpdatePositionMatrix(translationMatrix, 5, 0, 0);
-	//}
-	//else if(glfwGetKey(GLFW_KEY_LEFT) == GLFW_PRESS)
-	//{
-	//	Matrix4::UpdatePositionMatrix(translationMatrix, -5, 0, 0);
-	//}
-
-	//// Horizontal Keyboard-based input
-	//if(glfwGetKey(GLFW_KEY_UP) == GLFW_PRESS)
-	//{
-	//	Matrix4::UpdatePositionMatrix(translationMatrix, 0, 5, 0);
-	//}
-	//else if(glfwGetKey(GLFW_KEY_DOWN) == GLFW_PRESS)
-	//{
-	//	Matrix4::UpdatePositionMatrix(translationMatrix, 0, -5, 0);
-	//}
-}
-
-void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
-{
+	int scoreIncrease = 0;
 	// Calculate 
 	Vector4 thisCenter(this->translationMatrix[0][3], this->translationMatrix[1][3], 0.0f, 0.0f);
 
@@ -102,6 +79,7 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 			{
 				velocity.y += this->velocity.y * -2.0f;
 				launched = false;
+				ballCount -= 1;
 			}
 
 
@@ -129,6 +107,9 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 					static_cast<Bumper*>(itr->second)->growing = true;
 					static_cast<Bumper*>(itr->second)->moveTimes = 5;
 				}
+
+				// Increase score for hitting another ball or bumper
+				scoreIncrease += 5;
 			}
 
 			// Angle of reflection (angle of flipper)
@@ -170,9 +151,17 @@ void Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects)
 
 				// Separate collided objects (upon collision 2 objects will slightly overlap so this is necessary)
 				Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x, velocity.y, 0);
+				
+				// Increase score if hit spinner
+				if(itr->first.find("Spinner") != string::npos)
+				{
+					scoreIncrease += 5;
+				}
 			}
 		}
 	}
+
+	return scoreIncrease;
 }
 
 bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& angle, bool& hitCorner)

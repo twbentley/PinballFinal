@@ -32,27 +32,27 @@ Game::Game(void)
 	Vector4 colorBlue = Vector4(0.0f, 0.0f, 1.0f, 0.0f);
 
 	// Instantiate some game objects
-	gameObjects["Ball1"] = new Ball(data->sprites["circle"], colorRed, -200.0f, 50.0f, 5.0f, -3.0f, 1.0f, 1.0f);
+	gameObjects["Ball1"] = new Ball(data->sprites["circle"], colorRed, -200.0f, 75.0f, 5.0f, -3.0f, 1.0f, 1.0f);
 
-	gameObjects["Bumper1"] = new Bumper(data->sprites["circle"], colorBlue, -190.0f, 150.0f, 1.0f, 1.0f);
-	gameObjects["Bumper2"] = new Bumper(data->sprites["circle"], colorBlue, 130.0f, 150.0f, 1.0f, 1.0f);
+	gameObjects["Bumper1"] = new Bumper(data->sprites["circle"], colorBlue, -190.0f, 175.0f, 1.0f, 1.0f);
+	gameObjects["Bumper2"] = new Bumper(data->sprites["circle"], colorBlue, 130.0f, 175.0f, 1.0f, 1.0f);
 
-	gameObjects["WallRight"] = new Wall(data->sprites["vert_rect"], colorBlack, 300.0f, 0.0f, 1.0f, 6.7f);
-	gameObjects["WallLeft"] = new Wall(data->sprites["vert_rect"], colorBlack, -300.0f, 0.0f, 1.0f, 6.7f);
-	gameObjects["WallTop"] = new Wall(data->sprites["horiz_rect"], colorBlack, 0.0f, 400.0f, 5.0f, 1.0f);
-	gameObjects["WallBottom"] = new Wall(data->sprites["horiz_rect"], colorBlack, 0.0f, -400.0f, 5.0f, 1.0f);
+	gameObjects["WallRight"] = new Wall(data->sprites["vert_rect"], colorBlack, 300.0f, 25.0f, 1.0f, 6.7f);
+	gameObjects["WallLeft"] = new Wall(data->sprites["vert_rect"], colorBlack, -300.0f, 25.0f, 1.0f, 6.7f);
+	gameObjects["WallTop"] = new Wall(data->sprites["horiz_rect"], colorBlack, 0.0f, 425.0f, 5.0f, 1.0f);
+	gameObjects["WallBottom"] = new Wall(data->sprites["horiz_rect"], colorBlack, 0.0f, -375.0f, 5.0f, 1.0f);
 
-	gameObjects["InnerWall1"] = new Flipper(data->sprites["flipper"], colorBlue, 260.0f, 370.0f, 135, 1.0f, 1.0f);
-	gameObjects["InnerWall2"] = new Flipper(data->sprites["flipper"], colorBlue, 170.0f, -215.0f, 10, 1.0f, 1.0f);
-	gameObjects["InnerWall3"] = new Flipper(data->sprites["flipper"], colorBlue, -230.0f, -215.0f, 170, 1.0f, 1.0f);
-	gameObjects["InnerWall4"] = new Flipper(data->sprites["flipper"], colorBlue, 225.0f, -80.0f, 90, 5.0f, 1.0f);
+	gameObjects["InnerWall1"] = new Flipper(data->sprites["flipper"], colorBlue, 260.0f, 395.0f, 135, 1.0f, 1.0f);
+	gameObjects["InnerWall2"] = new Flipper(data->sprites["flipper"], colorBlue, 170.0f, -190.0f, 10, 1.0f, 1.0f);
+	gameObjects["InnerWall3"] = new Flipper(data->sprites["flipper"], colorBlue, -230.0f, -190.0f, 170, 1.0f, 1.0f);
+	gameObjects["InnerWall4"] = new Flipper(data->sprites["flipper"], colorBlue, 225.0f, -55.0f, 90, 5.0f, 1.0f);
 
-	gameObjects["Flipper1"] = new Flipper(data->sprites["flipper"], colorBlue, -120.0f, -260.0f, 135, 1.0f, 1.0f);
-	gameObjects["Flipper2"] = new Flipper(data->sprites["flipper"], colorBlue, 60.0f, -260.0f, 45, 1.0f, 1.0f);
+	gameObjects["Flipper1"] = new Flipper(data->sprites["flipper"], colorBlue, -120.0f, -235.0f, 135, 1.0f, 1.0f);
+	gameObjects["Flipper2"] = new Flipper(data->sprites["flipper"], colorBlue, 60.0f, -235.0f, 45, 1.0f, 1.0f);
 
-	gameObjects["Spinner"] = new Spinner(data->sprites["flipper"], colorBlue, -30.0f, 250.0f, 1.0f, 1.0f);
+	gameObjects["Spinner"] = new Spinner(data->sprites["flipper"], colorBlue, -30.0f, 275.0f, 1.0f, 1.0f);
 
-	gameObjects["Spring"] = new Spring(data->sprites["spring"], colorBlue, 264.f, -390.0f, 1.0f, 1.0f);
+	gameObjects["Spring"] = new Spring(data->sprites["spring"], colorBlue, 264.f, -365.0f, 1.0f, 1.0f);
 
 	// Set the background color
 	glClearColor(0.f, 1.f, 1.f, 0.f);
@@ -69,6 +69,8 @@ Game::Game(void)
 	
 	// Set the first game state
 	gameState = "Menu";
+	ballCount = 3;
+	score = 0;
 }
 
 // Game Destructor
@@ -91,13 +93,13 @@ bool Game::Game_Loop()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Render the current scene
-	Renderer->Draw(gameState, shader, gameObjects, viewMatrix, projectionMatrix);
+	Renderer->Draw(gameState, shader, gameObjects, viewMatrix, projectionMatrix, ballCount, score);
 
 	// Swap front and back buffers
 	glfwSwapBuffers(); 
 
 	// Update game objects
-	Updater->Update_Game(gameState, gameObjects);
+	Updater->Update_Game(gameState, gameObjects, ballCount, score);
 
 	// Exit the program when ESC is pressed
 	if(glfwGetKey(GLFW_KEY_ESC) == GLFW_PRESS)

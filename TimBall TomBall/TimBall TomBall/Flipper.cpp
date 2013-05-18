@@ -20,13 +20,13 @@ Flipper::~Flipper(void)
 void Flipper::Update(string side)
 {
 	// Horizontal Keyboard-based input
-	if(!moving && glfwGetKey(GLFW_KEY_ENTER) == GLFW_PRESS)
+	if((!moving && glfwGetKey(65) == GLFW_PRESS && side == "Left") || (!moving && glfwGetKey(68) == GLFW_PRESS && side == "Right"))
 	{
 		flipped = true;
 		moving = true;
 		moveTimes = 5;
 	}
-	else if(!moving && !glfwGetKey(GLFW_KEY_ENTER) == GLFW_PRESS && flipped)
+	else if((!moving && !glfwGetKey(65) == GLFW_PRESS && flipped && side == "Left") || (!moving && !glfwGetKey(68) == GLFW_PRESS && flipped && side == "Right"))
 	{
 		flipped = false;
 		moving = true;
@@ -62,7 +62,7 @@ void Flipper::Update(string side)
 		}
 	}
 
-	if(moving && moveTimes == 0 && !glfwGetKey(GLFW_KEY_ENTER) == GLFW_PRESS)
+	if((moving && moveTimes == 0 && !glfwGetKey(65) == GLFW_PRESS && side == "Left") || (moving && moveTimes == 0 && !glfwGetKey(68) == GLFW_PRESS && side == "Right"))
 	{
 		moving = false;
 	}

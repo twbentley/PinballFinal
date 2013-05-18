@@ -20,10 +20,9 @@ public:
 	Vector4 accel;
 	bool launched;
 
-	void Update(unordered_map<string, Game_Object*>);
+	int Update(unordered_map<string, Game_Object*>, int&);
 
-	void PollUserInput();
-	void ProcessCollisions(unordered_map<string, Game_Object*>);
+	int ProcessCollisions(unordered_map<string, Game_Object*>, int&);
 	void ApplyForce(unordered_map<string, Game_Object*>::iterator);
 	bool FlipperCollision(Vector4&, Game_Object&,float&,bool&);
 };
