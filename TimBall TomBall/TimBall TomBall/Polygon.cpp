@@ -12,7 +12,6 @@ Polygon::Polygon(string modelToLoad)
 
 	numIndices = modelData[8].size();
 
-	//points = new Vector2[num_sides];
 	vertices = new Vector4[numIndices];
 	indices = new unsigned int[numIndices];
 
@@ -77,7 +76,7 @@ Polygon::~Polygon(void)
 	// Vertices deleted by deleting buffer?
 	glDeleteBuffers(1, &vertexBuffer);
 	glDeleteBuffers(1, &indexbuffer);
-	//delete vertices;
+	delete [] vertices;
 	delete indices;
 }
 

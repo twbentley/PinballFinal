@@ -11,7 +11,8 @@ public:
 	Render();
 	~Render();
 
-	void Draw(ColorShader*, unordered_map<string, Game_Object*>, Matrix4, Matrix4);
+	void Draw(string gameState, ColorShader*, unordered_map<string, Game_Object*>, Matrix4, Matrix4);
+	void DrawBitmapText(string, float, float, float);
 };
 
 #endif

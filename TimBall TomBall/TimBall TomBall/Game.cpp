@@ -69,12 +69,12 @@ Game::Game(void)
 	float screenNear = .1f;
 	float screenDepth = 1000.0f;
 	projectionMatrix = Matrix4::CreateProjectionMatrix(-WINDOW_WIDTH, WINDOW_WIDTH, -WINDOW_HEIGHT, WINDOW_HEIGHT, screenNear, screenDepth);
+	
+	gameState = "Menu";
 }
 
 Game::~Game(void)
 {
-	glfwTerminate();
-
 	delete Renderer;
 	delete Updater;
 	delete data;
@@ -91,13 +91,13 @@ bool Game::Game_Loop()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Render the current scene
-	Renderer->Draw(shader, gameObjects, viewMatrix, projectionMatrix);
+	Renderer->Draw(gameState, shader, gameObjects, viewMatrix, projectionMatrix);
 
 	// Swap front and back buffers
 	glfwSwapBuffers(); 
 
 	// Update game objects
-	Updater->Update_Game(gameObjects);
+	Updater->Update_Game(gameState, gameObjects);
 
 	// Exit the program when ESC is pressed
 	if(glfwGetKey(GLFW_KEY_ESC) == GLFW_PRESS)

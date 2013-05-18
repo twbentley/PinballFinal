@@ -39,6 +39,7 @@ private:
 	unordered_map<string, Game_Object*> gameObjects;
 	Data_Container* data;
 	ColorShader* shader;
+	string gameState;
 public:
 	Game();
 	~Game();

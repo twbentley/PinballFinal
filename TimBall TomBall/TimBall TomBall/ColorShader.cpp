@@ -93,7 +93,9 @@ GLuint ColorShader::InitShader(const char* vShaderFile, const char* fShaderFile)
 
 		// Exit program if failed to read file
 		if ( shaders[i].source == NULL ) 
-		{ exit( EXIT_FAILURE ); }
+		{ 
+			exit( EXIT_FAILURE ); 
+		}
 		
 		// Create the shader from source and compile
 		GLuint shader = glCreateShader( s.type );
