@@ -3,15 +3,19 @@
 // Scaling factor for objects
 const int OBJ_CONST = 12;
 
-Polygon::Polygon(){ }
+// Default constructor
+Polygon::Polygon() { }
 
+// Parameterized constructor
+// modelToload - file name for the current model
 Polygon::Polygon(string modelToLoad)
 {
+	// Load the model file
 	vector<float> modelData[11];
 	FileIO::LoadObject("Assets/" + modelToLoad + ".obj", &(modelData[0]));
 
+	// Instantiate arrays
 	numIndices = modelData[8].size();
-
 	vertices = new Vector4[numIndices];
 	indices = new unsigned int[numIndices];
 
@@ -68,15 +72,17 @@ Polygon::Polygon(string modelToLoad)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexbuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * numIndices, indices, GL_STATIC_DRAW);
 
+	// Vertices loaded into buffer, don't need data anymore
+	delete [] vertices;
 }
 
+// Destructor
 Polygon::~Polygon(void)
 {
-	// Assertion failure, possibly glfwTerminate?
-	// Vertices deleted by deleting buffer?
+	// Release buffers
 	glDeleteBuffers(1, &vertexBuffer);
 	glDeleteBuffers(1, &indexbuffer);
-	delete [] vertices;
+		
 	delete indices;
 }
 
@@ -95,11 +101,7 @@ void Polygon::Draw(ColorShader* shader, Matrix4 worldMatrix, Matrix4 viewMatrix,
 	//glDisableVertexAttribArray(vao);
 }
 
-Vector4 Polygon::GetVertexAt(int index)
-{
-	return vertices[index];
-}
-
+// Getter for the radius of a polygon
 Vector4 Polygon::GetRadius()
 { 
 	return radius; 

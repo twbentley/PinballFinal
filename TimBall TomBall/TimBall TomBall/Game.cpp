@@ -1,7 +1,6 @@
 #include "Game.h"
 
-const int NUM_OBJECTS = 6;
-
+// Game Constructor
 Game::Game(void)
 {
 	// Initialize the GLFW libary
@@ -21,21 +20,19 @@ Game::Game(void)
 	// Reset the viewing matrix
 	glLoadIdentity();
 
-	// Instantiate Rendering and Updating
+	// Instantiate useful classes
 	Renderer = new Render();
 	Updater = new Update();
-
 	data = new Data_Container();
-
 	shader = new ColorShader();
 
+	// Instatiate defined colors
 	Vector4 colorBlack = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 	Vector4 colorRed = Vector4(1.0f, 0.0f, 0.0f, 0.0f);
 	Vector4 colorBlue = Vector4(0.0f, 0.0f, 1.0f, 0.0f);
 
 	// Instantiate some game objects
 	gameObjects["Ball1"] = new Ball(data->sprites["circle"], colorRed, -200.0f, 50.0f, 5.0f, -3.0f, 1.0f, 1.0f);
-	//gameObjects["Ball2"] = new Ball(data->sprites["circle"], -200.0f, 75.0f, 1.0f, -3.5f);
 
 	gameObjects["Bumper1"] = new Bumper(data->sprites["circle"], colorBlue, -190.0f, 150.0f, 1.0f, 1.0f);
 	gameObjects["Bumper2"] = new Bumper(data->sprites["circle"], colorBlue, 130.0f, 150.0f, 1.0f, 1.0f);
@@ -70,21 +67,24 @@ Game::Game(void)
 	float screenDepth = 1000.0f;
 	projectionMatrix = Matrix4::CreateProjectionMatrix(-WINDOW_WIDTH, WINDOW_WIDTH, -WINDOW_HEIGHT, WINDOW_HEIGHT, screenNear, screenDepth);
 	
+	// Set the first game state
 	gameState = "Menu";
 }
 
+// Game Destructor
 Game::~Game(void)
 {
+	// Clean up memory
 	delete Renderer;
 	delete Updater;
 	delete data;
 	delete shader;
 
-	//gameObjects.clear();
 	for(unordered_map<string, Game_Object*>::iterator itr = gameObjects.begin(); itr != gameObjects.end(); itr++)
 		delete itr->second;
 }
 
+// The main game loop
 bool Game::Game_Loop()
 {
 	// Clear the buffer
@@ -109,6 +109,7 @@ bool Game::Game_Loop()
 	return programRunning;
 }
 
+// Game shutdown, terminate glfw and exit program
 void Game::Shut_Down()
 {
 	glfwTerminate();

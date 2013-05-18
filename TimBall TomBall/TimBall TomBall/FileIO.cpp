@@ -5,17 +5,14 @@
 
 ifstream FileIO::loader;
 
-FileIO::FileIO()
-{
-}
+// Default constructor
+FileIO::FileIO() { }
 
-FileIO::FileIO(const FileIO& other)
-{
-}
+// Parameterized Constructor
+FileIO::FileIO(const FileIO& other) { }
 
-FileIO::~FileIO()
-{
-}
+// Destructor
+FileIO::~FileIO() { }
 
 // 3D model standard .obj file importer
 void FileIO::LoadObject(string objFile, vector<float>* const& model)

@@ -12,9 +12,7 @@ ColorShader::ColorShader()
 }
 
 // Destructor
-ColorShader::~ColorShader()
-{
-}
+ColorShader::~ColorShader() { }
 
 // Set the correct shader program to be used
 void ColorShader::SetShader()
@@ -60,8 +58,6 @@ char* ColorShader::readShaderSource(const char* shaderFile)
 			 i = -1;
 		}
 	}
-    //buf[size] = '\0';
-	cout << buf << endl;
 
     return buf;
 }
@@ -124,7 +120,7 @@ GLuint ColorShader::InitShader(const char* vShaderFile, const char* fShaderFile)
 		glAttachShader( program, shader );
     }
 
-    /* link  and error check */
+    // Link and error check
     glLinkProgram(program);
 
 	// Link shader program
@@ -148,11 +144,12 @@ GLuint ColorShader::InitShader(const char* vShaderFile, const char* fShaderFile)
     return program;
 }
 
+// Render the scene using the shaders
 void ColorShader::Render(Matrix4* worldMatrix, Matrix4* viewMatrix, Matrix4* projectionMatrix, int indexCount, Vector4 color)
 {
+	// Set the shader and draw all elements using triangles
 	SetShader();
 	SetShaderParameters(worldMatrix, viewMatrix, projectionMatrix, color);
-	//glDrawArrays(GL_TRIANGLES, 0, indexCount);
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (void*)0);
 }
 
@@ -166,7 +163,7 @@ void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix,
 	// Define vertex attribute data
 	glVertexAttribPointer( loc, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0) );
 
-	// glUniformMatrix4fv should have GL_TRUE to enable translation
+	// glUniformMatrix4fv should have GL_TRUE to enable transpose (our matrices are column-ordered)
 
 	unsigned int location;
 
@@ -194,6 +191,7 @@ void ColorShader::SetShaderParameters(Matrix4* worldMatrix, Matrix4* viewMatrix,
 	}
 	glUniformMatrix4fv(location, 1, GL_TRUE, (GLfloat*)projectionMatrix);
 
+	// Set the color in the shaders
 	glGetUniformLocation(shaderProgram, "vColor");
 	glUniform4f(shaderProgram, color.x, color.y, color.z, color.w);
 }

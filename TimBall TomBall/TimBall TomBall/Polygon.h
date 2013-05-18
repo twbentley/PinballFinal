@@ -26,7 +26,7 @@ public:
 
 	//ColorShader* shader;
 	void Draw(ColorShader*, Matrix4, Matrix4, Matrix4, Vector4);
-	Vector4 GetVertexAt(int);
+	
 	Vector4 GetRadius();
 };
 
