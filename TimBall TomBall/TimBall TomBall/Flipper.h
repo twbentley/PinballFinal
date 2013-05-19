@@ -1,7 +1,11 @@
+// Author: Timothy Reynolds
+
 #ifndef FLIPPER_H
 #define FLIPPER_H
 
-#include "game_object.h"
+#include "Game_Object.h"
+
+// This is a flipper in the game world for throwing pinballs around
 class Flipper : public Game_Object
 {
 public:

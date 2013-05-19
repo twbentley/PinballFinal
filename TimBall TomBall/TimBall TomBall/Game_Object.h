@@ -1,3 +1,5 @@
+// Author: Thomas Bentley & Timothy Reynolds
+
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
@@ -7,7 +9,7 @@
 
 using namespace std;
 
-// This class holds objects that will be in the game environment
+// This class is a game object that will be in the game environment
 class Game_Object
 {
 private:

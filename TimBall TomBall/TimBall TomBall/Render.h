@@ -1,3 +1,6 @@
+// Author: Thomas Bentley
+// Contributor: Timothy Reynolds
+
 #ifndef RENDER_H
 #define RENDER_H
 
@@ -5,7 +8,7 @@
 #include "Polygon.h"
 #include "Game_Object.h"
 
-// This class renders objects
+// This class renders objects and text
 class Render
 {
 public:

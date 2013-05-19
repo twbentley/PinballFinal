@@ -1,9 +1,12 @@
+// Author: Thomas Bentley
+
 #ifndef SPINNER_H
 #define SPINNER_H
 
 #include "Game_Object.h"
 #include "Ball.h"
 
+// This is a spinner in the game that rotates when hit and increases score
 class Spinner :
 	public Game_Object
 {

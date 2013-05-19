@@ -1,3 +1,6 @@
+// Author: Thomas Bentley
+// Contributor: Timothy Reynolds
+
 #ifndef UPDATE_H
 #define UPDATE_H
 

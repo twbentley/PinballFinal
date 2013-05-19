@@ -1,3 +1,6 @@
+// Author: Timothy Reynolds
+// Contributor: Thomas Bentley
+
 #ifndef DATA_CONTAINER_H
 #define DATA_CONTAINER_H
 
@@ -6,7 +9,7 @@
 #include <string>
 #include <unordered_map>
 
-// This class holds models, sprites, and other similar data for objects
+// This class holds model data/sprites for objects
 class Data_Container
 {
 private:

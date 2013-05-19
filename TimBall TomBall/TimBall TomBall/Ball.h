@@ -1,3 +1,6 @@
+// Author: Thomas Bentley
+// Contributor: Timothy Reynolds
+
 #ifndef _BALL_H
 #define _BALL_H
 
@@ -9,6 +12,7 @@
 #include "Flipper.h"
 #include <cstdarg>
 
+// Pinball in the game world
 class Ball : public Game_Object
 {
 public:

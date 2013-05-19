@@ -1,3 +1,7 @@
+// Author: Angel
+// Contributors: Thomas Bentley, Timothy Reynolds
+// Modified from Angel's InitShader class. Streamlined, organized, and added to.
+
 #ifndef COLORSHADER_H
 #define COLORSHADER_H
 
@@ -9,7 +13,7 @@
 // Define a helpful macro for handling offsets into buffer objects
 #define BUFFER_OFFSET( offset )   ((GLvoid*) (offset))
 
-// This class renders objects
+// This is a shader class for rendering objects
 class ColorShader
 {
 public:

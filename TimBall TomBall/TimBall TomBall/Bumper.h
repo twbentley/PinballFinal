@@ -1,8 +1,11 @@
+// AUthor: Timothy Reynolds
+
 #ifndef _BUMPER_H
 #define _BUMPER_H
 
 #include "Game_Object.h"
 
+// Bumper object, bounces ball when hit, gives score
 class Bumper : public Game_Object
 {
 public:

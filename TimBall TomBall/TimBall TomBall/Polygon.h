@@ -1,3 +1,6 @@
+// Author: Timothy Reynolds
+// Contributor: Thomas Bentley
+
 #ifndef POLYGON_H
 #define POLYGON_H
 
@@ -9,6 +12,7 @@
 // Define value of pi
 #define PI 3.14159265358979323846264338327950288
 
+// Class representing visual representation of game objects
 class Polygon
 {
 private:
