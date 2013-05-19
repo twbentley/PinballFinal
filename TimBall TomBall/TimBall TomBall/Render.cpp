@@ -36,7 +36,7 @@ void Render::Draw(string gameState, ColorShader* shader, unordered_map<string, G
 
 		DrawBitmapText("Press enter to restart.", -glutBitmapLength(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)"Press enter to restart.") / 600.0f, -0.3f, 0.0f);
 	}
-	else
+	else if(gameState == "Game" || gameState == "Paused")
 	{
 		for(auto itr = objects.begin(); itr != objects.end(); itr++)
 		{
@@ -50,6 +50,12 @@ void Render::Draw(string gameState, ColorShader* shader, unordered_map<string, G
 		ss.str("");
 		ss << "Balls remaining: " << ballCount;
 		DrawBitmapText(ss.str(), -0.3f, -0.97f, 0.0f);	
+	}
+
+	if(gameState == "Paused")
+	{
+		DrawBitmapText("Paused", -glutBitmapLength(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)"Paused") / 600.0f, 0.0f, 0.0f);
+		DrawBitmapText("Press enter to resume.", -glutBitmapLength(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)"Press enter to resume.") / 600.0f, -0.1f, 0.0f);
 	}
 
 	glDisableClientState(GL_VERTEX_ARRAY);

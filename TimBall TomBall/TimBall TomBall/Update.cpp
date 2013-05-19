@@ -47,5 +47,19 @@ void Update::Update_Game(string& gameState, unordered_map<string, Game_Object*> 
 		{
 			gameState = "Credits";
 		}
+
+		// Pause
+		if(glfwGetKey(80) == GLFW_PRESS)
+		{
+			gameState = "Paused";
+		}
+	}
+	else if(gameState == "Paused")
+	{
+		// Unpause
+		if(glfwGetKey(GLFW_KEY_ENTER) == GLFW_PRESS)
+		{
+			gameState = "Game";
+		}
 	}
 }

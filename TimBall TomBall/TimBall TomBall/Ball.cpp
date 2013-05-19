@@ -26,8 +26,8 @@ int Ball::Update(unordered_map<string, Game_Object*> objects, int& ballCount)
 	// If the ball is in play, move it based on velocity, acceleration/gravity
 	if(launched)
 	{
-		Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x * dt, velocity.y * dt, 0);
-		velocity += accel * dt;
+		Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x * dt * 1.75f, velocity.y * dt * 1.75f, 0);
+		velocity += accel * dt * 1.75f;
 	}
 
 	// "Friction"
