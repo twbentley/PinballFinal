@@ -60,6 +60,12 @@ void Update::Update_Game(string& gameState, unordered_map<string, Game_Object*> 
 		if(glfwGetKey(GLFW_KEY_ENTER) == GLFW_PRESS)
 		{
 			gameState = "Game";
+
+			static_cast<Ball*>(objects["Ball1"])->finalTime = (float)glutGet(GLUT_ELAPSED_TIME);
+			static_cast<Ball*>(objects["Ball1"])->initialTime = static_cast<Ball*>(objects["Ball1"])->finalTime;
+
+			static_cast<Spinner*>(objects["Spinner"])->finalTime = (float)glutGet(GLUT_ELAPSED_TIME);
+			static_cast<Spinner*>(objects["Spinner"])->initialTime = static_cast<Spinner*>(objects["Spinner"])->finalTime;
 		}
 	}
 }

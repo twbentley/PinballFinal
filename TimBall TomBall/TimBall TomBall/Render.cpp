@@ -25,7 +25,8 @@ void Render::Draw(string gameState, ColorShader* shader, unordered_map<string, G
 		DrawBitmapText("possible with three balls.", -glutBitmapLength(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)"possible with three balls.") / 600.0f, 0.0f, 0.0f);
 		DrawBitmapText("-Use A and D keys to flip paddle.", -glutBitmapLength(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)"-Use A and E keys to flip paddle.") / 600.0f, -0.1f, 0.0f);
 		DrawBitmapText("-Use spacebar to shoot ball.", -glutBitmapLength(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)"-Use spacebar to shoot ball.") / 600.0f, -0.2f, 0.0f);
-		DrawBitmapText("Press enter to start.", -glutBitmapLength(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)"Press enter to start.") / 600.0f, -0.4f, 0.0f);
+		DrawBitmapText("-Press P to pause.", -glutBitmapLength(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)"-Press P to pause.") / 600.0f, -0.3f, 0.0f);
+		DrawBitmapText("Press enter to start.", -glutBitmapLength(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)"Press enter to start.") / 600.0f, -0.5f, 0.0f);
 	}
 	else if(gameState == "Credits")
 	{
