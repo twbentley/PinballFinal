@@ -1,23 +1,25 @@
 #include "Ball.h"
 
-Ball::Ball()
-{
-}
+// Default constructor
+Ball::Ball() { }
 
+// Parameterized constructor : base()
 Ball::Ball(Polygon* sprite_name, Vector4 color, float positionX, float positionY, float velX, float velY, float scaleX, float scaleY) : Game_Object( sprite_name, color, positionX, positionY, scaleX, scaleY )
 {
+	// Initialize fields
 	velocity = Vector4(velX, velY, 0.0f, 0.0f);
 	accel = Vector4(0.0f, -0.1f, 0.0f, 0.0f);
 
 	launched = false;
 }
 
-Ball::~Ball(void)
-{
-}
+// Destructor
+Ball::~Ball(void) { }
 
+// Update the ball. Move it and return the state of its collision
 int Ball::Update(unordered_map<string, Game_Object*> objects, int& ballCount)
 {
+	// If the ball is in play, move it based on velocity, acceleration/gravity
 	if(launched)
 	{
 		Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x, velocity.y, 0);
@@ -30,14 +32,15 @@ int Ball::Update(unordered_map<string, Game_Object*> objects, int& ballCount)
 	//else if(accel < 0)
 	//	*(accel) += Vector4(0.01f, 0.0f, 0.0f, 0);
 
-	//PollUserInput();
 	return ProcessCollisions(objects, ballCount);
 }
 
+// Check for collision with other objects
 int Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects, int& ballCount)
 {
 	int scoreIncrease = 0;
-	// Calculate 
+
+	// Calculate the center of this ball
 	Vector4 thisCenter(this->translationMatrix[0][3], this->translationMatrix[1][3], 0.0f, 0.0f);
 
 	// Check collision with all objects
@@ -46,10 +49,13 @@ int Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects, int& ba
 		// If not launched yet
 		if(!launched)
 		{
+			// If it collided with a spring
 			if(itr->first == "Spring")
 			{
+				// Move the ball to the top of the spring
 				translationMatrix = Matrix4::CreatePositionMatrix(itr->second->translationMatrix[0][3], itr->second->translationMatrix[1][3] + itr->second->radius.y + radius.y, 0);
 				
+				// Launch the ball
 				if(static_cast<Spring*>(itr->second)->finished == true)
 				{
 					launched = true;
@@ -57,26 +63,33 @@ int Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects, int& ba
 				}
 			}
 		}
+		// If the ball has been launched
 		else
 		{
+			// Calculate the center of the object to check and the combined radius of the ball's and the object's
 			Vector4 otherCenter(itr->second->translationMatrix[0][3], itr->second->translationMatrix[1][3], 0.0f, 0.0f);
 			Vector4 combinedRadius = this->GetRadius() + itr->second->GetRadius();
 
-			// Check for collidable objects, based on dictionary name
+			// Check for collision with outside walls, and bounce the ball off of them
 			if(itr->first == "WallLeft" && thisCenter.x - GetRadius().x < otherCenter.x + itr->second->GetRadius().x)
 			{
 				velocity.x += this->velocity.x * -2.0f;
+				Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x, velocity.y, 0);
+
 			}
 			if(itr->first == "WallRight" && thisCenter.x + GetRadius().x > otherCenter.x - itr->second->GetRadius().x)
 			{
 				velocity.x += this->velocity.x * -2.0f;
+				Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x, velocity.y, 0);
 			}
 			if(itr->first == "WallTop" && thisCenter.y + GetRadius().x > otherCenter.y - itr->second->GetRadius().y)
 			{
 				velocity.y += this->velocity.y * -2.0f;
+				Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x, velocity.y, 0);
 			}
 			if(itr->first == "WallBottom" && thisCenter.y - GetRadius().x < otherCenter.y + itr->second->GetRadius().y)
 			{
+				// If the bottom of the world was hit, lose a ball
 				velocity.y += this->velocity.y * -2.0f;
 				launched = false;
 				ballCount -= 1;
@@ -101,6 +114,7 @@ int Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects, int& ba
 
 				// NOTE: Ball-Ball collision sometimes only changes the velocity of one of the balls
 
+				// If the ball collided with a spherical bumper, squish the bumper
 				if(static_cast<Bumper*>(itr->second)->complete)
 				{
 					static_cast<Bumper*>(itr->second)->complete = false;
@@ -117,6 +131,7 @@ int Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects, int& ba
 			bool hitCorner = false;
 			if((itr->first.find("Flipper") != string::npos || itr->first.find("InnerWall") != string::npos || itr->first.find("Spinner") != string::npos) && FlipperCollision(otherCenter, *(itr->second), bounceAngle, hitCorner))
 			{
+				// Calculate the sine/cos of the angle of the flipper, inner wall, spinner, and get that object's radius
 				Vector4 flipperRadius(itr->second->GetRadius().x, itr->second->GetRadius().y, 0.0f, 0.0f);
 				GLfloat cosAngle(itr->second->rotationMatrix[0][0]);
 				GLfloat sinAngle(-itr->second->rotationMatrix[0][1]);
@@ -124,16 +139,20 @@ int Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects, int& ba
 				// Calculate angle of impact
 				GLfloat hitAngle = atan(velocity.y/velocity.x) + PI;
 
+				// If the object was a spinner, start spinning it
 				if(itr->first.find("Spinner") != string::npos)
 					static_cast<Spinner*>(itr->second)->Spin(hitAngle, velocity, this);
 
+				// If you didn't hit the corner of the object
 				if(!hitCorner)
 				{			
+					// Calculate the angle of impact
 					if(velocity.x < 0)
 						hitAngle += 180 * PI / 180;
 					else if(velocity.x >= 0 && velocity.y < 0)
 						hitAngle += 360 * PI / 180;
-			
+					
+					// 360 degrees should be treated as 0 degrees
 					if(hitAngle >= 2*PI - .0000002 && hitAngle <= 2*PI + .0000002)
 						hitAngle = 0.0f;
 
@@ -142,11 +161,13 @@ int Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects, int& ba
 							bounceAngle += 2 * PI;
 				}
 
+				// Get the length of the velocity vector
 				float length = velocity.length();
 			
-				// How to get a vector based on this angle
+				// Get a vector based on the magnitude of the velocity and the angle of the collided object
 				Vector4 normal(length * cos(bounceAngle), length * sin(bounceAngle), 0.0f, 0.0f);
 
+				// Set the new velocity of the ball to the calculated value
 				velocity = normal;
 
 				// Separate collided objects (upon collision 2 objects will slightly overlap so this is necessary)
@@ -164,8 +185,10 @@ int Ball::ProcessCollisions(unordered_map<string, Game_Object*> objects, int& ba
 	return scoreIncrease;
 }
 
+// Separating Axis Theorem collision with rectangle objects
 bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& angle, bool& hitCorner)
 {
+	// Declare helpful locals
 	Vector4 axis, C, A, B;
 	float projC, projA, projB, gap;
 
@@ -195,7 +218,7 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 	circleBottomLeft = other.rotationMatrix * circleBottomLeft;
 
 	// Axis 1 (top)
-	// Calculate axis, 3 vectors, the dot, and then the gap
+	// Calculate axis of projection, 3 vectors(ball,object,distance between them, the projection of all those vectors, and then the gap between the objects
 	axis = Vector4( (upperRight - upperLeft).normalize(upperRight - upperLeft) );
 	C = Vector4(otherCenter.x - thisCenter.x, otherCenter.y - thisCenter.y, 0.0f, 0.0f);
 	A = Vector4(circleUpperRight);
@@ -211,7 +234,7 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 		return false;
 
 	// Axis 2 (bottom)
-	// Calculate axis, 3 vectors, the dot, and then the gap
+	// Calculate axis of projection, 3 vectors(ball,object,distance between them, the projection of all those vectors, and then the gap between the objects
 	axis = Vector4( (bottomRight - bottomLeft).normalize(bottomRight - bottomLeft) );
 	C = Vector4(otherCenter.x - thisCenter.x, otherCenter.y - thisCenter.y, 0.0f, 0.0f);
 	A = Vector4(circleBottomRight);
@@ -227,7 +250,7 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 		return false;
 
 	// Axis 3 (right)
-	// Calculate axis, 3 vectors, the dot, and then the gap
+	// Calculate axis of projection, 3 vectors(ball,object,distance between them, the projection of all those vectors, and then the gap between the objects
 	axis = Vector4( (upperRight - bottomRight).normalize(upperRight - bottomRight) );
 	C = Vector4(otherCenter.x - thisCenter.x, otherCenter.y - thisCenter.y, 0.0f, 0.0f);
 	A = Vector4(circleBottomRight);
@@ -243,7 +266,7 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 		return false;
 
 	// Axis 4 (left)
-	// Calculate axis, 3 vectors, the dot, and then the gap
+	// Calculate axis of projection, 3 vectors(ball,object,distance between them, the projection of all those vectors, and then the gap between the objects
 	axis = Vector4( (upperLeft - bottomLeft).normalize(upperLeft - bottomLeft) );
 	C = Vector4(otherCenter.x - thisCenter.x, otherCenter.y - thisCenter.y, 0.0f, 0.0f);
 	A = Vector4(circleBottomLeft);
@@ -258,8 +281,9 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 	if(gap > 0)
 		return false;
 
+	// Get the current angle of the collided object
 	float currentAngle = acos(other.rotationMatrix[0][0]);
-
+	// Calculate the distance from the corners of the object to the circle (magnitude)
 	float distanceUpperLeft = ( (upperLeft + otherCenter) - Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f )).length();
 	float distanceLowerLeft = ( (bottomLeft + otherCenter) - Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f )).length();
 	float distanceUpperRight = ( (upperRight + otherCenter) - Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f )).length();
@@ -276,10 +300,21 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 	left = other.rotationMatrix * left;
 	right = other.rotationMatrix * right;
 	
+	// Calculate vectors between the center of the ball and the corners of the object
 	Vector4 testUpperLeft( Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f) - otherCenter - upperLeft);;
 	Vector4 testUpperRight( Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f) - otherCenter - upperRight);
 	Vector4 testBottomLeft( Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f) - otherCenter - bottomLeft);
 	Vector4 testBottomRight( Vector4(thisCenter.x, thisCenter.y, 0.0f, 0.0f) - otherCenter - bottomRight);
+
+	// Check for the quadrant in which the ball collided with the object.
+	// Once quadrant has been determined, set angle for ball's new velocity
+	//upper-left|   upper  | upper-right
+	//       ___|__________|____
+	//          |          |
+	//     left |  object  |right
+	//       ___|__________|___
+	//     lower|		   | lower
+	//	   left |	lower  | right
 
 	// UpperLeft, Upper
 	if (testUpperLeft.dot(left) > 0 && testUpperLeft.dot(top) > 0)
@@ -359,32 +394,4 @@ bool Ball::FlipperCollision(Vector4& otherCenter, Game_Object& other, float& ang
 	}
 
 	return true;
-}
-
-// Apply a force to the object (DEPRECATED)
-void Ball::ApplyForce(unordered_map<string, Game_Object*>::iterator other)
-{
-	//Vector4& tmp = velocity;
-	//Vector4 thisForce( tmp );	// velocity / mass
-	//Vector4 otherForce;
-	//Vector4 thisFinalForce;
-	//Vector4 otherFinalForce;
-
-	//if(other->first == "Circle")
-	//{
-	//	otherForce = *( static_cast<Ball*>(other->second)->velocity );
-	//}
-	//else
-	//{	}
-
-	//// You'll want to replace all the 1's with something later, this is the general setup.
-	//thisFinalForce = thisForce * (1.0f - 1.0f) / (1.0f + 1.0f) + otherForce * (2.0f * 1.0f / (1.0f + 1.0f));
-	//otherFinalForce = otherForce * (1.0f - 1.0f) / (1.0f + 1.0f) + thisForce * (2.0f * 1.0f / (1.0f + 1.0f));
-	///*thisFinalForce /= mass;
-	//otherFinalForce /= other->mass;*/
-
-	//accel->x = thisFinalForce.x;
-	//accel->y = thisFinalForce.y;
-	//accel->z = zForce;
-	//accel->w = wForce;
 }

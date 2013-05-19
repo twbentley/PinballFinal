@@ -23,7 +23,6 @@ public:
 	int Update(unordered_map<string, Game_Object*>, int&);
 
 	int ProcessCollisions(unordered_map<string, Game_Object*>, int&);
-	void ApplyForce(unordered_map<string, Game_Object*>::iterator);
 	bool FlipperCollision(Vector4&, Game_Object&,float&,bool&);
 };
 
