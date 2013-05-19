@@ -11,6 +11,7 @@
 #include "Bumper.h"
 #include "Flipper.h"
 #include <cstdarg>
+#include <GL\glut.h>
 
 // Pinball in the game world
 class Ball : public Game_Object

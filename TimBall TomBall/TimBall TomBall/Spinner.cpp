@@ -17,19 +17,26 @@ Spinner::~Spinner(void) { }
 // Every update, spin the spinner if it has been hit (with friction)
 void Spinner::Update()
 {
+	// Update elapsed time to keep movement normal no matter the system
+	finalTime = (float)glutGet(GLUT_ELAPSED_TIME);
+	float dt = (finalTime - initialTime) / 25;
+
 	// If rotating counterclockwise
 	if(angle < 0)
 	{
 		// Rotate spinner by specified amount, and reduce that by the angular velocity each time(aka friction)
-		Matrix4::UpdateRotationMatrix(rotationMatrix, 'z', angle);
+		Matrix4::UpdateRotationMatrix(rotationMatrix, 'z', angle * dt);
 		angle += angularVelocity* PI / 180;
 	}
 	// If rotating clockwise
 	else if(angle > 0)
 	{
-		Matrix4::UpdateRotationMatrix(rotationMatrix, 'z', angle);
+		Matrix4::UpdateRotationMatrix(rotationMatrix, 'z', angle * dt);
 		angle -= angularVelocity* PI / 180;
 	}
+
+	// Set initial time for next calculation
+	initialTime = finalTime;
 }
 
 // Set the spinner spinning when it has been hit

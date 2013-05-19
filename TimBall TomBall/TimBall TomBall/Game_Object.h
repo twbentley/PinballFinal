@@ -31,6 +31,8 @@ public:
 	Matrix4 scaleMatrix;
 	Vector4 radius;
 	Vector4 objectsColor;
+	float initialTime;
+	float finalTime;
 };
 
 #endif

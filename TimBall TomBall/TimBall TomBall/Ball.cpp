@@ -19,11 +19,15 @@ Ball::~Ball(void) { }
 // Update the ball. Move it and return the state of its collision
 int Ball::Update(unordered_map<string, Game_Object*> objects, int& ballCount)
 {
+	// Update elapsed time to keep movement normal no matter the system
+	finalTime = (float)glutGet(GLUT_ELAPSED_TIME);
+	float dt = (finalTime - initialTime) / 25;
+
 	// If the ball is in play, move it based on velocity, acceleration/gravity
 	if(launched)
 	{
-		Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x, velocity.y, 0);
-		velocity += accel;
+		Matrix4::UpdatePositionMatrix(translationMatrix, velocity.x * dt, velocity.y * dt, 0);
+		velocity += accel * dt;
 	}
 
 	// "Friction"
@@ -31,6 +35,8 @@ int Ball::Update(unordered_map<string, Game_Object*> objects, int& ballCount)
 	//	*(accel) += Vector4(-0.01f, 0.0f, 0.0f, 0);
 	//else if(accel < 0)
 	//	*(accel) += Vector4(0.01f, 0.0f, 0.0f, 0);
+
+	initialTime = finalTime;
 
 	return ProcessCollisions(objects, ballCount);
 }
